@@ -1,0 +1,118 @@
+﻿@model List<EZY.RMAS.Contract.ProductCategoryMaster>
+@{
+    ViewBag.Title = "ProductCategoryList";
+}
+@section seccss{
+    <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+}
+<section class="content">
+    <div class="box box-dnex">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-product-hunt" aria-hidden="true"></i>&nbsp;Product Category</h3>
+            <div class="box-tools">
+                <button class="btn btn-default btn-sm" type="button" onclick="AddProductCategoryList()"><i class="fa fa-plus"></i>&nbsp;Add New ProductCategory</button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-8">
+                    <table class="table table-striped" id="tblProducts">
+                        <thead>
+                            <tr>
+                                <th>Category Group</th>
+                                <th>Category Code</th>
+                                <th>Description</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td>@Model[i].CategoryGroupDescripton</td>
+                                    <td>@Model[i].Code</td>
+                                    <td>@Model[i].Description</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" onclick="EditProductCategory(@Model[i].ProductCategory)"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="box-footer">
+            <div class="row">
+            </div>
+        </div>
+    </div>
+</section>
+@using (Html.BeginForm("ProductCategory", "Master", FormMethod.Post, new { id = "frmProductCategory", name = "frmProductCategory" }))
+{
+    <div id="ProductCategoryModal" class="modal fade" role="dialog">
+    </div>
+}
+@section secscripts{
+    <script type="text/javascript">
+        function AddProductCategoryList() {
+            $.ajax({
+                url: '@Url.Content("~/Master/ProductCategoryGroup")',
+                method: 'get',
+                contentType: 'text/html',
+                success: function (html) {
+                    $('#ProductCategoryModal').html(html);
+                    $('#ProductCategoryModal').modal('show');
+                },
+                error: function (err) {
+                }
+            });
+        }
+
+        $('#frmProductCategory').validate({
+            rules: {
+                CategoryGroup: {
+                    required:true
+                    },
+                Code: {
+                    required: true
+                },
+                Description: {
+                    required: true
+                }
+            }
+        });
+
+        function EditProductCategory(productCategory) {
+            
+            $.ajax({
+                url: '@Url.Content("~/Master/ProductCategoryGroup?ProductCategory=")' + productCategory,
+                method: 'get',
+                contentType: 'text/html',
+                success: function (html) {
+                    
+                    $('#ProductCategoryModal').html(html);
+                    $('#ProductCategoryModal').modal('show');
+                },
+                error: function (err) {
+                    
+                }
+            });
+        }
+
+        function SaveProductCategory() {
+            
+
+            if ($('#frmProductCategory').valid()) {
+                $('#frmProductCategory').submit();
+            }
+        };
+
+        function DeleteProductCategory(lookupID) {
+
+        }
+    </script>
+}
+

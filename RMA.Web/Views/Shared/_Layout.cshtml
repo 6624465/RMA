@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>RMA</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="@Url.Content("~/Css/bootstrap.css?v=1.2")">
+    <link href="@Url.Content("~/Css/font-awesome-4.5.0/css/font-awesome.css?v=1.2")" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css?v=1.2">
+    <link href="@Url.Content("~/Css/jquery-jvectormap-1.2.2.css?v=1.2")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/style.min.css?v=1.2")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/_all-skins.min.css?v=1.3")" rel="stylesheet" />    
+    <script src="@Url.Content("~/Scripts/jquery-2.2.3.min.js?v=1.2")"></script> 
+    <style type="text/css">
+        input[type=text].error, input[type=password].error, input[type=file].error, textarea.error, select.error {
+            border: 1px solid red;
+        }
+
+        label.error {
+            display: none !important;
+        }
+        /*::-webkit-scrollbar {
+            width: 12px;
+        }
+ 
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+            border-radius: 10px;
+        }
+ 
+        ::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+        }*/
+        /*body::-webkit-scrollbar {
+            width: 1em;
+        }
+ 
+        body::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        }
+ 
+        body::-webkit-scrollbar-thumb {
+          background-color: darkgrey;
+          outline: 1px solid slategrey;
+        }*/
+        html {
+            overflow: auto;
+        }
+        /*body {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            bottom: 20px;
+            right: 20px;
+            padding: 30px; 
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }*/
+
+        /* Let's get this party started */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+ 
+        /* Track */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+        }
+ 
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 20px;
+            border-radius: 10px;
+            background: rgb(236, 240, 245);
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+        }
+        ::-webkit-scrollbar-thumb:window-inactive {
+	        background: rgba(255,0,0,0.4); 
+        } 
+
+        .css10 {
+            margin-top: 10px;
+        }
+    </style>
+    @RenderSection("seccss", false)
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        @{ Html.RenderAction("Links", "Layout"); }
+        <div class="content-wrapper">
+            <div id="contentWrapper" style="min-height:600px;">
+                @RenderBody()
+            </div>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.3.8
+            </div>
+            <strong>Copyright &copy; 2018 <a href="#">EZY PM</a>.</strong> All rights
+            reserved.
+        </footer>
+    </div>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js?v=1.2")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js?v=1.2")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.slimscroll.min.js?v=1.2")"></script>
+    <script src="@Url.Content("~/Scripts/fastclick.js?v=1.2")"></script>
+    <script src="@Url.Content("~/Scripts/app.min.js?v=1.2")"></script>
+    <script src="@Url.Content("~/Scripts/demo.js?v=1.2")"></script>
+    @RenderSection("secscripts", false)
+    <script type="text/javascript">
+        $(document).on('keypress', '.numCss', function (evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode >= 48 && charCode <= 57) || charCode == 8)
+                return true;
+            else
+                return false;
+        });
+
+        $(document).on('keypress', '.decimalCss', function (evt) {
+            //
+            //alert(evt.keyCode);
+            //alert(evt.charCode);
+
+            //var charCode = (evt.which) ? evt.which : (evt.charCode);
+            //if (charCode == 8 || charCode == 0) {
+
+            //}
+            //else if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+            //    alert(charCode);
+            //    return false;
+            //}
+
+            //
+            //var character = String.fromCharCode(evt.charCode)
+            //var newValue = this.value + character;                
+            //if (isNaN(newValue) || parseFloat(newValue) * 10000 % 1 > 0) {
+            //    evt.preventDefault();
+            //    return false;
+            //}
+
+            //return true;
+            /*
+           var charCode = (evt.which) ? evt.which : event.keyCode;
+           if (charCode != 46 && charCode > 31
+             && (charCode < 48 || charCode > 57))
+               return false;
+    
+           return true;*/
+
+            if (navigator.appName == "Netscape")
+                Key = evt.charCode; //or e.which; (standard method)
+            else
+                Key = evt.keyCode;
+            var character = String.fromCharCode(Key);
+            //console.log(Key);
+
+            if (Key == 0)
+                return true;
+
+            var newValue = this.value + character;
+            if (isNaN(newValue) || parseFloat(newValue) * 10000 % 1 > 0) {
+                evt.preventDefault();
+                return false;
+            }
+
+        });
+    </script>
+</body>
+</html>

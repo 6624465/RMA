@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<section class="content">
+    <div class="bs-example list-items">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="row">
+                    <section class="content-header">
+                        <h1>
+                            &nbsp;
+                            @*<small>Control panel</small>*@
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                           @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                            <li class="active">Master Data</li>
+                        </ol>
+                    </section>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="main-section grey ">
+                            <a href='@Url.Content("~/Master/CurrencyList")'>
+                                <div class="menu_section  grey">
+                                    <span><i class="fa fa-money fa-5x" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="content-section grey-btm">
+                                    <b> Currency                             </b>
+                                    <p>Create or Modify the Currency</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section green">
+                            <a href='@Url.Content("~/Master/Products")'>
+                                <div class="menu_section green">
+                                    <span>  <i class="fa fa-archive fa-5x" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="content-section green-btm">
+                                    <b> Products</b>
+                                    <p>Create or Modify the Product </p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section org">
+                            <a href='@Url.Content("~/Customer/Customers")'>
+                                <div class="menu_section org">
+                                    <span>  <i class="fa fa-database fa-5x" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="content-section org-btm">
+                                    <b> Contact Database</b>
+                                    <p>Create or Modify the Customer / Vendor</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>   
+                </div>   
+            </div>
+        </div>
+    </div>
+</section>

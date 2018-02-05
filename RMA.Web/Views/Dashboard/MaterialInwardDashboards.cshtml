@@ -1,0 +1,315 @@
+﻿@model EZY.RMAS.Contract.MaterialInwardDashboardDTO
+@{
+    ViewBag.Title = "MaterialInwardDashboards";
+    //Material Inward Start
+    var strInwardProductName = string.Empty;
+    var strInwardQty = string.Empty;
+    for (var i = 0; i < Model.MaterialInwardProductQty.Count; i++)
+    {
+        strInwardProductName += "'" + Model.MaterialInwardProductQty[i].ProductName + "'" + ",";
+        strInwardQty += Model.MaterialInwardProductQty[i].Quantity + ",";
+    }
+    strInwardProductName = strInwardProductName.TrimEnd(',');
+    strInwardQty = strInwardQty.TrimEnd(',');
+
+    var strProductName = string.Empty;
+    var strInwardInvoices = string.Empty;
+    for (var i = 0; i < Model.MaterialInwardInvoices.Count; i++)
+    {
+        strProductName += "'" + Model.MaterialInwardInvoices[i].ProductName + "'" + ",";
+        strInwardInvoices += Model.MaterialInwardInvoices[i].InvoiceNoCount + ",";
+    }
+    strProductName = strProductName.TrimEnd(',');
+    strInwardInvoices = strInwardInvoices.TrimEnd(',');
+    //Material Inward End
+}
+<style>
+    .highcharts-title tspan {
+        visibility: hidden;
+    }
+
+    .highcharts-credits {
+        display: none;
+    }
+</style>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<section class="content">
+    <div class="box box-dnex">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                        @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                        <li><a href='@Url.Content("~/Home/Reports")'> Reports</a></li>
+                        <li><a href='@Url.Content("~/Dashboard/MaterialInwardDashboards")'>Management Reports</a></li>
+                        <li class="active">Dashboard</li>
+                    </ol>
+                </section>
+            </div>
+        </div>
+        <div class="box-body">
+            @using (Html.BeginForm("GetMaterialInwardDashboards", "Dashboard", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
+            {
+                <div class="row">
+                    <div class="col-sm-12">
+                        @{Html.RenderPartial("DashBoardsLinks");}
+                        <br />
+                        <div class="row">
+                            @if (ViewBag.Login == 10)
+                            {
+                                <div class="col-md-1">
+                                    @Html.DropDownListFor(x => x.Branch, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
+                                </div>
+                            }
+                            <div class="col-md-1">
+                                @Html.DropDownListFor(x=> x.ProductCode, new SelectList(ViewBag.productCategory, "Value","Text"),null, new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                @Html.DropDownListFor(x => x.FromMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                @Html.DropDownListFor(x => x.ToMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-primary" onclick="btnSubmit();">Show</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                            }
+            <br /><br />
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="box box-dnex">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">&nbsp; Material Inward Report For Qty</h3>
+
+                        </div>
+                        <div class="box-body">
+                            <div id="MaterialInwardQty" style="height: 350px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box box-dnex">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">&nbsp; Material Inward Report For Cost</h3>
+
+                        </div>
+                        <div class="box-body">
+                            <div id="MaterialInwardCost" style="height: 350px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="box box-dnex">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">&nbsp; Material Inward Report For Invoices</h3>
+
+                        </div>
+                        <div class="box-body">
+                            <div id="MaterialInwardInvoices" style="height: 350px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div id="container" style="height: 180px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Reports")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#Year').val('@Model.Year');
+
+            $('#MaterialInward').parent().addClass('active');
+
+            $('#frm').validate({
+                rules:
+                    {
+                        Branch: {
+                            required: true
+                        },
+                        FromMonth: {
+                            required: true
+                        },
+                        ToMonth: {
+                            required: true
+                        },
+                        Year: {
+                            required: true
+                        }
+                    }
+            })
+
+            obj = {};
+            obj.Branch = $('#Branch').val();
+            obj.FromMonth = $('#FromMonth').val();
+            obj.ToMonth = $('#ToMonth').val();
+            obj.Year = $('#Year').val();
+            obj.ProductCode = $('#ProductCode').val();
+            var objarray = [];
+            $.ajax({
+                url: '@Url.Content("~/Dashboard/GetMaterialInwardProductCost")',
+                method: 'POST',
+                contentType: "application/json",
+                data: JSON.stringify(obj),
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        var tempArray = new Array();
+                        tempArray.push(item.ProductName);
+                        tempArray.push(item.Cost);
+                        objarray.push(tempArray);
+                        // console.log(JSON.stringify(objarray));
+                    });
+                    bindChart(objarray);
+                },
+                error: function (err) {
+                }
+            })
+
+        });
+
+        var chart = Highcharts.chart('MaterialInwardQty', {
+
+            title: {
+                text: 'Chart.update'
+            },
+            chart: {
+                inverted: true
+            },
+
+            //subtitle: {
+            //    text: 'Plain'
+            //},
+
+            xAxis: {
+                categories: [@Html.Raw(strInwardProductName)]
+            },
+            yAxis: {
+                gridLineWidth: 0
+            },
+            plotOptions: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y}'
+                    }
+                }
+            },
+            series: [{
+                type: 'column',
+                name: 'Qty',
+                colorByPoint: true,
+                data: [@Html.Raw(strInwardQty)],
+                showInLegend: false,
+                // name: ''
+                colors: ['#8B008B', '#0000FF', '#8A2BE2', '#1E90FF', '#DC143C', '#B8860B',
+               '#FF0000', '#00FF7F'],
+            }]
+
+        });
+        function btnSubmit() {
+            $('#frm').valid();
+            $('#frm').submit();
+        }
+        function bindChart(result) {
+            Highcharts.chart('MaterialInwardCost', {
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                },
+                //title: {
+                //   // text: type
+                //},
+                //tooltip: {
+                //    //headerFormat: '<span style="font-size:11px">{series.name}</span><br/>',
+                //    pointFormat: '<b>{point.percentage:.0f}%</b>'
+                //},
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 50,
+                        dataLabels: {
+                            distance: 10,
+                            color: 'Black',
+                            enabled: true,
+                            format: '$' + '{point.y}',
+                            //style: {
+                            //    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            //}
+                        },
+                        showInLegend: true,
+                        size: 250
+                    },
+                    borderWidth: 0,
+                },
+                series: [{
+                    name: 'Cost',
+                    colorByPoint: true,
+                    data: result,
+                    colors: ['#008B8B', '#B8860B', '#DC143C', '#00FF7F', '#FF0000', '#7FFF00', '#0000FF', '#8A2BE2', '#1E90FF', ],
+                }]
+            });
+        }
+
+        var chart = Highcharts.chart('MaterialInwardInvoices', {
+
+            title: {
+                text: 'Chart.update'
+            },
+            xAxis: {
+                categories: [@Html.Raw(strProductName)]
+            },
+            yAxis: {
+                gridLineWidth: 0,
+            },
+            plotOptions: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y}'
+                    }
+                }
+            },
+            series: [{
+                type: 'column',
+                colorByPoint: true,
+                data: [@Html.Raw(strInwardInvoices)],
+                showInLegend: false,
+                name: 'Invoices',
+                colors: ['#8A2BE2', '#1E90FF', '#DC143C', '#B8860B', '#DC143C', '#7FFF00', '#FF0000', '#00FF7F', '#0000FF'],
+            }]
+
+        });
+    </script>
+</section>

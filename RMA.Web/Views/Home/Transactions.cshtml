@@ -1,0 +1,152 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<section class="content">
+    <div class="bs-example list-items">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div class="row">
+                    <section class="content-header">
+                        <h1>
+                            &nbsp;
+                            @*<small>Control panel</small>*@
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                           @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                            <li class="active">Transactions</li>
+                        </ol>
+                    </section>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="main-section grey ">
+                            <a href='@Url.Content("~/Invoice/VendorInvoiceList")'>
+                                <div class="menu_section  grey">
+
+                                    <span><i class="fa fa-list-alt fa-4x" aria-hidden="true"></i></span>
+
+                                </div>
+                                <div class="content-section grey-btm">
+                                    <b> Materials Inward                            </b>
+                                    <p>Create or Modify the  Material Inward </p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section blue">
+                            <a href='@Url.Content("~/Invoice/CustomerInvoiceList")'>
+                                <div class="menu_section blue">
+
+                                    <span> <i class="fa fa-list fa-4x" aria-hidden="true"></i></span>
+
+                                </div>
+                                <div class="content-section blue-btm">
+                                    <b>Materials Outward</b>
+                                    <p>Create or Modify the  Material Outward</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section green">
+                            <a href='@Url.Content("~/RMA/Inward")'>
+                                <div class="menu_section green">
+
+                                    <span> <i class="fa fa-sign-in fa-4x" aria-hidden="true"></i></span>
+
+                                </div>
+                                <div class="content-section green-btm">
+                                    <b> RMA Validation</b>
+                                    <p>Create or Modify the  RMA Inward </p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section ddgreen">
+                            <a href='@Url.Content("~/RMA/VendorRMA")'>
+                                <div class="menu_section ddgreen">
+
+                                    <span>
+                                        <i class="fa fa-level-up fa-4x" aria-hidden="true"></i>
+                                    </span>
+
+
+                                </div>
+                                <div class="content-section ddgreen-btm">
+                                    <b>Vendor Outward</b>
+                                    <p>Create or Modify the Vendor RMA </p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="main-section dgreen">
+                            <a href='@Url.Content("~/RMA/VendorRMAOutwardList")'>
+                                <div class="menu_section dgreen">
+                                    <span> <i class="fa fa-level-down fa-4x" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="content-section dgreen-btm">
+                                    <b>Vendor Return</b>
+                                    <p>Create or Modify the Vendor RMA </p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section org">
+                            <a href='@Url.Content("~/RMA/OutwardList")'>
+                                <div class="menu_section org">
+
+                                    <span>  <i class="fa fa-sign-out fa-4x" aria-hidden="true"></i></span>
+
+
+                                </div>
+                                <div class="content-section org-btm">
+                                    <b> RMA Return</b>
+                                    <p>Create or Modify the RMA Outward</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section grey ">
+                            <a href='@Url.Content("~/Invoice/MaterialsEnquiry")'>
+                                <div class="menu_section  grey">
+
+                                    <span><i class="fa fa-search" aria-hidden="true"></i></span>
+
+                                </div>
+                                <div class="content-section grey-btm">
+                                    <b>Materials Inquiry                           </b>
+                                    <p>Create or Modify the  Materials Inquiry </p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

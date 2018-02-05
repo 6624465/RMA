@@ -1,0 +1,88 @@
+
+
+
+/* css for login */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+body{font-family: 'Open Sans', sans-serif;}
+.main-container{width:100%}
+.left-container {
+	width:61%;
+	
+	background-color: rgb(186,36,34);
+	min-height:200px;
+	float:left;
+	position:fixed;
+	height:100%;
+	
+}
+.bg-img{
+    background-image:url(../Images/bg.png); 
+    width:100%; 
+    height:100%; 
+    background-repeat:no-repeat;
+	background-size:100% 100%;
+   background-color:rgb(46,177,98);
+}
+.signin .btn.green{background-color:rgb(237,35,36); border-color:rgb(237,35,36); color:#fff;}
+.signin .btn.green:hover{background-color:rgba(237,35,36,0.8); border-color:rgb(237,35,36);}
+
+.right-container{padding-top:55px;width:39%;
+float:right;padding-left:3%;padding-right:3%;font-weight:normal;    }
+.right-container img{width:145px;}
+.right-container h1{font-size:28px; font-weight:normal;    margin-bottom: 56px;
+    margin-top: 56px;}
+.right-container h6{font-size:14px; margin-bottom:20px; }
+.right-container .form-group{ margin-bottom:8px;}
+.right-container input[type="text"],.right-container input[type="password"] {border-radius:0px;    border: 1px solid rgb(130,130,130);
+    color: #000;
+    height: 28px;
+	padding:0px;
+    margin: 0;
+	font-size:12px;
+	font-weight:400;
+    padding-left: 3px;
+    z-index: 3;
+	box-shadow:0 0px 0px rgba(0, 0, 0, 0.075) inset;}
+	.btn-frmt{ margin-top:15px;  margin-right:3px;}
+		.btn-danger.btn-frmt:hover{border-color:rgb(194,37,44);}
+.right-container *::-moz-placeholder {
+    color: rgb(178,178,178);
+}
+		
+	.signin{margin-bottom:20px; width:80%;}
+	.right-container button{ border-radius:0px;}
+	input[type="checkbox"], input[type="radio"]{height:11px;width:14px; display:inline-block; margin-bottom:20px; margin-top:20px; }
+	label{font-weight:400; font-size:12px;}
+	.right-container a{ font-size:12px; color:#2872dd; line-height:normal;}
+.copyright, .version{font-size:11px; color:rgb(130,130,130); font-weight:400;}
+footer{position:fixed; bottom:10px;}
+.col-md-3.version{text-align:right;}
+.col-md-3.version > img {
+    width: 40px;
+}
+.logo .icon-logo {
+    color: #444;
+    
+    font-size: 4rem;
+    padding-right: 10px;
+}
+.logo .icon-logo img{ width:105px; height:auto;}
+.logo a {
+    color: rgb(46,177,98);
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 2.8rem;
+    padding: 3px 0 0;
+	display:inline-block;
+	margin-top:10px;
+}
+.logo a span {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.2rem;
+    padding-top: 0;
+}

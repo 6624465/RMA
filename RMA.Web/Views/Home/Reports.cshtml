@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<section class="content">
+    <div class="bs-example list-items">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="row">
+                    <section class="content-header">
+                        <h1>
+                            &nbsp;
+                            @*<small>Control panel</small>*@
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                            <li class="active">Reports</li>
+                        </ol>
+                    </section>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="main-section grey ">
+                            <a href='@Url.Content("~/Reports/MaterialInwardProductQtyMonthWise")'>
+                                <div class="menu_section  grey">
+
+                                    <span><i class="fa fa-line-chart fa-5x"></i></span>
+
+                                </div>
+                                <div class="content-section grey-btm">
+                                    <b> Operational Reports</b>
+                                    <p>View or download Operational Reports</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+                        <div class="main-section blue">
+                            <a href='@Url.Content("~/Dashboard/MaterialInwardDashboards")'>
+                                <div class="menu_section blue">
+
+                                    <span><i class="fa fa-pie-chart fa-5x"></i></span>
+
+                                </div>
+                                <div class="content-section blue-btm">
+                                    <b>Management Reports</b>
+                                    <p>View or download Management Reports</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    @*<div class="col-md-3">
+                        @Html.ActionLink("Achievement", "Achievement", "Reports")
+                    </div>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

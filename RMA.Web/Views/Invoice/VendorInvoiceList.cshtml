@@ -1,0 +1,209 @@
+﻿@model List<EZY.RMAS.Contract.InvoiceHeader>
+@{
+    ViewBag.Title = "VendorInvoiceList";
+}
+@section seccss{
+    <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/sweetalert.css")" rel="stylesheet" />
+}
+<section class="content">
+    <div class="box box-default">
+        <div class="box-header with-border">
+
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                        @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                        <li><a href='@Url.Content("~/Home/Transactions")'> Transactions</a></li>
+                        <li class="active">Material Inward List</li>
+                    </ol>
+                </section>
+            </div>
+            <div class="box-tools">
+                @if (UTILITY.HasRight("VendorInvoiceAdd", "Action"))
+                {
+                    @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Invoice",
+                    "VendorInvoice", "Invoice",
+                    new { invoiceNo = "", documentNo = "" }, new { @class = "btn btn-default btn-sm" })
+                }
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <table class="table table-striped" id="tblVendorInvoices">
+                        <thead>
+                            <tr>
+                                <th>Document No</th>
+                                <th>Invoice No</th>
+                                <th>Cus Ref Invoice No</th>
+                                <th>Vendor / Supplier Name</th>
+                                <th>Description</th>
+                                <th>Invoice Date</th>
+                                <th>Vendor Warranty Expiry Date</th>
+                                <th>Quantity</th>
+                                <th>Cost</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td>@Model[i].DocumentNo</td>
+                                    <td>@Model[i].InvoiceNo</td>
+                                    <td>@Model[i].CusInvoiceNo</td>
+                                    <td>@Model[i].CustomerCode</td>
+                                    <td>@Model[i].ProductCode</td>
+                                    <td>@Model[i].InvoiceDate</td>
+                                    <td>@Model[i].WarrantyExpiryDate</td>
+                                    <td>@Model[i].Quantity</td>
+                                    <td>@Model[i].UnitPrice</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i>&nbsp;Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>&nbsp;Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Transactions")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@section secscripts{
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
+    <script src="@Url.Content("~/Scripts/sweetalert.js")"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            var isDefaultCol = false;
+            var isDefaultDir = false;
+            var obj = {};
+            var oTable = $('#tblVendorInvoices').dataTable({
+                "bStateSave": true,
+                "sPaginationType": "full_numbers",
+                "bServerSide": true,
+                "bProcessing": true,
+                "bSortClasses": false,
+                "bDeferRender": true,
+                "sAjaxSource": '@Url.Content("~/Invoice/VendorInvoiceList")',
+                "bFilter": false,
+                "aaSorting": [[0, "asc"]],
+                "aoColumnDefs": [{
+                    bSortable: false,
+                    aTargets: [-1]
+                }
+                ],
+                "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+                    var sortColArr = ['DocumentNo', 'InvoiceNo', 'CusInvoiceNo', 'CustomerCode', 'ProductCode', 'InvoiceDate', 'WarrantyExpiryDate', 'Quantity', 'UnitPrice'];
+                    var paramData = {};
+                    var sExt = "?";
+                    var sAnd = "";
+                    var r = 0;
+
+                    for (var key in aoData) {
+                        paramData[aoData[key]['name']] = aoData[key]['value'];
+
+                        if (r > 0) sAnd = "&";
+                        if (aoData[key]['name'].trim() == "iDisplayLength") {
+                            sExt += sAnd + "limit=" + aoData[key]['value']; r++
+                            obj.limit = aoData[key]['value'];
+                        }
+                        if (aoData[key]['name'].trim() == "iDisplayStart") {
+                            sExt += sAnd + "offset=" + aoData[key]['value']; r++
+                            obj.offset = aoData[key]['value'];
+                        }
+                        if (aoData[key]['name'].trim() == "iSortCol_0") {
+                            sExt += sAnd + "sort_col=" + aoData[key]['value']; r++
+                            obj.sortColumn = sortColArr[aoData[key]['value']];
+                        }
+                        if (aoData[key]['name'].trim() == "sSortDir_0") {
+                            sExt += sAnd + "sort=" + aoData[key]['value']; r++
+                            obj.sortType = aoData[key]['value'].toUpperCase();
+                        }
+                        if (aoData[key]['name'].trim() == "sSortDir_0") {
+                            sExt += sAnd + "sort=" + aoData[key]['value']; r++
+                            obj.sortType = aoData[key]['value'].toUpperCase();
+                        }
+                        if (aoData[key]['name'].trim() == "sEcho") var sEcho = aoData[key]['value'];
+                    }
+
+                    oSettings.jqXHR = $.ajax({
+                        "type": "POST",
+                        "contentType": "application/json;charset=utf-8",
+                        "accept": "application/json",
+                        "dataType": "json",
+                        "url": sSource,
+                        cache: false,
+                        "data": JSON.stringify(obj),
+                        "success": function (result) {
+
+                            var tempdset = {};
+                            var dataSet = [];
+                            for (var key in result['vendorInvoiceList']) {
+                                var objinner = [];
+                                objinner.push(result['vendorInvoiceList'][key]['DocumentNo']);
+                                objinner.push(result['vendorInvoiceList'][key]['InvoiceNo']);
+                                objinner.push(result['vendorInvoiceList'][key]['CusInvoiceNo']);
+                                objinner.push(result['vendorInvoiceList'][key]['CustomerName']);
+                                objinner.push(result['vendorInvoiceList'][key]['ProductName']);
+                                objinner.push(result['vendorInvoiceList'][key]['InvoiceDate']);
+                                objinner.push(result['vendorInvoiceList'][key]['WarrantyExpiryDate']);
+                                objinner.push(result['vendorInvoiceList'][key]['Quantity']);
+                                objinner.push(result['vendorInvoiceList'][key]['UnitPrice']);
+                                var htmlAction = '';
+                                @if(UTILITY.HasRight("VendorInvoiceEdit", "Action"))
+                                {
+                                    <text>htmlAction += '<a class="btn btn-primary btn-sm" href="' + '@Url.Content("~/Invoice/VendorInvoice")' + '?q=' + result['vendorInvoiceList'][key]['EncryptStr'] + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>&nbsp;';</text>
+                                    <text>htmlAction += '<button class="btn btn-danger btn-sm" onclick="DeleteInvoice(\'' + result['vendorInvoiceList'][key]['InvoiceNo'] + '\', \'' + result['vendorInvoiceList'][key]['EncryptStr'] + '\')"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Delete</button>&nbsp;';</text>
+                                }
+                                else
+                                {
+                                    <text>htmlAction += '<button class="btn btn-primary btn-sm" disabled="disabled"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</button>&nbsp;';</text>
+                                    <text>htmlAction += '<button class="btn btn-danger btn-sm" disabled="disabled"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Delete</button>&nbsp;';</text>
+
+                                }
+
+
+                                objinner.push(htmlAction);
+                                dataSet.push(objinner);
+                            }
+
+                            tempdset['sEcho'] = sEcho;
+                            tempdset['iTotalRecords'] = result['totalRecords'];
+                            tempdset['iTotalDisplayRecords'] = result['totalRecords'];
+                            tempdset['aaData'] = dataSet;
+                            fnCallback(tempdset);
+                        }
+                    });
+                }
+            });
+          
+            var success = '@TempData["VendorSaved"]';
+            if (success) {
+                swal("Created!", "Your Vendor Invoice is Saved Successfully!", "success")
+            }
+        });
+
+        function DeleteInvoice(invoice, enStr) {
+            var result = confirm('Are you sure, want to delete invoice ' + invoice);
+            if (result) {
+                location.href = '@Url.Content("~/Invoice/DeleteVendorInvoice")' + '?q=' + enStr;
+            }
+        }
+    </script>
+}
+

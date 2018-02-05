@@ -1,0 +1,468 @@
+﻿@using EZY.RMAS.Contract;
+@model EZY.RMAS.Contract.VendorRMAInvoiceHeader
+@{
+    ViewBag.Title = "VendorOutwardRMADetailsByRMANo";
+}
+@{
+    Model.VendorRMAInvoiceDimensions = new List<VendorRMAInvoiceDimension>();
+    for (var i = 0; i < 5; i++)
+    {
+        var VendorRMAInvoiceDimension = new VendorRMAInvoiceDimension()
+        {
+            Weight = 0M
+        };
+        Model.VendorRMAInvoiceDimensions.Add(VendorRMAInvoiceDimension);
+    }
+
+}
+<link href="@Url.Content("~/Css/VendorDO.css")" rel="stylesheet" />
+<section class="content">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                        @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                        <li><a href='@Url.Content("~/Home/Transactions")'> Transactions</a></li>
+                        <li class="active"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Vendor Outward</li>
+                    </ol>
+                </section>
+            </div>
+        </div>
+        @using (Html.BeginForm("GenerateVendorRMA", "RMA", FormMethod.Post, new { id = "frm", name = "frm" }))
+        {
+            <div class="box-body">
+                @if (Model.VendorRMAHeader != null)
+                {
+                    <div class="row css10">
+                      
+                        <div class="col-md-12">
+                            <table class="table table-striped table-bordered table-width">
+                                <thead style="background-color:#3c8dbc;color:white">
+                                    <tr class="widh-th-1">
+                                        <th style="width:40px;">Sl No.</th>
+                                        <th style="width:60px;">Document</th>
+                                        <th style="width:80px;">Vendor Invoice No.</th>
+                                        <th style="width:200px;">Vendor Name</th>
+                                        <th class="th-width">Product Serial No.</th>
+                                        <th class="th-width">Vendor Warranty Expiry Date</th>
+                                        <th class="th-width">Customer Warranty Expiry Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.VendorRMAHeader.Count; i++)
+                                    {
+                                        <tr id="@(i + 1)" style="@if (Model.VendorRMAHeader[i].IsValid)
+                                    { <text>background-color: rgba(14, 128, 0, 0.22);</text>}
+                                    else { <text>background-color: rgba(255, 0, 0, 0.12);</text>}" height="50">
+                                            <td width="50px">
+                                                @(i + 1)
+                                            </td>
+                                            <td>
+                                                @Model.VendorRMAHeader[i].DocumentNo
+                                                @Html.HiddenFor(x => x.VendorRMAHeader[i].DocumentNo)
+                                            </td>
+                                            <td>
+                                                @Model.VendorRMAHeader[i].VendorInvoiceNo
+                                                @Html.HiddenFor(x => x.VendorRMAHeader[i].VendorInvoiceNo)
+                                            </td>
+                                            <td>
+                                                @Model.VendorRMAHeader[i].VendorName
+                                                @Html.HiddenFor(x => x.VendorRMAHeader[i].VendorName)
+                                            </td>
+                                            <td>
+                                                @Model.VendorRMAHeader[i].SerialNo
+                                                @Html.HiddenFor(x => x.VendorRMAHeader[i].SerialNo)
+                                            </td>
+                                            <td>
+                                                <span style="float:left;">
+                                                    @string.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(Model.VendorRMAHeader[i].VendorWarrantyExpiryDate).ToShortDateString())
+                                                </span>
+                                                @Html.HiddenFor(x => x.VendorRMAHeader[i].VendorWarrantyExpiryDate)
+                                                @if (Model.VendorRMAHeader[i].VendorWarrantyExpiryDate != null)
+                                                {
+                                                    if (Model.VendorRMAHeader[i].RMAIsValid)
+                                                    {
+                                                        <h5 class="valid-invalid-btn"><span id="RMAspvalid" class="label label-success">Valid</span></h5>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h5 class="valid-invalid-btn"><span id="RMAspinvalid" class="label label-danger isinvalid">Invalid</span></h5>
+                                                    }
+                                                    @Html.HiddenFor(x => x.VendorRMAHeader[i].RMAIsValid)
+                                                }
+                                            </td>
+                                            <td width="25%">
+                                                <span style="float:left;">@string.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(Model.VendorRMAHeader[i].WarrantyExpiryDate).ToShortDateString())</span>
+                                                @Html.HiddenFor(x => x.VendorRMAHeader[i].WarrantyExpiryDate)
+
+                                                @if (Model.VendorRMAHeader[i].IsValid)
+                                                {
+                                                    <h5 class="valid-invalid-btn"><span id="spvalid" class="label label-success">Valid</span></h5>
+                                                }
+                                                else
+                                                {
+                                                    <h5 class="valid-invalid-btn"><span id="spinvalid" class="label label-danger isinvalid">Invalid</span></h5>
+                                                }
+                                                @Html.HiddenFor(x => x.VendorRMAHeader[i].IsValid)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row css10">
+                        <div class="col-md-2">
+                            <button type="button" id="btnGenVendorRMA" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-gears"></i>&nbsp;DO NO.</button>
+
+                        </div>
+                    </div>
+                        
+                }
+            </div>
+        }
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Transactions")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<h4 class="modal-title">Modal Header</h4>*@
+            </div>
+            @using (Html.BeginForm("VendorRMAInvoiceSave", "RMA", FormMethod.Post, new { id = "frmInvoice", name = "frmInvoice" }))
+            {
+                <div class="modal-body" style="border-bottom:none;">
+                    <div class="col-md-6">
+                        <h3 class="bold">EZY Infotech Pte. Ltd.</h3>
+                        <p class="address">
+                            1 CHANGI NORTH STREET 1
+                            <br> Singapore 498 789
+                            <br> <b>TEL : 64910225 FAX: 65465976</b>
+                            <br> GST No: 200008073-K
+                            <br> CR NO: 780730 000 00Z
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="@Url.Content("~/Images/logo.jpg")" alt="logo" class="img-responsive pull-right">
+                    </div>
+                    <div class="col-md-12 bg">
+                        <hr>
+                        <h3 class="text-center upper-case"><b>Invoice</b></h3>
+                        <hr>
+                    </div>
+                    <div class="clear-fix">
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            <div class="col-md-12">
+                                <b class="bill-ship">Date:</b><span class="company"> @DateTime.Now.ToShortDateString()</span>
+
+                            </div>
+                            <div class="col-md-12">
+
+                                <b class="bill-ship">Invoice:</b><span class="company"> New</span>
+                            </div>
+                        </div>
+                    </div>
+                    @{
+                        var CompanyName = Model.VendorRMAHeader.FirstOrDefault().CompanyName;
+                        var CustomerAddress = Model.VendorRMAHeader.FirstOrDefault().CustomerAddress;
+                    }
+                    @if (Model.VendorRMAHeader != null)
+                    {
+                        <div class="col-md-12 space">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <table>
+                                            <tr>
+                                                <th></th>
+                                                <td class="bill-ship"><b>&nbsp;Bill to:</b></td>
+                                                <td class="company">&nbsp;@CompanyName</td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <div class="pull-right">
+                                                <table>
+                                                    <tr>
+                                                        <th></th>
+                                                        <td class="bill-ship"><b>&nbsp;Ship to:</b></td>
+                                                        <td class="company">&nbsp;@CompanyName</td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <table>
+                                            <tr>
+                                                <th></th>
+                                                <td class="bill-ship"><b>&nbsp;Attn:</b></td>
+                                                <td class="company">&nbsp;@CustomerAddress</td>
+                                            </tr>
+
+                                        </table>
+
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="col-md-12">
+                                            <div class="pull-right">
+                                                <table>
+                                                    <tr>
+                                                        <th></th>
+                                                        <td class="bill-ship"><b>&nbsp;Attn:</b></td>
+                                                        <td class="company">&nbsp;@CustomerAddress</td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="row css10">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="tblItems">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">RMA#</th>
+                                            <th scope="col" style="width:200px;">Model</th>
+                                            <th scope="col" style="width:250px;">Description</th>
+                                            <th scope="col" class="text-right" style="width:60px;">Qty</th>
+                                            <th class="text-right">Unit Price / USD</th>
+                                            <th class="text-right">Total Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @for (var i = 0; i < Model.VendorRMAInvoiceDetails.Count; i++)
+                                        {
+                                            <tr id="@(i + 1)">
+                                                <td>
+                                                    @Model.VendorRMAInvoiceDetails[i].RMANumber
+                                                    @Html.HiddenFor(x => x.VendorRMAInvoiceDetails[i].RMANumber)
+                                                </td>
+                                                <td>
+                                                    @Model.VendorRMAInvoiceDetails[i].ModelNo
+                                                    @Html.HiddenFor(x => x.VendorRMAInvoiceDetails[i].ModelNo)
+                                                </td>
+                                                <td>
+                                                    @Model.VendorRMAInvoiceDetails[i].Description
+                                                </td>
+                                                <td style="text-align:center;">
+                                                    @Model.VendorRMAInvoiceDetails[i].Qty
+                                                    @Html.HiddenFor(x => x.VendorRMAInvoiceDetails[i].Qty, new { @class = "SerialQty", style = "float:right;" })
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(x => x.VendorRMAInvoiceDetails[i].UnitPrice, new { @class = "CreditCost", Onchange = "Price(this)", data_index = i, style = "float:right;" })
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(x => x.VendorRMAInvoiceDetails[i].TotalPrice, new { @class = "TotPrice", @readonly = "readonly", style = "float:right;" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-8">
+                                    <div class="qty pull-right">
+                                        <label class="qty-total">Total Qty</label>
+                                        <p>@Html.TextBoxFor(x => x.TotalQty, new { @class = "CreditCost", @readonly = "readonly" })</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="total pull-right">
+                                        <label class="qty-total">Total</label>
+                                        <p>@Html.TextBoxFor(x => x.TotalAmount, new { @class = "CreditCost", @readonly = "readonly" })</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <!--table2-->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-5">
+                                <div class="table-responsive" cellpadding="0" cellspacing="0">
+                                    <table class="table table-bordered input-width-width">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Cartons</th>
+                                                <th scope="col">Dimension</th>
+                                                <th scope="col">Weight</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (var i = 0; i < Model.VendorRMAInvoiceDimensions.Count(); i++)
+                                            {
+                                                <tr>
+                                                    <td scope="row">@Html.TextBoxFor(x => x.VendorRMAInvoiceDimensions[i].CartonNo)</td>
+                                                    <td scope="row">@Html.TextBoxFor(x => x.VendorRMAInvoiceDimensions[i].Dimension)</td>
+                                                    <td scope="row">@Html.TextBoxFor(x => x.VendorRMAInvoiceDimensions[i].Weight, new { @class = "TotWeight" })</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="net-weight pull-right">
+                                            <label>Net Weight&nbsp;&nbsp;</label>
+                                            @Html.TextBoxFor(x => x.TotalWeight, new { @class = "CreditCost", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-7 product-desc">
+                                <div class="col-md-4">
+                                    <p style="height:33px;">PAYMENT TERMS<p>
+                                    <p style="height:30px;">AIRPORT OF DISCHARGE<p>
+                                    <p style="height:33px;">AIRPORT OF LOADING<p>
+                                    <p style="height:30px;">COO<p>
+                                    <p style="height:30px;">SHIPMENT TERMS<p>
+                                    <p>MAWB<p>
+                                </div>
+                                <div class="col-md-8 prod-values">
+                                    <p>@Html.TextBoxFor(x => x.PaymentTerm, new { @class = "form-control input-sm", style = "30px;" })<p>
+                                    <p>@Html.TextBoxFor(x => x.DischargePort, new { @class = "form-control input-sm", style = "30px;" })<p>
+                                    <p>@Html.TextBoxFor(x => x.LoadingPort, new { @class = "form-control input-sm", style = "30px;" })<p>
+                                    <p>@Html.TextBoxFor(x => x.OriginCountry, new { @class = "form-control input-sm", style = "30px;" })<p>
+                                    <p>@Html.TextBoxFor(x => x.ShipmentTerms, new { @class = "form-control input-sm", style = "30px;" })<p>
+                                    <p>@Html.TextBoxFor(x => x.AWB, new { @class = "form-control input-sm", style = "30px;" })<p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--table2-->
+                    <hr>
+
+                    <div class="col-md-12">
+                        <div class="company pull-right">
+                            <b>For Ezy Infotech Pte. Ltd.</b>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="remarks">
+                            <h5><b>REMARKS</b></h5>
+                            <p>@Html.TextAreaFor(x => x.Remarks, new { @cols = "80", @rows = "4" })</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div>
+                            <h5><b>Palet Dimnesion</b></h5>
+                            <p>@Html.TextBoxFor(x => x.Dimension, new { style = "width:60%;" })</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="note">
+
+                            <p><b>Faulty items - No Commercial Value, value declared for customs purpose only</b></p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="remarks pull-right">
+
+                            <p><b>Authorised Signatory</b></p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            }
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="GenerateRMA()">Proceed</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                @*<button type="button" id="btnShow">Show PDF</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+<script type="text/javascript">
+    $(function () {
+        CalculateQty();
+    });
+    function CalculateQty() {
+        var sum = 0;
+        $(".SerialQty").each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                sum += parseFloat(this.value);
+            };
+            $('#TotalQty').val(sum);
+        });
+    }
+    function GenerateRMA() {
+        var result = {};
+        $.each($('#frmInvoice').serializeArray(), function () {
+            result[this.name] = this.value;
+        });
+        $.ajax({
+            url: "@Url.Content("~/RMA/VendorRMAInvoiceSave")",
+            type: "post",
+            contentType: 'application/json',
+            data: JSON.stringify(result),
+            success: function (data) {
+                if (data) {
+                    $('#frm').submit();
+                }
+            }
+        });
+    }
+    function Price(el) {
+        var index = $(el).data('index');
+        var i = $('#VendorRMAInvoiceDetails_' + index + '__Qty').val();
+        var value = el.value * i;
+        $('#VendorRMAInvoiceDetails_' + index + '__TotalPrice').val(value);
+        CalculateTotalprice();
+    }
+    function CalculateTotalprice() {
+        var TotSum = 0;
+        $('.TotPrice').each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                TotSum += parseFloat(this.value);
+            };
+            $('#TotalAmount').val(TotSum);
+        });
+    }
+    $('.TotWeight').on('change', function () {
+        var TotalWeight = 0;
+        $('.TotWeight').each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
+                TotalWeight += parseFloat(this.value);
+            };
+            $('#TotalWeight').val(TotalWeight);
+        });
+    });
+</script>
+ }

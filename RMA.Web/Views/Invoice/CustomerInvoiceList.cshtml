@@ -1,0 +1,188 @@
+﻿@model List<EZY.RMAS.Contract.InvoiceHeader>
+@{
+    ViewBag.Title = "CustomerInvoiceList";
+}
+@section seccss{
+    <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+}
+<section class="content">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                       @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                        <li><a href='@Url.Content("~/Home/Transactions")'> Transactions</a></li>
+                        <li class="active">Material Outword List</li>
+                    </ol>
+                </section>
+            </div>
+            <div class="box-tools">
+                @if(UTILITY.HasRight("CustomerInvoiceAdd", "Action"))
+                {
+                    @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Invoice",
+                    "CustomerInvoice", "Invoice",
+                    new { invoiceNo = "", documentNo = "" }, new { @class = "btn btn-default btn-sm" })
+                }
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <table class="table table-striped" id="tblCustomerInvoices">
+                        <thead>
+                            <tr>
+                                <th>Document No</th>
+                                <th>Invoice No</th>
+                                <th>Customer Name</th>
+                                <th>Product Name</th>
+                                <th>Invoice Date</th>
+                                <th>Customer Warranty Expiry Date</th>
+                                <th>Quantity</th>
+                                <th>UnitPrice</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td>@Model[i].DocumentNo</td>
+                                    <td>@Model[i].InvoiceNo</td>
+                                    <td>@Model[i].CustomerCode</td>
+                                    <td>@Model[i].ProductCode</td>
+                                    <td>@Model[i].InvoiceDate</td>
+                                    <td>@Model[i].WarrantyExpiryDate</td>
+                                    <td>@Model[i].Quantity</td>
+                                    <td>@Model[i].UnitPrice</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i>&nbsp;Edit</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Transactions")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@section secscripts{
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            var isDefaultCol = false;
+            var isDefaultDir = false;
+            var obj = {};
+            var oTable = $('#tblCustomerInvoices').dataTable({
+                "bStateSave": true,
+                "sPaginationType": "full_numbers",
+                "bServerSide": true,
+                "bProcessing": true,
+                "bSortClasses": false,
+                "bDeferRender": true,
+                "sAjaxSource": '@Url.Content("~/Invoice/CustomerInvoiceList")',
+                "bFilter": false,
+                "aaSorting": [[0, "asc"]],
+
+                "aoColumnDefs": [{ "sType": "numeric" },{
+                    bSortable: false,
+                    aTargets: [-1]
+                }
+                ],
+                "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+                    var sortColArr = ['DocumentNo', 'InvoiceNo', 'CustomerCode', 'ProductCode', 'InvoiceDate', 'WarrantyExpiryDate', 'Quantity', 'UnitPrice'];
+                    var paramData = {};
+                    var sExt = "?";
+                    var sAnd = "";
+                    var r = 0;
+
+                    for (var key in aoData) {
+                        paramData[aoData[key]['name']] = aoData[key]['value'];
+
+                        if (r > 0) sAnd = "&";
+                        if (aoData[key]['name'].trim() == "iDisplayLength") {
+                            sExt += sAnd + "limit=" + aoData[key]['value']; r++
+                            obj.limit = aoData[key]['value'];
+                        }
+                        if (aoData[key]['name'].trim() == "iDisplayStart") {
+                            sExt += sAnd + "offset=" + aoData[key]['value']; r++
+                            obj.offset = aoData[key]['value'];
+                        }
+                        if (aoData[key]['name'].trim() == "iSortCol_0") {
+                            sExt += sAnd + "sort_col=" + aoData[key]['value']; r++
+                            obj.sortColumn = sortColArr[aoData[key]['value']];
+                        }
+                        if (aoData[key]['name'].trim() == "sSortDir_0") {
+                            sExt += sAnd + "sort=" + aoData[key]['value']; r++
+                            obj.sortType = aoData[key]['value'].toUpperCase();
+                        }
+                        if (aoData[key]['name'].trim() == "sEcho") var sEcho = aoData[key]['value'];
+                    }
+
+                    oSettings.jqXHR = $.ajax({
+                        "type": "POST",
+                        "contentType": "application/json;charset=utf-8",
+                        "accept": "application/json",
+                        "dataType": "json",
+                        "url": sSource,
+                        cache: false,
+                        "data": JSON.stringify(obj),
+                        "success": function (result) {
+                            
+                            var tempdset = {};
+                            var dataSet = [];
+                            for (var key in result['customerInvoiceList']) {
+
+                                var objinner = [];
+                                objinner.push(result['customerInvoiceList'][key]['DocumentNo']);
+                                objinner.push(result['customerInvoiceList'][key]['InvoiceNo']);
+                                objinner.push(result['customerInvoiceList'][key]['CustomerName']);
+                                objinner.push(result['customerInvoiceList'][key]['ProductName']);
+                                objinner.push(result['customerInvoiceList'][key]['InvoiceDate']);
+                                objinner.push(result['customerInvoiceList'][key]['WarrantyExpiryDate']);
+                                objinner.push(result['customerInvoiceList'][key]['Quantity']);
+                                objinner.push(result['customerInvoiceList'][key]['UnitPrice']);
+
+                                var htmlAction = '';
+                                @if (UTILITY.HasRight("CustomerInvoiceEdit", "Action"))
+                                {
+                                    <text>htmlAction += '<a class="btn btn-primary btn-sm" href="' + '@Url.Content("~/Invoice/CustomerInvoice")' + '?q=' + result['customerInvoiceList'][key]['EncryptStr'] + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>&nbsp;';</text>
+                                }
+                                else
+                                {
+                                    <text>htmlAction += '<button class="btn btn-primary btn-sm" disabled="disabled"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</button>&nbsp;';</text>
+                                }
+
+                                objinner.push(htmlAction);
+                                dataSet.push(objinner);
+                            }
+
+                            tempdset['sEcho'] = sEcho;
+                            tempdset['iTotalRecords'] = result['totalRecords'];
+                            tempdset['iTotalDisplayRecords'] = result['totalRecords'];
+                            tempdset['aaData'] = dataSet;
+                            fnCallback(tempdset);
+                        }
+                    });
+                }
+            });
+            var success = '@TempData["isCustomerSave"]'
+            if (success) {
+                swal("Created!", "Your Customer Invoice is Saved Successfully!", "success")
+            }
+        });
+    </script>
+}
+

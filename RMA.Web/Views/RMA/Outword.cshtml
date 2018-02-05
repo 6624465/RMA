@@ -1,0 +1,222 @@
+﻿@model EZY.RMAS.Contract.RMAOutwardHeader
+@{
+    ViewBag.Title = "Outword";
+}
+@section seccss{
+    @*<link href="@Url.Content("~/Css/datepicker3.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/bootstrap-timepicker.css")" rel="stylesheet" />*@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+}
+
+
+@using (Html.BeginForm("Outword", "RMA", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
+{
+    <section class="content">
+
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Material Inward </h3>
+            </div>
+            <div class="box-body">
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Document Number&nbsp; <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.DocumentNo,
+                         new
+                         {
+                             @class = "form-control input-sm",
+                             placeholder = "Document Number"
+                         })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Document Date&nbsp; <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.DocumentDate,
+                         new
+                         {
+                             @class = "form-control input-sm",
+                             placeholder = "Document Number"
+                         })
+                    </div>
+                </div>
+
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Document Date&nbsp; <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.DocumentDate,
+                         new
+                         {
+                             @class = "form-control input-sm",
+                             placeholder = "Document Date"
+                         })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Reference Number&nbsp; <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.ReferenceNo,
+                         new
+                         {
+                             @class = "form-control input-sm",
+                             placeholder = "Reference Number"
+                         })
+                    </div>
+                </div>
+
+
+                <div class="box-footer">
+                    @*@if (UTILITY.HasRight("VendorInvoiceSave", "Action"))
+                        {*@
+
+                    <button type="button" onclick="SaveRMAOutWord()" class="btn btn-danger btn-sm btn-frmt green">
+                        <i class="fa fa-pencil-square"></i>&nbsp;Save RMA Outword
+                    </button>
+                    @*}*@
+                    <button type="button" onclick="location.href = '@Url.Content("~/Invoice/OutwordList")'" class="btn btn-default btn-sm btn-frmt ">
+                        <i class="fa fa-times"></i>&nbsp;Cancel
+                    </button>
+                </div>
+                <div class="overlay" style="display:none;">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+    <div id="invoiceHeaderDetailDiv">
+    </div>
+
+}
+
+<div id="ScanProductsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Scan Products</h4>
+            </div>
+            <div class="modal-body" id="ProductModalBody">
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-md-2">
+                        <label class="control-label pull-right">Serial Nos</label>
+                    </div>
+                    <div class="col-md-10">
+                        <textarea class="form-control input-sm" rows="10" id="serialNos" name="serialNos"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="SaveSerialsNo()" class="btn btn-danger btn-frmt green btn-sm">
+                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                </button>
+
+                <button type="reset" class="btn btn-default btn-frmt btn-sm" data-dismiss="modal">
+                    <i class="fa fa-times"></i>Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section secscripts{
+    <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
+    <script type="text/javascript">
+        $('#frm').validate({
+            rules: {
+                DocumentNo: {
+                    required: true
+                },
+                DocumentDate: {
+                    required: true
+                },
+                ReferenceNo: {
+                    required: true
+                }
+            }
+        });
+
+        @if(Model.RmaDetails == null)
+        {
+            <text>
+        $('input[name^="file"]').each(function () {
+            $(this).rules('add', {
+                required: true
+            })
+        });
+        </text>
+        }
+
+
+        function ProcessVendorInvoice() {
+            if ($('#frm').valid()) {
+                $('#frm').submit();
+            }
+        }
+
+        function SaveRMAOutWord() {
+            if ($('#frm').valid()) {
+                //if (confirm("Are you sure ? You want to save \nProduct Category: " + $('#ProductCategory option:selected').text()
+                //    + "\nProduct Code: " + $('#ProductCode').val() + "\nModels: " + $('#ModelNo option:selected').text() + "\nVendor / Supplier Name: " + $('#CustomerCode').val()
+                //    + "\nInvoice No: " + $('#InvoiceNo').val() + "\nQuantity: " + $('#Quantity').val() + "\nUnit Price: " + $('#UnitPrice').val())) {
+                $('#frm').attr('action', '@Url.Content("~/Invoice/SaveRMAOutWord")');
+                $('#frm').submit();
+                //}
+            }
+        };
+
+        function WarrantyPeriod_OnChange(el) {
+            var months = parseInt(el.value);
+            var invoiceDate = $('#InvoiceDate').val();
+
+            var expiryDate = moment(invoiceDate, 'DD/MM/YYYY').add(months, 'M');
+            $('#expirtyDtMsg').html('Your invoice will expire on ' + moment(expiryDate).format('DD/MM/YYYY'));
+
+        }
+
+        function ScanSerialNo() {
+            $('#ScanProductsModal').modal('show');
+            setTimeout(function () {
+                $('#serialNos').focus();
+            }, 900);
+
+        }
+
+        function fileChanged(el) {
+            var file = el.files[0];
+            if (file != null) {
+                $('#scanBtn').attr('disabled', 'disabled');
+            }
+        }
+
+        //function SaveSerialsNo() {
+        //    var settings = $('#frm').validate().settings;
+        //    settings.rules.file = { required: false };
+
+        //    var serialNos = $('#serialNos').val().split(/\n/);
+
+        //    var invoiceDetailHtml = '';
+        //    $.each(serialNos, function (index, item) {
+        //        if (item != '') {
+        //            invoiceDetailHtml += '<input type="hidden" id="InvoiceDetailItems_' + index + '__SerialNo" name="InvoiceDetailItems[' + index + '].SerialNo" value="' + item + '" />'
+        //        }
+        //    });
+        //    $('#invoiceHeaderDetailDiv').html(invoiceDetailHtml);
+        //    $('#fileupload').attr('disabled', 'disabled');
+        //    $('#ScanProductsModal').modal('hide');
+        //}
+    </script>
+    <!--http://stackoverflow.com/questions/20929355/jquery-validate-input-file-type-->
+    <!--http://stackoverflow.com/questions/974079/setting-mime-type-for-excel-document-->
+}
+

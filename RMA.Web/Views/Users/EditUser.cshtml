@@ -1,0 +1,168 @@
+﻿@model EZY.RMAS.Contract.Users
+
+@{
+    ViewBag.Title = "EditUser";
+}
+@section seccss{
+    @*<link href="@Url.Content("~/Css/polaris/polaris.css")" rel="stylesheet" />*@
+    <link href="@Url.Content("~/Css/all.css")" rel="stylesheet" />
+}
+<section class="content">
+    @using (Html.BeginForm("SaveUser", "Users", FormMethod.Post, new { id = "frmUser", name = "frmUser" }))
+    {
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                       @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                        <li><a href='@Url.Content("~/Home/Administration")'> Administration</a></li>
+                        <li><a href='@Url.Content("~/Users/Index")'><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Users</a></li>
+                        <li class="active"><i class="fa fa-user"></i>&nbsp;User Profile</li>
+                    </ol>
+                </section>
+            </div>
+        </div>
+        <div class="box-body">
+            <fieldset class="form-horizontal">
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(m => m.UserID, new { @class = "control-label input-sm col-md-2" })
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.UserID, new { @class = "form-control input-sm " })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label input-sm" })
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control input-sm " })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label input-sm" })
+                        <div class="col-md-4">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control input-sm ",Value=Model.Password })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label input-sm" })
+                        <div class="col-md-4">                           
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-sm " })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(m => m.MobileNumber, new { @class = "col-md-2 control-label input-sm" })
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control  input-sm" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">     
+                    <div class="row">   
+                        <div class="col-md-1"></div>                     
+                        @for (var i = 0; i < Model.userBranchList.Count; i++)
+                        {
+                            @Html.HiddenFor(x => x.userBranchList[i].UserID)
+                            @Html.HiddenFor(x => x.userBranchList[i].BranchID)
+                            
+                            
+                            <div class="col-md-2">
+                                @Html.CheckBoxFor(x => x.userBranchList[i].IsSelected)
+                                <label for="userBranchList_@(i)__IsSelected" 
+                                       class="control-label">@Model.userBranchList[i].BranchName</label>
+                            </div>                            
+                        }
+                    </div>               
+                    
+                </div>
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(m => m.RoleCode, new { @class = "col-md-2 control-label input-sm" })
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(m => m.RoleCode, Model.RoleCodeList, "SELECT ROLE", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="box-footer">
+            <div class="row  no-print">
+                <div class="col-xs-12">
+                    @*@if (HtmlHelpers.hasRight("UsersViewSave"))
+                    {*@
+                        <button type="button" onclick="SaveUser()" id="btnSave" class="btn btn-success btn-sm">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                    @*}*@
+                    
+                    @Html.EncodedActionLink("<i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Clear",
+                     "EditUser", "Users",
+                     new { userID = "NEW" }, new { @class = "btn btn-default btn-sm" })
+                    <button class="btn btn-danger btn-sm" type="button" onclick="DeleteUser('@Model.UserName','@Model.UserID')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                    <a href="@Url.Content("~/Users/Index")" class="btn btn-info pull-right btn-sm">
+                        <i class="fa fa-backward"></i>
+                        Back
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    }
+    @using (Html.BeginForm("DeleteUser", "Users", FormMethod.Post, new { id = "frmDeleteUser", name = "frmDeleteUser" }))
+    {
+        @Html.Hidden("UserID")
+    }
+</section>
+@section secscripts{
+    <script src="@Url.Content("~/Scripts/icheck.js")"></script>
+    @*<script src="@Url.Content("~/Scripts/custom.min.js")"></script>*@
+    <script type="text/javascript">
+        //$(document).ready(function () {
+        //    $('input[type="checkbox"]').iCheck({
+        //        labelHover: false,
+        //        cursor: true
+        //    });
+            
+        //});
+        //$('.iCss').iCheck();
+        function DeleteUser(userName, userID) {
+            var r = confirm('Are you sure do you want to delete ' + userName);
+            if (r) {
+                $('#UserID').val(userID);
+                $('#frmDeleteUser').submit();
+            }
+        }
+
+        $('#frmUser').validate({
+            rules: {
+                UserID: {
+                    required: true
+                },
+                UserName: {
+                    required: true
+                },
+                Password: {
+                    required: true
+                }
+            }
+        });
+
+        function SaveUser() {
+            if ($('#frmUser').valid()) {
+                $('#frmUser').submit();
+            }
+        }
+    </script>
+}
+

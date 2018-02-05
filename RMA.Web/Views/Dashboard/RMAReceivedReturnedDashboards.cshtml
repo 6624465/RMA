@@ -1,0 +1,232 @@
+﻿@model EZY.RMAS.Contract.RMAGenerationReceiveDTO
+@{
+    ViewBag.Title = "MaterialInwardDashboards";
+    //RMA Inward Start
+    var strRMAGenMonthName = string.Empty;
+    var strRMAReceivedCount = string.Empty;
+    for (var i = 0; i < Model.RMAGeneration.Count; i++)
+    {
+        strRMAGenMonthName += "'" + Model.RMAGeneration[i].MonthName + "'" + ",";
+        strRMAReceivedCount += Model.RMAGeneration[i].DocumentNoCount + ",";
+    }
+    strRMAGenMonthName = strRMAGenMonthName.TrimEnd(',');
+    strRMAReceivedCount = strRMAReceivedCount.TrimEnd(',');
+
+
+    var strRMAReturnMonthName = string.Empty;
+    var strReturnCount = string.Empty;
+    for (var i = 0; i < Model.RMAReturned.Count; i++)
+    {
+        strRMAReturnMonthName += "'" + Model.RMAReturned[i].MonthName + "'" + ",";
+        strReturnCount += Model.RMAReturned[i].DocumentNoCount + ",";
+    }
+    strRMAReturnMonthName = strRMAReturnMonthName.TrimEnd(',');
+    strReturnCount = strReturnCount.TrimEnd(',');
+    //RMA Inward End
+}
+<style>
+    .highcharts-title tspan {
+        visibility: hidden;
+    }
+
+    .highcharts-credits {
+        display: none;
+    }
+</style>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<section class="content">
+    <div class="box box-dnex">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                        @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                        <li><a href='@Url.Content("~/Home/Reports")'> Reports</a></li>
+                        <li><a href='@Url.Content("~/Dashboard/MaterialInwardDashboards")'>Management Reports</a></li>
+                        <li class="active">Dashboard</li>
+                    </ol>
+                </section>
+            </div>
+        </div>
+        <div class="box-body">
+            @using (Html.BeginForm("RMAReceivedReturnedDashboards", "Dashboard", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
+            {
+                <div class="row">
+                    <div class="col-sm-12">
+                        @{Html.RenderPartial("DashBoardsLinks");}
+                        <br />
+                        <div class="row">
+                            @if (ViewBag.Login == 10)
+                            {
+                                <div class="col-md-1">
+                                    @Html.DropDownListFor(x => x.Branch, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
+                                </div>
+                            }
+                            <div class="col-md-1">
+                                @Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), "Select Product", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                @Html.DropDownListFor(x => x.FromMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                @Html.DropDownListFor(x => x.ToMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-primary" onclick="btnSubmit();">Show</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                            }
+            <br /><br />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-dnex">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">&nbsp; Total No Of RMA Received</h3>
+
+                        </div>
+                        <div class="box-body">
+                            <div id="TotRMAReceived" style="height: 350px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="box box-dnex">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">&nbsp; Total No Of RMA Returned</h3>
+
+                        </div>
+                        <div class="box-body">
+                            <div id="TotRMAReturned" style="height: 350px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div id="container" style="height: 180px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Reports")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+
+            $('#Year').val('@Model.Year');
+
+            $('#RMATransactions').parent().addClass('active');
+
+            $('#frm').validate({
+                rules:
+                    {
+                        Branch: {
+                            required: true
+                        },
+                        FromMonth: {
+                            required: true
+                        },
+                        ToMonth: {
+                            required: true
+                        },
+                        Year: {
+                            required:true
+                        }
+                    }
+            })
+        });
+
+
+        var chart = Highcharts.chart('TotRMAReceived', {
+
+            title: {
+                text: 'Chart.update'
+            },
+            //subtitle: {
+            //    text: 'Plain'
+            //},
+
+            xAxis: {
+                categories: [@Html.Raw(strRMAGenMonthName)]
+            },
+            yAxis: {
+                gridLineWidth: 0,
+            },
+            plotOptions: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y}'
+                    }
+                }
+            },
+            series: [{
+                type: 'column',
+                name: 'Received',
+                colorByPoint: true,
+                data: [@Html.Raw(strRMAReceivedCount)],
+                showInLegend: false,
+                colors: ['#8B008B', '#0000FF', '#8A2BE2', '#1E90FF', '#DC143C', '#B8860B',
+              '#FF0000', '#00FF7F'],
+                //name: ''
+            }]
+
+        });
+
+        var chart = Highcharts.chart('TotRMAReturned', {
+
+            title: {
+                text: 'Chart.update'
+            },
+            xAxis: {
+                categories: [@Html.Raw(strRMAReturnMonthName)]
+            },
+            yAxis: {
+                gridLineWidth: 0,
+            },
+            plotOptions: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y}'
+                    }
+                }
+            },
+            series: [{
+                type: 'column',
+                name: 'Returned',
+                colorByPoint: true,
+                data: [@Html.Raw(strReturnCount)],
+                showInLegend: false,
+                colors: ['#8B008B', '#0000FF', '#8A2BE2', '#1E90FF', '#DC143C', '#B8860B',
+              '#FF0000', '#00FF7F'],
+                //name: 'RMA Returned'
+            }]
+
+        });
+        function btnSubmit() {
+            $('#frm').valid();
+            $('#frm').submit();
+        }
+    </script>
+</section>

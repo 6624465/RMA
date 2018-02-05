@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "ManagementReports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                        @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                        <li><a href='@Url.Content("~/Home/Reports")'> Reports</a></li>
+                        <li class="active">Management Reports</li>
+                    </ol>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                @{Html.RenderPartial("DashBoardsLinks");}
+            </div>
+        </div>
+
+
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Reports")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

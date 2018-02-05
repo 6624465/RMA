@@ -1,0 +1,284 @@
+﻿@model List<EZY.RMAS.Contract.Product>
+@{
+    ViewBag.Title = "Products";
+}
+@section seccss{
+    <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+}
+
+<section class="content">
+    <div class="box box-dnex">
+        <div class="box-header with-border">
+
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                       @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                        <li><a href='@Url.Content("~/Home/Masters")'> Master Data</a></li>
+                        <li class="active">Products</li>
+                    </ol>
+                </section>
+            </div>
+            <div class="box-tools pull-right">
+                @if (UTILITY.HasRight("ProductAdd"))
+                {
+                    <button class="btn btn-box-tool" type="button" onclick="AddProduct()"><i class="fa fa-plus"></i>&nbsp;Add New Product</button>
+                }                
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <table class="table table-striped" id="tblProducts">
+                        <thead>
+                            <tr>
+                                @*<th>Product Code</th>*@
+                                <th>Product Name</th>
+                                <th>Model No</th>
+                                <th>Description</th>
+                                <th style="width: 40px">Status</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    @*<td>@Model[i].ProductCode</td>*@
+                                    <td>@Model[i].ProductCategory</td>
+                                    <td>@Model[i].ModelNo</td>
+                                    <td>@Model[i].Description</td>
+                                    <td>
+                                        @if (Model[i].Status)
+                                        {
+                                            <span class="badge bg-green">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-red">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" onclick="EditProduct('@Model[i].ProductCode','@Model[i].ModelNo')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteProduct('@Model[i].ProductCode', '@Model[i].ModelNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Masters")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>    
+</section>
+@using (Html.BeginForm("Product", "Master", FormMethod.Post, new { id = "frmProduct", name = "frmProduct" }))
+{
+    <div id="ProductModal" class="modal fade" role="dialog">
+    </div>
+}
+
+@using (Html.BeginForm("DeleteProduct", "Master", FormMethod.Post, new { id = "frmDeleteProduct",  name = "frmDeleteProduct" }))
+{
+    @Html.Hidden("ProductCategoryDescription")
+    @Html.Hidden("ProductCode")
+    @Html.Hidden("ModelNo")
+}
+
+@section secscripts{
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>    
+    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
+    <script type="text/javascript">
+        function AddProduct() {
+            $.ajax({
+                url: '@Url.Content("~/Master/Product")',
+                method: 'get',
+                contentType: 'text/html',
+                success: function (html) {
+                    $('#ProductModal').html(html);
+                    $('#ProductModal').modal('show');
+                },
+                error: function (err) {
+                    
+                }
+            });
+        }
+        //function SaveCategoryGroup() {
+        //    
+        //    //if ($('#frmProductCategory').valid()) {
+        //        $('#frmProductCategory').submit();
+        //    }
+        //};
+        $('#frmProduct').validate({
+            rules: {
+                //ProductCode: {
+                //    required: true
+                //},
+                 ProductCategoryDescription: {
+                    required: true
+                },
+                ModelNo: {
+                    required: true
+                },
+                Description: {
+                    required: true
+                }
+            }
+        });
+
+        function SaveProduct() {
+            if ($('#frmProduct').valid()) {
+                $('#frmProduct').submit();
+            }
+        };
+
+        function EditProduct(productCode, modelNo) {
+            $.ajax({
+                url: '@Url.Content("~/Master/Product?productCode=")' + productCode + '&modelNo=' + modelNo,
+                method: 'get',
+                contentType: 'text/html',
+                success: function (html) {
+                    $('#ProductModal').html(html);
+                    $('#ProductModal').modal('show');
+                },
+                error: function (err) {
+                    
+                }
+            });
+        }
+
+        function DeleteProduct(productCode, modelNo) {
+            var result = confirm('Are you sure, do you want to delete ' + productCode);
+            if (result) {
+                $('#ProductCode').val(productCode);
+                $('#ModelNo').val(modelNo);
+
+                $('#frmDeleteProduct').submit();
+            }
+        }
+        var isDefaultCol = false;
+        var isDefaultDir = false;
+        var obj = {};
+        var oTable = $('#tblProducts').dataTable({
+            "bStateSave": true,
+            "sPaginationType": "full_numbers",
+            "bServerSide": true,
+            "bProcessing": true,
+            "bSortClasses": false,
+            "bDeferRender": true,
+            "sAjaxSource": '@Url.Content("~/Master/GetProducts")',
+            "bFilter": false,
+            "aaSorting": [[0, "asc"]],
+            "aoColumnDefs": [{
+                bSortable: false,
+                aTargets: [-1]
+            }
+            ],
+            "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+                var sortColArr = ['ProductCategoryDescription','ProductCode', 'ModelNo', 'Description', 'Status', 'Action'];
+                var paramData = {};
+                var sExt = "?";
+                var sAnd = "";
+                var r = 0;
+
+                for (var key in aoData) {
+                    paramData[aoData[key]['name']] = aoData[key]['value'];
+
+                    if (r > 0) sAnd = "&";
+                    if (aoData[key]['name'].trim() == "iDisplayLength") {
+                        sExt += sAnd + "limit=" + aoData[key]['value']; r++
+                        obj.limit = aoData[key]['value'];
+                    }
+                    if (aoData[key]['name'].trim() == "iDisplayStart") {
+                        sExt += sAnd + "offset=" + aoData[key]['value']; r++
+                        obj.offset = aoData[key]['value'];
+                    }
+                    if (aoData[key]['name'].trim() == "iSortCol_0") {
+                        sExt += sAnd + "sort_col=" + aoData[key]['value']; r++
+                        obj.sortColumn = sortColArr[aoData[key]['value']];
+                    }
+                    if (aoData[key]['name'].trim() == "sSortDir_0") {
+                        sExt += sAnd + "sort=" + aoData[key]['value']; r++
+                        obj.sortType = aoData[key]['value'].toUpperCase();
+                    }
+                    if (aoData[key]['name'].trim() == "sEcho") var sEcho = aoData[key]['value'];
+                }
+
+                oSettings.jqXHR = $.ajax({
+                    "type": "POST",
+                    "contentType": "application/json;charset=utf-8",
+                    "accept": "application/json",
+                    "dataType": "json",
+                    "url": sSource,
+                    cache: false,
+                    "data": JSON.stringify(obj),
+                    "success": function (result) {
+
+                        var tempdset = {};
+                        var dataSet = [];
+                        for (var key in result['products']) {
+
+                            var objinner = [];
+                            //objinner.push(result['products'][key]['ProductCode']);
+                            objinner.push(result['products'][key]['ProductCategoryDescription']);
+                            objinner.push(result['products'][key]['ModelNo']);
+                            objinner.push(result['products'][key]['Description']);
+                            if (result['products'][key]['Status'])
+                                objinner.push('<span class="badge bg-green">Active</span>');
+                            else
+                                objinner.push('<span class="badge bg-red">Inactive</span>');
+
+                            var htmlAction = '';
+                            @if(UTILITY.HasRight("ProductEdit"))
+                            {
+                                <text>htmlAction += '<button class="btn btn-primary btn-sm" onclick="EditProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>&nbsp;';</text>
+                            }
+                            else
+                            {
+                                <text>htmlAction += '<button class="btn btn-primary btn-sm" disabled="disabled"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>&nbsp;';</text>
+                            }
+                            if (result['products'][key]['Status'])
+                            {
+                                @if(UTILITY.HasRight("ProductDelete"))
+                            {
+                                <text>htmlAction += '<button class="btn btn-danger btn-sm" onclick="DeleteProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>'</text>;
+                            }
+                            else
+                            {
+                                <text>htmlAction += '<button class="btn btn-danger btn-sm" disabled="disabled"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>'</text>;
+                            }
+                            }
+                            else
+                            {
+                               htmlAction += '<button class="btn btn-danger btn-sm" disabled="disabled" onclick="DeleteProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>'
+                            }
+
+
+
+                            objinner.push(htmlAction);
+                            dataSet.push(objinner);
+                        }
+
+                        tempdset['sEcho'] = sEcho;
+                        tempdset['iTotalRecords'] = result['totalRecords'];
+                        tempdset['iTotalDisplayRecords'] = result['totalRecords'];
+                        tempdset['aaData'] = dataSet;
+                        fnCallback(tempdset);
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+

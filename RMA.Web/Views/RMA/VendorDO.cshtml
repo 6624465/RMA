@@ -1,0 +1,261 @@
+﻿@model EZY.RMAS.Contract.VendorRMAInvoiceHeader
+@{
+    ViewBag.Title = "VendorDO";
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+</head>
+<body>
+    <div class="container-fluid" style="font-family:Trebuchet MS;font-size:10px;margin:0px auto; background:#fff;">
+        <table class="table table-bordered" style="width:100%;  color:#000;  margin:20px auto 0px; background:#fff;  ">
+            <tr>
+                <td style="padding:15px 15px 55px 15px; border:1px thin #e7e7e7;">
+                    
+                    <table class="table" style="margin-top:10px; width:100%; margin-bottom:0px; padding-bottom:0px;">
+                        <tr>
+
+                            <td style="font-size: 11px; width:80%; margin-top:300px;">
+                                <p style="margin-top: 0px; font-size:10px; margin-bottom: 200px;">
+                                    <b style="font-size:14px;">EZY Infotech Pte. Ltd. </b><br />
+                                    1 CHANGI NORTH STREET 1<br />
+                                    Singapore 498 789 <br/>
+                                    <b>TEL : 64910225 FAX: 65465976 </b><br>
+                                    GST No: 200008073-K <br>
+                                    CR NO: 780730 000 00Z
+                                </p>
+                            </td>
+                            <td>
+                              
+                            </td>
+                            <td style="margin-left:45px; width:20%">
+                                <img src="http://rma.logiconglobal.com/Images/logo.jpg" alt="logo" style="margin-left:35px" />
+                            </td>
+                            
+                        </tr>
+                        <!--<div style="clear:both;"></div>-->
+                    </table>
+
+                    <table class="table" style="width:100%; margin-bottom:0px; padding-bottom:0px;">
+                        <tr>
+
+                            <td style="text-align:center; font-size:16px; letter-spacing:20px;">
+                               <h2>Invoice</h2>
+                              
+                            </td>
+                            
+
+                        </tr>
+                        <!--<div style="clear:both;"></div>-->
+                    </table>
+                    <table class="table" style="width:100%; margin-bottom:0px;padding-bottom:0px;">
+                        <tr>
+
+                            <td style="float:right;text-align:right;">
+                                <b>Date:</b><span>12/01/2018</span><br />
+                                <b>Invoice: </b><span>12/01/2018</span>
+                            </td>
+
+
+                        </tr>
+                        <!--<div style="clear:both;"></div>-->
+                    </table>
+
+                    <table class="table" style="margin-top:10px; width:100%; margin-bottom:0px; padding-bottom:0px;">
+                        <tr>
+
+                            <td style="float:right; width:70%;">
+                                <b>Bill To: </b><span>12/01/2018</span><br />
+                                <b>Attn: </b><span>12/01/2018</span>
+                            </td>
+                            <td style="float:right; width:30%; text-align:right;">
+                                <b>Ship To: </b><span>12/01/2018</span><br />
+                                <b>Attn: </b><span>12/01/2018</span>
+                            </td>
+
+
+                        </tr>
+                        <!--<div style="clear:both;"></div>-->
+                    </table><br />
+
+                    <table class="table" style="margin-top:10px; width:100%; margin-bottom:0px; padding-bottom:0px; border-collapse:collapse;" border="1" cell-padding="3">
+                        <tr>
+                            <th style="text-align:left; width:20%;">RMA#</th>
+                            <th style="text-align:left; width:10%;">Model</th>
+                            <th style="text-align:left; width:35%;">Description</span></th>
+                            <th style="text-align:right; width:10%;">Qty</th>
+                            <th style="text-align:right; width:10%;">Unit Price / USD</th>
+                            <th style="text-align:right; width:10%;">Total Price</th>
+                        </tr>
+                        @foreach (var item in Model.VendorRMAInvoiceDetails)
+                        {
+                            <tr>
+                                <td style="text-align:left;">
+                                    @item.RMANumber
+                                </td>
+                                <td style="text-align:left;">
+                                    @item.ModelNo
+                                </td>
+                                <td style="text-align:left; width:200px;">
+                                    @item.Description
+                                </td>
+                                <td style="text-align:right;  width:50px;">
+                                    @item.Qty
+                                </td>
+                                <td style="text-align:right;">
+                                    @item.UnitPrice
+                                </td>
+                                <td style="text-align:right;">
+                                    @item.TotalPrice
+                                </td>
+                            </tr>
+
+                        }
+                        <!--<div style="clear:both;"></div>-->
+                    </table>
+
+                    <table class="table" style="margin-top:10px; width:100%; margin-bottom:0px; padding-bottom:0px;">
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>Total Qty: <input /></th>
+                            <th></th>
+                            <th>Total Price <input /></th>
+                        </tr>
+                       
+                        <!--<div style="clear:both;"></div>-->
+                    </table>
+                    <br />
+
+                    <table class="table" style="margin-top:10px; width:30%; margin-bottom:0px; padding-bottom:0px;">
+                        <tr>
+                            <td>
+                              
+                                <table style="border-collapse:collapse;" border="1">
+                                   
+                                        
+                                            <tr>
+                                                <th style="width:25px;">Cartons</th>
+                                                <th style="width:25px;">Dimension</th>
+                                                <th>Weight</th>
+                                            </tr>
+                                        
+                                     
+                                            @foreach (var item in Model.VendorRMAInvoiceDimensions)
+                                            {
+                                                <tr class="input-width">
+                                                    <td>@item.CartonNo</td>
+                                                    <td>@item.Dimension</td>
+                                                    <td>@item.Weight</td>
+                                                </tr>
+                                            }
+                                        
+                                </table>
+
+                            </td>
+                            <td>
+                              
+                                <table style="margin-bottom:25px;">
+                                   
+                                        <tr>
+                                            <td>
+                                                Payment History
+                                            </td>
+                                            <td>
+                                                <span>@Html.DisplayFor(x => x.PaymentTerm)</span> 
+                                            </td>
+                                        </tr>
+
+                                    <tr>
+                                        <td>
+                                            AIRPORT OF DISCHARGE
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.DischargePort)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            AIRPORT OF LOADING
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.LoadingPort)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>COO
+                                            
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.OriginCountry)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            SHIPMENT TERMS
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.ShipmentTerms)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            MAWB
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.AWB)
+                                        </td>
+                                    </tr>
+                                            
+                                        
+                                </table>
+
+                            </td>
+                           
+                        </tr>
+
+                        <!--<div style="clear:both;"></div>-->
+                    </table>
+                    <table style="margin-top:5px;">
+                        <tr>
+                            <td style="text-align:right;">
+                                <h4><b>For Ezy Infotech Pte. Ltd.</b></h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">
+                                <h5 style="padding:0px;margin:0px;"><b>Remarks</b></h5>
+                                <p style="display:inline-block;">@Html.DisplayFor(x => x.Remarks)</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">
+                                <h5><b>Palet Dimnesion</b></h5>
+                                <p>@Html.DisplayFor(x => x.Dimension)</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">
+                                
+                                <p>Faulty items - No Commercial Value, value declared for customs purpose only</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;">
+                                <h3><b>Authorised Signatory</b></h3>
+                            </td>
+                        </tr>
+                    </table>
+                    
+
+                    </td>
+                    </tr>
+                    </table>
+                    </div>
+    </body>
+</html>
+

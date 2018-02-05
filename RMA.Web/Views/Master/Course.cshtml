@@ -1,0 +1,92 @@
+﻿@model EZY.RMAS.Contract.Course
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">@ViewBag.Title</h4>
+        </div>
+        <div class="modal-body" id="ProductCategoryModalBody">
+            @Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.IsActive)            
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-3">
+                    <label class="control-label pull-right">Country</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DropDownListFor(x => x.Country,
+                    new SelectList((List<EZY.RMAS.Contract.Country>)ViewData["CountryData"], "CountryCode", "CountryName"),
+                    "Select Country", new { @class = "form-control input-sm" })
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-3">
+                    <label class="control-label pull-right">Product</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DropDownListFor(x => x.Product,
+                    new SelectList((List<EZY.RMAS.Contract.EduProduct>)ViewData["ProductData"], "Id", "ProductName"),
+                    "Select Product", new { @class = "form-control input-sm" })
+                </div>                
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-3">
+                    <label class="control-label pull-right">Course Name</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(x => x.CourseName,
+                    new { @class = "form-control input-sm", placeholder = "Course Name" })
+                </div>
+                @Html.HiddenFor(x => x.Id)
+            </div>
+            <br />
+            @*<div class="row">
+                <div class="col-md-3">
+                    <label class="control-label pull-right">Course Description</label>
+                </div>
+                <div class="col-md-8">
+                    @Html.TextAreaFor(x => x.CourseDescription,
+                    new { @class = "form-control input-sm", placeholder = "Course Description" })
+                </div>
+            </div>
+            <br />*@
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label pull-right">No Of Days</label>
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(x => x.NoOfDays, "{0:#.#}",
+                    new { @class = "form-control input-sm numCss", placeholder = "No Of Days" })
+                </div>
+            </div>            
+            <br />
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label pull-right">Public Price</label>
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(x => x.PublicPrice, "{0:#.#}",
+                    new { @class = "form-control input-sm decimalCss", placeholder = "Public Price" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label pull-right">Private Price</label>
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(x => x.PrivatePrice, "{0:#.#}",
+                    new { @class = "form-control input-sm decimalCss", placeholder = "Private Price" })
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" onclick="SaveCourse()" class="btn btn-danger btn-frmt green btn-sm">
+                <i class="fa fa-floppy-o"></i>&nbsp;Save
+            </button>
+            <button type="reset" class="btn btn-default btn-frmt btn-sm" data-dismiss="modal">
+                <i class="fa fa-times"></i>Cancel
+            </button>
+        </div>
+    </div>
+</div>

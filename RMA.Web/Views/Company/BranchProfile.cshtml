@@ -1,0 +1,253 @@
+﻿@model EZY.RMAS.Contract.Branch
+@{
+    ViewBag.Title = "BranchProfile";
+}
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-3">
+            @{ Html.RenderAction("GetCompanies", "Company"); }
+        </div>
+        <div class="col-md-9">
+            @using (Html.BeginForm("SaveBranchProfile", "Company", FormMethod.Post, new { id = "frmCompanyProfile", name = "frmCompanyProfile" }))
+            {
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <section class="content-header">
+                                <ol class="breadcrumb">
+                                    <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                                   @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                                    <li><a href='@Url.Content("~/Home/Administration")'> Administration</a></li>
+                                    <li>@Html.EncodedActionLink("Company Profile",
+                                        "CompanyProfile", "Company",
+                                        new { companyCode = Model.CompanyCode },null)</li>
+                                    <li class="active"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;Branch Profile</li>
+                                </ol>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Branch Code</label>
+                            </div>
+                            <div class="col-md-4">
+                                @if (!string.IsNullOrWhiteSpace(Model.BranchCode))
+                                {
+                                    @Html.TextBoxFor(m => m.BranchCode, new { placeholder = "Branch Code", @class = "form-control input-sm", @readonly = "readonly" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.BranchCode, new { placeholder = "Branch Code", @class = "form-control input-sm"})
+                                }
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Branch Name</label>
+                            </div>
+                            <div class="col-md-4">
+                                @if (!string.IsNullOrWhiteSpace(Model.BranchName))
+                                {
+                                    @Html.TextBoxFor(m => m.BranchName, new { placeholder = "Branch Name", @class = "form-control input-sm", @readonly = "readonly" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.BranchName, new { placeholder = "Branch Name", @class = "form-control input-sm" })
+                                }
+                                
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Registration No.</label>
+                            </div>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.RegNo, new { @placeholder = "RegNo", @class = "form-control input-sm" })
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Address 1</label>
+                            </div>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.BranchAddress.Address1, new { @placeholder = "Address1", @class = "form-control input-sm" })
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Address 2</label>
+                            </div>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.BranchAddress.Address2, new { @placeholder = "Address2", @class = "form-control input-sm" })
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">City</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(m => m.BranchAddress.CityName, new { @placeholder = "City Name", @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">State</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(m => m.BranchAddress.StateName, new { @placeholder = "State Name", @class = "form-control input-sm" })
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Zip Code</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(m => m.BranchAddress.ZipCode, new { @placeholder = "Zip Code", @class = "form-control input-sm numCss" })
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Country</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.BranchAddress.CountryCode, Model.CountryList, "Select Country", new { @placeholder = "Country Code", @class = "form-control chosen-select input-sm" })
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Phone</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(m => m.BranchAddress.TelNo, new { @placeholder = "TelNo", @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Fax</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(m => m.BranchAddress.FaxNo, new { @placeholder = "FaxNo", @class = "form-control input-sm" })
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-2">
+                                <label class="control-label pull-right">Website</label>
+                            </div>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.BranchAddress.WebSite, new { @placeholder = "WebSite", @class = "form-control input-sm" })
+                                @Html.HiddenFor(m => m.BranchAddress.AddressType, new { @class = "form-control" })
+                                @Html.HiddenFor(m => m.AddressID, new { @class = "form-control" })
+                                @Html.HiddenFor(m => m.CompanyCode)
+                                @Html.HiddenFor(m => m.BranchID, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <button class="btn btn-primary btn-sm" type="button" onclick="SaveBranch()"><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+                                    @*<button class="btn btn-default btn-sm" type="button" onclick="Clear()"><i class="fa fa-eraser"></i>&nbsp;Clear</button>*@
+                                    @Html.EncodedActionLink("<i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Clear",
+                                            "BranchProfile", "Company",
+                                            new { companyCode = Model.CompanyCode, branchCode = "NEW" }, new { @class = "btn btn-success btn-sm" })
+                                    <button class="btn btn-danger btn-sm" type="button" onclick="DeleteBranch('@Model.BranchName','@Model.BranchID')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                                    <button class="btn btn-info btn-sm" onclick="location.href = '@Url.Content("~/Company/CompanyProfile")'" type="button"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</section>
+@using (Html.BeginForm("DeleteBranch", "Company", FormMethod.Post, new { id = "frmDeleteBranch", name = "frmDeleteBranch" }))
+{
+    @Html.Hidden("BranchID")
+}
+@section secscripts{
+    <script type="text/javascript">
+        function Clear() {
+            $('.form-control').val('');
+        }
+
+        function DeleteBranch(branchName, branchID) {
+            var r = confirm('Are you sure you want to delete ' + branchName);
+            if (r) {
+                $('#BranchID').val(branchID);
+                $('#frmDeleteBranch').submit();
+            }
+        }
+
+        $('#frmCompanyProfile').validate({
+            rules: {
+                BranchCode: {
+                    required: true,
+                    maxlength: 10
+                },
+                BranchName: {
+                    required: true,
+                    maxlength: 255
+                },
+                RegNo: {
+                    required: true,
+                    maxlength: 20
+                },
+                'BranchAddress.Address1': {
+                    required: true,
+                    maxlength: 100
+                },
+                'BranchAddress.Address2': {
+                    required: true,
+                    maxlength: 100
+                },
+                'BranchAddress.CityName': {
+                    required: true,
+                    maxlength: 40
+                },
+                'BranchAddress.StateName': {
+                    required: true,
+                    maxlength: 40
+                },
+                'BranchAddress.ZipCode': {
+                    required: true,
+                    maxlength: 6
+                },
+                'BranchAddress.CountryCode': {
+                    required: true,
+                    maxlength: 6
+                },
+                'BranchAddress.TelNo': {
+                    required: true,
+                    maxlength: 20,
+                    //pattern: '/^\+?\d+$/'
+                },
+                'BranchAddress.FaxNo': {
+                    required: true,
+                    maxlength: 20
+                }
+            }
+        });
+
+        //$.validator.addMethod(
+        //    "regex",
+        //    function (value, element, regexp) {
+        //        var re = new RegExp(regexp);
+        //        return this.optional(element) || re.test(value);
+        //    },
+        //    "Please check your input."
+        //);
+        //$("#BranchAddress_TelNo").rules("add", { regex: "/^\+?\d+$/" })
+
+        function SaveBranch() {
+            if ($('#frmCompanyProfile').valid()) {
+                $('#frmCompanyProfile').submit();
+            }
+        }
+
+        $(function () {
+            $('#BranchCode').on('keydown', function (e) {
+                return e.which !== 32;
+            });
+        });
+    </script>
+}
+
+
+

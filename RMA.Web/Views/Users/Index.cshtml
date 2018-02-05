@@ -1,0 +1,90 @@
+﻿@model List<EZY.RMAS.Contract.Users>
+@{
+    ViewBag.Title = "Index";
+}
+@section seccss{
+    <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+}
+<section class="content">
+    <div class="box box-dnex">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                       @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                        <li><a href='@Url.Content("~/Home/Administration")'> Administration</a></li>
+                        <li class="active"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Users</li>
+                    </ol>
+                </section>
+            </div>
+            <div class="box-tools">
+                @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New User",
+                    "EditUser", "Users",
+                    new { userID = "" }, new { @class = "btn btn-default btn-sm" })
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <table class="table table-striped" id="tblUsers">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>User Name</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.EncodedActionLink(Model[i].UserID,
+                                            "EditUser", "Users",
+                                            new { userID = Model[i].UserID }, new { })
+                                    </td>
+                                    <td>@Model[i].UserName</td>
+                                    <td>@Model[i].RoleCode</td>
+                                    <td>
+                                        @if (Model[i].IsActive)
+                                        {
+                                            <span class="badge bg-green">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-red">Inactive</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>      
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Administration")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>  
+    </div>    
+</section>
+@section secscripts{
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#tblUsers').DataTable({
+                responsive: true
+            });
+        });
+    </script>
+}
+
+

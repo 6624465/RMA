@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<section class="content">
+    <div class="bs-example list-items">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="row">
+                    <section class="content-header">
+                        <h1>
+                            &nbsp;
+                            @*<small>Control panel</small>*@
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                           @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                            <li class="active">Administration</li>
+                        </ol>
+                    </section>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="main-section grey ">
+                            <a href='@Url.Content("~/Company/CompanyProfile")'>
+                                <div class="menu_section  grey">
+
+                                    <span><i class="fa fa-building fa-5x"></i></span>
+
+                                </div>
+                                <div class="content-section grey-btm">
+                                    <b> Company Details</b>
+                                    <p>Create or Modify the Company Details</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section blue">
+                            <a href='@Url.Content("~/Roles/RoleRights")' '>
+                                <div class="menu_section blue">
+
+                                    <span> <i class="fa fa-user fa-5x"></i></span>
+
+                                </div>
+                                <div class="content-section blue-btm">
+                                    <b>Roles Rights</b>
+                                    <p>Create or Modify the Role Rights</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section green">
+                            <a href='@Url.Content("~/Users/Index")'>
+                                <div class="menu_section green">
+
+                                    <span> <i class="fa fa-users fa-5x"></i></span>
+
+                                </div>
+                                <div class="content-section green-btm">
+                                    <b>Users list</b>
+                                    <p>Create or Modify the User list </p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section org">
+                            <a href="#">
+                                <div class="menu_section org">
+
+                                    <span>  <i class="fa fa-gears fa-5x"></i></span>
+
+
+                                </div>
+                                <div class="content-section org-btm">
+                                    <b> Configuration</b>
+                                    <p>Create or Modify the Config</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

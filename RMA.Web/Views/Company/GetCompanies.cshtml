@@ -1,0 +1,52 @@
+﻿
+@model List<EZY.RMAS.Contract.Company>
+@{
+    var branch = new EZY.RMAS.Contract.Branch();
+}
+@functions {
+    string GetActiveClass(string code1, string code2)
+    {
+        if (code1 == code2)
+            return "class=active";
+        else
+            return "";
+    }
+
+
+}
+
+<ul id="menu" style="list-style:none;">
+    <li class="active">
+        <a href="#"><span class="side_text">Companies List</span>&nbsp;<span class="fa fa-angle-left side_icon"></span></a>
+        <ul style="list-style:none;">
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <li @GetActiveClass(Model[i].CompanyCode, Convert.ToString(TempData["TempCompanyCode"]))>
+                    @Html.EncodedActionLink(Model[i].CompanyName,
+                        "CompanyProfile", "Company",
+                        new { companyCode = Model[i].CompanyCode },
+                        new { style = "font-style: italic; color: maroon;cursor:pointer;" })
+                    <ul style="list-style:none;">
+                        @for (var j = 0; j < Model[i].BranchList.Count; j++)
+                        {
+                            <li>                                
+                                @Html.EncodedActionLink(Model[i].BranchList[j].BranchName,
+                                    "BranchProfile", "Company",
+                                    new { companyCode = Model[i].CompanyCode, branchCode = Model[i].BranchList[j].BranchCode }, 
+                                    new { style = "cursor:pointer;", id = "anch_branch_" + j })
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </li>
+</ul>
+@Html.Hidden("companyCode")
+
+<script type="text/javascript">   
+
+    function companyInfo(CompanyCode) {
+        location.href = '@Url.Content("~/Company/CompanyProfile?companyCode=")' + CompanyCode;
+    }
+</script>

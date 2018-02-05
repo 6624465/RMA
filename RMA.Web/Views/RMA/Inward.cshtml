@@ -1,0 +1,459 @@
+﻿@model EZY.RMAS.Contract.RMAHeader
+@{
+    ViewBag.Title = "Inward";
+}
+@section seccss{
+    <link href="@Url.Content("~/Css/sweetalert.css")" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <style type="text/css">
+        h4, .h4, h5, .h5, h6, .h6 {
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+        .table-width{
+            table-layout:fixed;
+            
+        }
+        .width-auto{
+            width:66%;
+            margin:0 auto;
+            position:relative;
+            right:90px;
+            top:10px;
+        }
+    </style>
+}
+
+
+@using (Html.BeginForm("ProcessRMAInward", "RMA", FormMethod.Post, new { id = "frmRMAInward", name = "frmRMAInward" }))
+{
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="row">
+                    <section class="content-header">
+                        <ol class="breadcrumb">
+                            <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                            @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                            <li><a href='@Url.Content("~/Home/Transactions")'> Transactions</a></li>
+                            <li class="active"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp; RMA Validation</li>
+                        </ol>
+                    </section>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Country</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(x => x.CountryCode,
+                             new SelectList(ViewBag.countries, "Value", "Text"),
+                             "Select Country",
+                             new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Email</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.EmailID, new { @class = "form-control input-sm", placeholder = "Email" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Contact No</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.ContactNo, new { @class = "form-control input-sm numCss", placeholder = "Contact No" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right" style="display:none">Incident Date</label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group date" id="IncidentDt">
+                                @Html.HiddenFor(x => x.IncidentDate, new { @class = "form-control input-sm" })
+                                @*<span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Customer Address</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextAreaFor(x => x.CustomerAddress, new { @class = "form-control input-sm", placeholder = "Customer Address" })
+                    </div>
+                    <div class="col-md-2">
+                        <input id="fileupload" type="file" name="file" onchange="fileChanged(this)" />
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" id="scanBtn"
+                                class="btn btn-primary btn-sm"
+                                onclick="ScanSerialNo()">
+                            <i class="fa fa-barcode" aria-hidden="true"></i>&nbsp;Scan
+                        </button>
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Contact/Company Name</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.CompanyName, new { @class = "form-control input-sm", placeholder = "Contact/Company Name" })
+                    </div>
+                </div>
+                @*<div class="row css10">
+                    <div class="col-md-3">
+                        <button type="button" onclick="SaveSerialsNo()" class="btn btn-danger btn-frmt green btn-sm">
+                            <i class="fa fa-floppy-o"></i>&nbsp;Process
+                        </button>
+                        </div>
+                    </div>*@
+                @if (Model.rmaDetails != null)
+                {
+                    <div class="width-auto">
+                        <div class="row css10">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered table-width">
+                                    <thead style="background-color:#3c8dbc;color:white">
+                                        <tr>
+                                            <th width="70">Sl No.</th>
+                                            <th width="180">Document No.</th>
+                                            <th width="230">Model No.</th>
+                                            <th width="240">Product Serial No.</th>
+                                            <th width="210">Warranty Expiry Date</th>
+                                            @*<th>Is Valid</th>*@
+                                            <th width="100">#Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < Model.rmaDetails.Count; i++)
+                                        {
+                                            <tr class="trCss" id="@(i+1)" style="@if (Model.rmaDetails[i].IsValid) { <text>background-color: rgba(14, 128, 0, 0.22);</text>} else { <text>background-color: rgba(255, 0, 0, 0.12);</text>}">
+                                                <td>
+                                                    @(i + 1)
+                                                </td>
+                                                <td>
+                                                    @Model.rmaDetails[i].DocumentNo
+                                                    @Html.HiddenFor(x => x.rmaDetails[i].DocumentNo)
+                                                </td>
+                                                <td>
+                                                    @Model.rmaDetails[i].ModelNo
+                                                    @Html.HiddenFor(x => x.rmaDetails[i].ModelNo)
+                                                </td>
+                                                <td>
+                                                    @Model.rmaDetails[i].SerialNo
+                                                    @Html.HiddenFor(x => x.rmaDetails[i].SerialNo)
+                                                </td>
+                                                <td style="display:inline-flex;border:none;">
+                                                    @*@Model.rmaDetails[i].WarrantyExpiryDate*@
+                                                    @string.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(Model.rmaDetails[i].WarrantyExpiryDate).ToShortDateString())
+                                                    @Html.HiddenFor(x => x.rmaDetails[i].WarrantyExpiryDate)
+                                                    @if (Model.rmaDetails[i].IsValid)
+                                                    {
+                                                        <h5><span id="spvalid" class="label label-success" style="margin-left:10px">Valid</span></h5>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h5><span id="spinvalid" class="label label-danger isinvalid" style="margin-left:10px">Invalid</span></h5>
+                                                    }
+                                                    @Html.HiddenFor(x => x.rmaDetails[i].IsValid)
+                                                </td>
+                                                @*<td>
+                                                        @if (Model.rmaDetails[i].IsValid)
+                                                        {
+                                                            <h5><span id="spvalid" class="label label-success">Valid</span></h5>
+                                                        }
+                                                        else
+                                                        {
+                                                            <h5><span id="spinvalid" class="label label-danger isinvalid">Invalid</span></h5>
+                                                        }
+                                                        @Html.HiddenFor(x => x.rmaDetails[i].IsValid)
+                                                    </td>*@
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="DeleteSerial(@(i+1),'@Model.rmaDetails[i].SerialNo')"><i class="fa fa-trash-o"></i>&nbsp;Remove</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row css10">
+                            <div class="col-md-2">
+                                <button type="button" id="btnGenRMA" data-toggle="modal" data-target="#myModal" class="btn btn-primary"><i class="fa fa-gears"></i>&nbsp;Generate RMA</button>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Transactions")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="RMADetailDiv">
+    </div>
+
+}
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Are you sure ? You want to Generate RMA!</h4>
+            </div>
+            <div class="modal-body">
+                @if (Model.rmaDetails != null)
+                {
+                    <div class="row css10">
+                        <div class="col-md-12">
+                            <table id="poptable" class="table table-striped table-bordered">
+                                <thead style="background-color:#3c8dbc;color:white">
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th>Model No.</th>
+                                        <th>Product Serial No.</th>
+                                        <th>Warranty Expiry Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.rmaDetails.Count; i++)
+                                    {
+                                        <tr class="trCss" id="@(i + 1)" style="@if (Model.rmaDetails[i].IsValid)
+                                    { <text>background-color: rgba(14, 128, 0, 0.22);</text>}
+                                    else { <text>background-color: rgba(255, 0, 0, 0.12);</text>}">
+                                            <td>
+                                                @(i + 1)
+                                            </td>
+                                            <td>
+                                                @Model.rmaDetails[i].ModelNo
+                                            </td>
+                                            <td>
+                                                @Model.rmaDetails[i].SerialNo
+                                            </td>
+                                            <td style="display:inline-flex;border:none;">
+                                                @*@Model.rmaDetails[i].WarrantyExpiryDate*@
+                                                @string.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(Model.rmaDetails[i].WarrantyExpiryDate).ToShortDateString())
+                                                @if (Model.rmaDetails[i].IsValid)
+                                                {
+                                                    <h5><span id="spvalid" class="label label-success" style="margin-left:10px">Valid</span></h5>
+                                                }
+                                                else
+                                                {
+                                                    <h5><span id="spinvalid" class="label label-danger invalid" style="margin-left:10px">Invalid</span></h5>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="GenerateRMA()">Proceed</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="ScanProductsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Scan Products</h4>
+            </div>
+            <div class="modal-body" id="ProductModalBody">
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-md-2">
+                        <label class="control-label pull-right">Serial Nos</label>
+                    </div>
+                    <div class="col-md-10">
+                        <textarea class="form-control input-sm" rows="10" id="serialNos" name="serialNos"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="SaveSerialsNo()" class="btn btn-danger btn-frmt green btn-sm">
+                    <i class="fa fa-floppy-o"></i>&nbsp;Process
+                </button>
+                <button type="reset" class="btn btn-default btn-frmt btn-sm" data-dismiss="modal">
+                    <i class="fa fa-times"></i>Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section secscripts{
+    <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/sweetalert.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            var length = $('.isinvalid').length;
+            if (length >= 1) {
+                $('#btnGenRMA').attr('disabled', 'disabled');
+            }      
+            var isSaved = '@TempData["isSaved"]';
+            if (isSaved) {
+                swal("RMA Generated", "RMA Number is Sent To Your Mail!!", "success")
+            }
+            $('#frmRMAInward').validate({
+                rules: {
+                    CountryCode: {
+                        required: true
+                    },
+                    EmailID: {
+                        required: true,
+                        email: true
+                    },
+                    ContactNo: {
+                        required: true
+                    },
+                    IncidentDate: {
+                        required: true
+                    },
+                    CompanyName: {
+                        required: true
+                    },
+                    CustomerAddress: {
+                        required: true
+                    }
+                }
+            });
+        });
+        var i = 0;
+        //var s = 0;
+
+        function DeleteSerial(id, serialNo) {
+            var serialNoId = id - 1;
+            var changeSerialNo = $('#rmaDetails_' + serialNoId + '__SerialNo').val('deleted');
+            $('#' + id).hide();
+
+            var length = $('.isinvalid').length;
+            length = length - (i++);
+            if (length == 1) {
+                $('#btnGenRMA').removeAttr('disabled');
+
+                var sno = serialNoId + 1;
+                $('#poptable tr:eq(' + sno + ')').hide();
+            }
+        }
+
+        //var invalidlength = $('.popinvalid').length;
+        //invalidlength = invalidlength - (s++);
+        //if (invalidlength == 1) {
+        //    $('#btnGenRMA').removeAttr('disabled');
+        //}
+
+        function fileChanged(el) {
+            var file = el.files[0];
+            if (file != null) {
+                $('#scanBtn').attr('disabled', 'disabled');
+            }
+        }
+
+        //function ModalShow2(Message, ResponseType, actionType) {
+
+        //    $('#myModalTest2').modal({
+        //        keyboard: false
+        //    }, 'show');
+        //    if (ResponseType == "Failure") {
+        //        $('#myModalTestInnerDiv2').removeClass("modal-success").addClass("modal-danger");
+        //    }
+        //    else {
+        //        $('#myModalTestInnerDiv2').removeClass("modal-danger").addClass("modal-success");
+        //    }
+
+        //    ActionType = actionType
+        //    $("#modalHeader2").text(ResponseType);
+        //    $("#pmodalid2").text(Message);
+        //    $('#myModalTestInnerDiv2').show();
+        //}
+        $('#IncidentDt').datetimepicker({
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-arrow-up',
+                down: 'fa fa-arrow-down'
+            },
+            format: 'DD/MM/YYYY'
+        });
+
+        function ScanSerialNo() {
+            $('#ScanProductsModal').modal('show');
+            setTimeout(function () {
+                $('#serialNos').focus();
+            }, 900);
+
+        }
+
+        function SaveSerialsNo() {
+
+            var serialNos = $('#serialNos').val().split(/\n/);
+
+            var valuesSoFar = Object.create(null);
+            var duplicateSerialNos = [];
+            for (var i = 0; i < serialNos.length; ++i) {
+                var value = serialNos[i];
+                if (value in valuesSoFar)
+                    duplicateSerialNos.push(value);
+
+                valuesSoFar[value] = true;
+            }
+
+            if (duplicateSerialNos && duplicateSerialNos.length > 0) {
+                swal("Cancelled", "Please Remove Duplicate SerialNos"+" " + duplicateSerialNos + "", "error");
+               // alertify.error('Please Remove Duplicate Values of' + duplicateSerialNos + '');
+                return false;
+            }
+
+            var rmaDetailHtml = '';
+            $.each(serialNos, function (index, item) {
+                if (item != '') {
+                    rmaDetailHtml += '<input type="hidden" id="rmaDetails_' + index + '__SerialNo" name="rmaDetails[' + index + '].SerialNo" value="' + item + '" />'
+                }
+            });
+            $('#RMADetailDiv').html(rmaDetailHtml);
+            $('#ScanProductsModal').modal('hide');
+            if ($('#frmRMAInward').valid()) {
+                $('#frmRMAInward').submit();
+            }
+        }
+
+        function GenerateRMA() {
+            //if ($('#frmRMAInward'))
+            //    {
+            //if (confirm("Are you sure ? You want to Generate RMA \nCountry: " + $('#CountryCode option:selected').text()
+            //          + "\nEmail: " + $('#EmailID').val() + "\nContact No: " + $('#ContactNo').val()
+            //          + "\nCustomer Address: " + $('#CustomerAddress').text())) {
+            $('#frmRMAInward').attr('action', '@Url.Content("~/RMA/GenerateRMA")');
+            $('#frmRMAInward').submit();
+            //}
+        }
+    </script>
+}

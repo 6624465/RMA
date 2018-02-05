@@ -1,0 +1,164 @@
+﻿
+.box-body{
+        margin:0 auto;
+        
+    }
+.box-custom{
+    margin:0 auto;
+    background:#fff;
+        width: 65%;
+}
+.top-space{
+    margin-top: 20px;
+}
+    .modal-header {
+    }
+    img {
+        width: 28%;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .modal-body {
+        border: none;
+    }
+
+    .table th,
+    .table td, .table tr {
+    }
+
+    .address {
+    }
+
+    /*.bold {
+        font-color: #000;
+    }
+
+    .bold {
+        font-color: #000;
+    }*/
+
+    .space {
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .table {
+        margin-top: 10px;
+    }
+
+    .direction {
+        direction: rtl;
+    }
+
+    .product-desc {
+        margin-top: 20px;
+    }
+
+    .scroll {
+        overflow-y: scroll;
+        max-height: 85%;
+    }
+
+    .no-wrap {
+        white-space: nowrap;
+    }
+
+    .inline {
+        float: right;
+        position: relative;
+        left: 60px;
+    }
+
+    .space-left {
+        margin-left: 32px;
+    }
+
+    .bg {
+    }
+    /*media (min-width: 768px) {*/
+    .modal-xl {
+        width: 90%;
+        max-width: 1200px;
+    }
+    /*}*/
+    .prod-values input {
+        width: 100%;
+    }
+
+    .product-desc p {
+        white-space: nowrap;
+    }
+
+    input {
+        width: 50%;
+    }
+
+    .input-width input {
+        width: 40%;
+    }
+    .input-width-width input{
+        width:57%;
+    }
+
+    .company {
+        margin-right: 4%;
+        white-space: nowrap;
+    }
+
+    .upper-case {
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        font-family: 'helvetica';
+    }
+
+    .qty {
+        margin-right: 0px;
+        position:relative;
+           left: 147px;
+    width: 112px;
+    }
+
+    .total {
+        position: relative;
+        left: 11px;
+        width: 105px;
+    }
+
+    .net-weight {
+        position: relative;
+        left: 14px;
+    }
+    .net-weight input{
+        width:25%;
+    }
+
+    .bill-ship {
+        width: 65px;
+    }
+
+    .company {
+        width: 190px;
+    }
+    .text-right{
+        width:120px;
+        text-align:center;
+    }
+    .qty-total{
+        float:left;
+        position:relative;
+        right:12px;
+    }
+    .table-width{
+        table-layout:fixed;
+    }
+    .valid-invalid-btn{
+        margin:0px 0px 0px 5px;
+        position:relative; 
+        left:8px; 
+        top:1px;
+    }
+    .th-width{
+        width:100px;
+    }

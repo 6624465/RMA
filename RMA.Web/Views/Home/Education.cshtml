@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Education";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="bs-example-home list-items">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="row">
+                    <section class="content-header">
+                        <h1>
+                            &nbsp;
+                            @*<small>Control panel</small>*@
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                            <li class="active">Master Data</li>
+                        </ol>
+                    </section>
+                </div>
+                <div class="row">                    
+                    <div class="col-md-3">
+                        <div class="main-section grey ">
+                            <a href='@Url.Content("~/Master/EduProductList")'>
+                                <div class="menu_section  grey">
+                                    <span><i class="fa fa-book fa-5x" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="content-section grey-btm">
+                                    <b> Education Products </b>
+                                    <p>Create or Modify the Education Product</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section dgreen ">
+                            <a href='@Url.Content("~/Master/CourseList")'>
+                                <div class="menu_section  dgreen">
+                                    <span><i class="fa fa-bars fa-5x" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="content-section grey-btm">
+                                    <b> Courses </b>
+                                    <p>Create or Modify the Course</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section org-btm ">
+                            <a href='@Url.Content("~/Master/CourseSalesMasterList")'>
+                                <div class="menu_section  org-btm">
+                                    <span><i class="fa fa-money fa-5x" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="content-section grey-btm">
+                                    <b> Course Sales Master </b>
+                                    <p>Create or Modify the Course Sales Master List</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

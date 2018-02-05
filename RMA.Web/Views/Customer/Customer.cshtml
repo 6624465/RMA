@@ -1,0 +1,227 @@
+﻿@model EZY.RMAS.Contract.Customer
+@{
+    ViewBag.Title = "Index";
+}
+
+<section class="content">
+    @using (Html.BeginForm("SaveCustomer", "Customer", FormMethod.Post, new { id = "frmCustomer", name = "frmCustomer" }))
+    {
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-user"></i>&nbsp;@ViewBag.HeaderTitle</h3>
+            </div>
+            <div class="box-body">
+                <div class="row hearder-title"><div class="col-md-12"><h4> Account Information</h4> </div></div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Contact Type</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(x => x.CustomerType,
+                            new SelectList(ViewBag.CustomerType, "Value", "Text"),
+                            "Select CustomerType",
+                            new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Contact Code</label>
+                    </div>
+                    <div class="col-md-4">
+
+                        @Html.TextBoxFor(x => x.CustomerCode,
+                                  new { @class = "form-control input-sm", placeholder = "Customer Code" })
+
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Company Name</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.CustomerName,
+                            new { @class = "form-control input-sm", placeholder = "Company Name" })
+                    </div>
+                </div>
+                <div class="row hearder-title css10">
+                    <div class="col-md-12">
+                        <h4> Address </h4>
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Address 1</label>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.Address1,
+                            new { @class = "form-control input-sm", placeholder = "Address 1" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Address 2</label>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(x => x.Address2,
+                            new { @class = "form-control input-sm", placeholder = "Address 2" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">State</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.State,
+                            new { @class = "form-control input-sm", placeholder = "State" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label pull-right">Country</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(x => x.CountryCode,
+                            new SelectList(ViewBag.Country, "Value", "Text"),
+                            "Select Country",
+                            new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Post Code</label>
+                    </div>
+                    <div class="col-md-2">
+                        @Html.TextBoxFor(x => x.PostCode, new { @class = "form-control input-sm", placeholder = "Zip Code" })
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Contact Person Name</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.ContactPerson, new { @class = "form-control input-sm", placeholder = "Contact Person Name" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Mobile # </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control input-sm numCss", placeholder = "Mobile #" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label pull-right">Fax </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.FaxNumber, new { @class = "form-control input-sm numCss", placeholder = "Fax" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Tel No </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.MobilePhoneNumber, new { @class = "form-control input-sm numCss", placeholder = "Tel No" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label pull-right">Email </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.EmailID, new { @class = "form-control input-sm", placeholder = "Email" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Is Active</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.CheckBoxFor(x => x.Status)
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="col-md-12">
+                    @if (UTILITY.HasRight("CustomerSave"))
+                    {
+                        <button type="button" class="btn btn-danger btn-frmt green btn-sm" onclick="SaveCustomer()">
+                            <i class="fa fa-floppy-o"></i>&nbsp;Save
+                        </button>
+                    }
+
+                    <button type="button" onclick="location.href = '@Url.Content("~/Customer/Customers")'" class="btn btn-default btn-frmt btn-sm">
+                        <i class="fa fa-times"></i>&nbsp;Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+
+</section>
+@section secscripts{
+    <script type="text/javascript">
+        $(function () {
+            $('#CustomerType').val('@Model.CustomerType');
+            @*@if (ViewBag.HeaderTitle == "Update Contact")
+            {
+                <text>$('#CustomerCode').attr('readonly', 'readonly');</text>
+            }*@
+            $('#EmailID').on('change', function () {
+                $(this).val($(this).val().replace(/\s+/g, ''));
+            });
+            $('#frmCustomer').validate({
+                rules: {
+                    CustomerType: {
+                        required: true
+                    },
+                    CustomerCode: {
+                        required: true
+                    },
+                    CustomerName: {
+                        required: true
+                    },
+                    PhoneNumber: {
+                        digits: true
+                    },
+                    FaxNumber: {
+                        digits: true
+                    },
+                    MobilePhoneNumber: {
+                        digits: true
+                    },
+                    //EmailID: {
+                    //    email: true,
+                    //    required:true
+                    //},
+                    Address1:{
+                        required: true
+                    },
+                    Address2:{
+                        required: true
+                    },
+                    //State: {
+                    //    required: true
+                    //},
+                    CountryCode: {
+                        required: true
+                    },
+                    //PostCode: {
+                    //    required: true
+                    //},
+                    ContactPerson: {
+                        required: true
+                    },
+                    PhoneNumber: {
+                        required: true
+                    },
+                    MobilePhoneNumber: {
+                        required:true
+                    },
+
+                }
+            });
+        });
+
+        function SaveCustomer() {
+            if ($('#frmCustomer').valid()) {
+                $('#frmCustomer').submit();
+            }
+        }
+    </script>
+}
+

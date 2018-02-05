@@ -1,0 +1,107 @@
+﻿@model EZY.RMAS.Contract.RMAOutwardHeader
+@{
+    ViewBag.Title = "GetRMAByDocumentNo";
+}
+
+<section class="content">
+    @using (Html.BeginForm("SaveRMAOutWard", "RMA", FormMethod.Post, new { id = "frm", name = "frm" }))
+    {
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;RMA Outward</h3>
+        </div>
+        <div class="box-body">
+            <div class="row css10">
+                <div class="col-md-2">
+                    <label class="control-label pull-right">RMA No</label>
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(x => x.ReferenceNo, new { @class = "form-control input-sm", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="row css10">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Document No</th>
+                                <th>Old Serial No</th>
+                                <th>New Serial No</th>
+                                <th>Product Code</th>
+                                <th>Product Description</th>
+                                <th>Cost</th>
+                                <th>Is Credit Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @for (var i = 0; i < Model.RmaDetails.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Model.RmaDetails[i].DocumentNo
+                                        @Html.HiddenFor(x => x.RmaDetails[i].DocumentNo)
+                                    </td>
+                                    <td>
+                                        @Model.RmaDetails[i].OldSerialNo
+                                        @Html.HiddenFor(x => x.RmaDetails[i].OldSerialNo)
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.RmaDetails[i].NewSerialNo, new { @class = "form-control input-sm", onkeypress = "onKeyPress(event)" })
+                                    </td>
+                                    <td>
+                                        @Model.RmaDetails[i].ProductCode
+                                        @Html.HiddenFor(x => x.RmaDetails[i].ProductCode)
+                                    </td>
+                                    <td>
+                                        @Model.RmaDetails[i].ProductDescription
+                                        @Html.HiddenFor(x => x.RmaDetails[i].ProductDescription)
+                                    </td>
+                                    <td>
+                                        @Model.RmaDetails[i].Cost
+                                        @Html.HiddenFor(x => x.RmaDetails[i].Cost)
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(x => x.RmaDetails[i].IsCreditNote, new { onchange = "chkOnChanged(" + i + ")" })
+                                    </td>
+                                </tr>
+                            }                            
+                        </tbody>
+                    </table>                    
+                </div>
+            </div>
+            <div class="row css10">
+                <div class="col-md-12">
+                    <button class="btn btn-primary btn-sm" type="button" onclick="btnSave()"><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+                    <button class="btn btn-default btn-sm" type="button" onclick="location.href = '@Url.Content("~/RMA/OutwardList")'"><i class="fa fa-backward"></i>&nbsp;Cancel</button>
+                </div>                
+            </div>
+        </div>
+    </div>
+    }
+</section>
+@section secscripts{
+    <script type="text/javascript">
+        function chkOnChanged(index) {
+            if ($('#RmaDetails_' + index + '__IsCreditNote').is(':checked'))
+                $('#RmaDetails_' + index + '__NewSerialNo').val('').attr('readonly', 'readonly');
+            else
+                $('#RmaDetails_' + index + '__NewSerialNo').val('').removeAttr('readonly');
+        }
+
+        function onKeyPress(e) {
+            var key = e.which;
+            if (key == 13) 
+            {
+                var currentIndex = parseInt(e.currentTarget.id.split('_')[1]);
+                $('#RmaDetails_' + currentIndex + '__IsCreditNote').prop('checked', false);
+                $('#RmaDetails_' + (currentIndex + 1) + '__NewSerialNo').focus();
+            }
+        }
+
+        function btnSave() {
+            $('#frm').submit();
+        }
+    </script>
+}
+

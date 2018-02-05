@@ -1,0 +1,780 @@
+﻿@model EZY.RMAS.Contract.InvoiceHeader
+@{
+    ViewBag.Title = "VendorInvoice";
+}
+@section seccss{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/sweetalert.css")" rel="stylesheet" />
+    <style type="text/css">
+        .deleteCss {
+            text-decoration: line-through;
+            color: red;
+        }
+    </style>
+}
+@using (Html.BeginForm("VendorInvoice", "Invoice", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
+{
+    <section class="content">
+        @Html.HiddenFor(x => x.DocumentNo)
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Material Inward </h3>
+            </div>
+            <div class="row css10">
+                <div class="col-md-3">
+                    <label class="control-label pull-right">Product Category&nbsp; <span class="error-req">*</span></label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DropDownListFor(x => x.ProductCategory,
+                             new SelectList(ViewBag.productCategory, "Value", "Text"),
+                             "Select Category",
+                             new { @class = "form-control input-sm", onchange = "productCategoryChanged(this)" })
+                </div>
+            </div>
+            <div class="row css10">
+                <div class="col-md-3">
+                    <label class="control-label pull-right">Product&nbsp; <span class="error-req">*</span></label>
+                </div>
+                <div class="col-md-4">
+                    @if (string.IsNullOrWhiteSpace(Model.ProductCode))
+                    {
+                        @Html.DropDownListFor(x => x.ProductCode,
+                                 Enumerable.Empty<SelectListItem>(),
+                                 "Select Product",
+                                 new { @class = "form-control input-sm PRD", @readonly = "readonly", onchange = "productChanged(this)" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(x => x.ProductCode,
+                                 new SelectList(ViewBag.vProducts, "Value", "Text"),
+                                 "Select Product",
+                                 new { @class = "form-control input-sm", onchange = "productChanged(this)" })
+                    }
+
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Description&nbsp; <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.ProductDescription, new { @class = "form-control input-sm", @readonly = "readonly" })
+                        @Html.HiddenFor(x => x.ModelNo, new { @class = "form-control input-sm" })
+                        @*@if (string.IsNullOrWhiteSpace(Model.ModelNo))
+                            {
+                                @Html.DropDownListFor(x => x.ModelNo,
+                                     Enumerable.Empty<SelectListItem>(),
+                                     "Select ModelNo",
+                                     new { @class = "form-control input-sm", @readonly = "readonly" })
+                            }
+                            else
+
+
+                            {
+                                @Html.DropDownListFor(x => x.ModelNo,
+                                     new SelectList(ViewBag.vModels, "Value", "Text"),
+                                     "Select ModelNo",
+                                     new { @class = "form-control input-sm" })
+                            }*@
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Vendor Name <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(x => x.CustomerCode,
+                          new SelectList(ViewBag.vendorsList, "Value", "Text"),
+                          "Select Vendor",
+                          new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Invoice No.<span class="error-req">*</span>&nbsp;</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.InvoiceNo,
+                         new
+                         {
+                             @class = "form-control input-sm",
+                             placeholder = "EZY Invoice"
+                             //,onblur = "CheckInvoiceNo()"
+                         })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">CusInvoice No.&nbsp;</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.CusInvoiceNo,
+                         new
+                         {
+                             @class = "form-control input-sm",
+                             placeholder = "Cus Invoice"
+                         })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Invoice Date.(DD/MM/YYYY)&nbsp; <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group date" id="InvoiceDt">
+                                @Html.TextBoxFor(x => x.InvoiceDate, new { @class = "form-control input-sm", id = "InvoiceDate" })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (ViewBag.QuantityMismatched != null)
+                {
+                    <div class="callout callout-danger">
+                        <h4>Warning!</h4>
+                        <p>
+                            Quantity and items in uploaded files not matched. Please try with another file.
+                        </p>
+                    </div>
+                }
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Quantity&nbsp; <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.Quantity,
+                        new { @class = "form-control input-sm numCss", onblur = "Qty()" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Currency&nbsp; <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-3">
+
+                        @Html.DropDownListFor(x => x.CurrencyCode,
+                         new SelectList(ViewBag.Currency, "Value", "Text"),
+                         "Select Currency",
+                         new { @class = "form-control input-sm" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Unit Price&nbsp; <span class="error-req">*</span></label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.UnitPrice,
+                            new { @class = "form-control input-sm decimalCss" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">
+                            Product Serial No's.&nbsp;
+                            <span class="error-req">*</span>
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <input id="fileupload" type="file" name="file" onchange="fileChanged(this)" />
+                        @*<input id="browse-click" type="file" class="file" value="Browse for files" onchange="fileChanged(this)" />*@
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" id="scanBtn"
+                                class="btn btn-primary btn-sm"
+                                onclick="ScanSerialNo()">
+                            <i class="fa fa-barcode" aria-hidden="true"></i>&nbsp;Scan
+                        </button>
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-3">
+                        <label class="control-label pull-right">Warranty Period (in month's) </label>
+                    </div>
+                    <div class="col-md-1">
+                        @Html.DropDownListFor(x => x.WarrantyPeriod,
+                            new SelectList(ViewBag.WarentyPeriodList, "Value", "Text"), "",
+                            new { @class = "form-control input-sm", onchange = "WarrantyPeriod_OnChange(this);" })
+                    </div>
+                    <div class="col-md-8">
+                        <b style="color:red" id="expirtyDtMsg">@ViewBag.ExpireMsg</b>
+                    </div>
+                </div>
+                <br />
+                @*new button*@
+                @*<div class="row css10">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-1">
+                            @if (Model.DocumentNo != "" && Model.DocumentNo != null)
+                            {
+                                @Html.HiddenFor(x => x.DocumentNo)
+                                <button type="button" id="SaveBtn" class="btn btn-success" onclick="SaveVendorInvoice()">Update</button>
+                            }
+                        </div>
+                    </div>*@
+                <input type="hidden" name="FileName" value="@Model.FileName" />
+
+                @if (Model.InvoiceDetailItems != null && Model.InvoiceDetailItems.Count() > 0)
+                {
+                    <div class="row css10">
+                        <div class="col-md-4 col-md-offset-2">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th bgcolor="#5D7B9D" style="color:white; width:25%">Sl No.</th>
+                                        <th class="hidden" bgcolor="#5D7B9D" style="color:white; width:25%">Document No.</th>
+                                        <th bgcolor="#5D7B9D" style="color:white;">Product Serial No.</th>
+                                        <th class="hidden" bgcolor="#5D7B9D" style="color:white; width:50%">IsValid</th>
+                                        <th bgcolor="#5D7B9D" style="color:white;  width:20%;">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.InvoiceDetailItems.Count; i++)
+                                    {
+                                        <tr id="@(i)" class="detailCount @(Model.InvoiceDetailItems[i].RecordCount == 1 ? "deleteCss" : "")">
+                                            <td align="center">
+                                                @(i + 1)
+                                            </td>
+                                            <td class="hidden">
+                                                @Model.InvoiceDetailItems[i].DocumentNo
+                                                @Html.HiddenFor(x => x.InvoiceDetailItems[i].DocumentNo)
+                                            </td>
+                                            <td>
+                                                @Model.InvoiceDetailItems[i].SerialNo
+                                                @*@Html.HiddenFor(x => x.InvoiceDetailItems[i].SerialNo)*@
+                                                <input id="InvoiceDetailItems_@(i)__SerialNo" name="InvoiceDetailItems[@(i)].SerialNo" type="hidden" value="@Model.InvoiceDetailItems[i].SerialNo">
+                                                @*@if (ViewBag.DBDuplicatesno != null)
+                                                    {
+                                                        foreach (var item in ViewBag.DBDuplicatesno)
+                                                        {
+                                                            if (item == Model.InvoiceDetailItems[i].SerialNo)
+                                                            {
+                                                                <span id="span_invalid_@(i)" class="label label-danger isinvalid">invalid</span>
+                                                            }
+                                                        }
+                                                    }*@
+                                            </td>
+                                            <td class="hidden">
+                                                @Model.InvoiceDetailItems[i].RecordCount
+                                                @Html.HiddenFor(x => x.InvoiceDetailItems[i].RecordCount)
+                                            </td>
+                                            <td>
+                                                @*@if (Model.InvoiceDetailItems[i].DocumentNo != "" && Model.InvoiceDetailItems[i].DocumentNo != null)
+                                                    {
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="DeleteSerialNo('@Model.InvoiceDetailItems[i].SerialNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                                                    }
+                                                    else
+                                                    {*@
+                                                <button type="button" class="btn btn-danger btn-sm isdelete" onclick="DeleteSerial(@(i),'@Model.InvoiceDetailItems[i].SerialNo','@Model.InvoiceDetailItems[i].DocumentNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                                                @*}*@
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-md-12">
+                        @ViewBag.Exception
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                @if (UTILITY.HasRight("VendorInvoiceSave", "Action"))
+                {
+                    @*if (Model.InvoiceDetailItems == null)
+                        {
+                            <button type="button" onclick="ProcessVendorInvoice();" class="btn btn-danger btn-sm btn-frmt green">
+                                <i class="fa fa-check-square-o"></i>&nbsp;Upload & Process
+                            </button>
+                        }*@
+                if (Model.DocumentNo == null)
+                {
+                    <button type="button" id="BtnSave" onclick="SaveVendorInvoice()" class="btn btn-success">
+                        <i class="fa fa-floppy-o"></i>&nbsp;Save
+                    </button>
+                }
+                else
+                {
+                    <button type="button" id="BtnSave" onclick="SaveVendorInvoice()" class="btn btn-success">
+                        <i class="fa fa-floppy-o"></i>&nbsp;Update
+                    </button>
+                }
+                @*else
+                    {
+
+                        <button type="button" onclick="ProcessVendorInvoices();" class="btn btn-danger btn-sm btn-frmt green">
+                            <i class="fa fa-check-square-o"></i>&nbsp;Upload & Process
+                        </button>
+                    }*@
+                }
+                <button type="button" onclick="location.href = '@Url.Content("~/Invoice/VendorInvoiceList")'" class="btn btn-default btn-sm btn-frmt ">
+                    <i class="fa fa-times"></i>&nbsp;Cancel
+                </button>
+            </div>
+            <div class="overlay" style="display:none;">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>
+        </div>
+
+    </section>
+    <div id="invoiceHeaderDetailDiv">
+    </div>
+
+
+}
+<div id="ScanProductsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Scan Products</h4>
+            </div>
+            <div class="modal-body" id="ProductModalBody">
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-md-2">
+                        <label class="control-label pull-right">Serial Nos</label>
+                    </div>
+                    <div class="col-md-10">
+                        <textarea class="form-control input-sm" rows="10" id="serialNos" name="serialNos"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="SaveSerialsNo()" class="btn btn-primary btn-frmt green btn-sm">
+                    <i class="fa fa-upload"></i>&nbsp;Submit
+                </button>
+
+                <button type="reset" class="btn btn-default btn-frmt btn-sm" data-dismiss="modal">
+                    <i class="fa fa-times"></i>Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@*@using (Html.BeginForm("DeleteSerialNo", "Invoice", FormMethod.Post, new { id = "frmDeleteSerialNo", name = "frmDeleteSerialNo" }))
+
+    {
+        @Html.Hidden("SerialNo")
+        @Html.Hidden("invoiceNo")
+        @Html.Hidden("documentNo")
+    }*@
+
+@section secscripts{
+    <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
+    <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/sweetalert.js")"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            //$('#fileupload').val('');
+            $('#FileName').val('');
+            var Dsno='@ViewBag.Dupsno';
+            if(Dsno)
+            {
+                alert("System Deleted Automatically Duplicates");
+            }
+            var v = $('#Quantity').val();
+            var length = $('.detailCount').length;
+            if (v != length) {
+                $('#SaveBtn').attr('disabled', 'disabled');
+            }
+            //$('#InvoiceDt').data("DateTimePicker").minDate(moment().startOf('week'));
+            //$('#InvoiceDt').data("DateTimePicker").maxDate(moment().endOf('today'));
+            var duplicateSno=@Html.Raw(Json.Encode(ViewData["DuplicateSNo"]));
+            if(duplicateSno !=null)
+            {
+                //alert("These are the Duplicate SerialNo's"+duplicateSno+"System Deleted Automatically.");
+                swal("Cancelled", "These are the Duplicate SerialNo's" + '  '+ duplicateSno +'  '+ "System Deleted Automatically.", "error");
+            }
+            @if (Model.InvoiceDate == null)
+            {
+             <text>$('#WarrantyPeriod').attr('readonly', 'readonly');</text>
+            }
+            //  $('#ProductCategory').val('@Model.ProductCategory');
+            $('#CurrencyCode').val('@Model.CurrencyCode');
+            $('#InvoiceDt').val('@Model.InvoiceDate');
+            // $('#InvoiceDt').data("DateTimePicker").minDate(moment().startOf('week'));
+            @if(Model.DocumentNo == null)
+            {
+               <text>$('#InvoiceDt').data("DateTimePicker").maxDate(moment().endOf('today'));</text>
+            }
+            else
+            {
+                 <text>$('#ProductCategory').val('@Model.ProductCategory');</text>
+            }
+        });
+        $('#InvoiceDt').datetimepicker({
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-arrow-up',
+                down: 'fa fa-arrow-down'
+
+            },
+            format: 'DD/MM/YYYY',
+        });
+        $('#InvoiceDt').on('dp.change', function (e) {
+            $('#WarrantyPeriod').removeAttr('readonly');
+        });
+
+        $('#frm').validate({
+            rules: {
+                ProductCategory: {
+                    required: true
+                },
+                ProductCode: {
+                    required: true
+                },
+                ModelNo: {
+                    required: true
+                },
+                CustomerCode: {
+                    required: true
+                },
+                InvoiceNo: {
+                    required: true
+                },
+                CusInvoiceNo: {
+                    required: true
+                },
+                InvoiceDate: {
+                    required: true
+                },
+                Quantity: {
+                    required: true
+                },
+                CurrencyCode: {
+                    required: true
+                },
+                UnitPrice: {
+                    required: true
+                },
+                WarrantyPeriod: {
+                    required: true
+                }
+            }
+        });
+        function DeleteSerial(serialNoId, serialNo,DocumentNo) {
+            $('#' + serialNoId).addClass('deleteCss');
+            if(DocumentNo !='')
+            {
+                var recordStatus = $('#InvoiceDetailItems_' + serialNoId + '__RecordCount').val(2);
+            }
+            else
+            {
+                var recordStatus = $('#InvoiceDetailItems_' + serialNoId + '__RecordCount').val(1);
+            }
+            var changeSerialNo = $('#InvoiceDetailItems_' + serialNoId + '__SerialNo').val();
+            //var x = $('#' + serialNoId).removeClass('detailCount').hide();
+            //var v = $('#Quantity').val();
+            //var length = $('.isdelete').length;
+            //var i = length - x.length;
+            //if (v != i) {
+            //    $('#BtnSave').attr('disabled', 'disabled');
+            //    $('#SaveBtn').attr('disabled', 'disabled');
+            //}
+        }
+        @*function (serialNo) {
+            $.ajax({
+                url: '@Url.Content("~/Invoice/DeleteSerialNo?serialNo=")' + serialNo,
+                method: 'POST',
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data) {
+                        alert("Deleted Sucessfully!");
+                        location.reload();
+                    }
+                },
+                error: function (err) {
+
+                }
+            })
+        }*@
+        function Qty() {
+            var v = $('#Quantity').val();
+            var rowCount = $('.detailCount').length;
+            if (v == rowCount) {
+                $('#BtnSave').removeAttr('disabled');
+                $('#SaveBtn').removeAttr('disabled');
+            }
+        }
+        @*function CheckInvoiceNo()
+        {
+
+            var InvoiceNo = $('#InvoiceNo').val();
+            $.ajax({
+                url: '@Url.Content("~/Invoice/CheckInvoiceNo?invoiceNo=")' + InvoiceNo,
+                method: 'POST',
+                contentType: 'application/json',
+                success: function (data) {
+
+                    if (data == false) {
+                        alert('This InvoiceNo is exist!')
+                        $('#InvoiceNo').val('');
+                    }
+                },
+                error: function (err) {
+
+
+                }
+            });
+        }*@
+
+        @*@if(Model.InvoiceDetailItems == null)
+        {
+            <text>
+        $('input[name^="file"]').each(function () {
+            $(this).rules('add', {
+                required: true
+            })
+        });
+        </text>
+        }*@
+
+        function ProcessVendorInvoice() {
+
+            if ($('#frm').valid()) {
+                $('#frm').submit();
+            }
+        }
+        function ProcessVendorInvoices() {
+
+            if ($('#frm').valid()) {
+                var serialNos = $('#serialNos').val().split(/\n/);
+                var Exsno = $('.detailCount').length;
+                var valuesSoFar = Object.create(null);
+                for (var i = 0; i <= Exsno; i++) {
+                    var values = $('#InvoiceDetailItems_' + i + '__SerialNo').val();
+                    valuesSoFar[i] = values;
+                }
+                var valuesInObj = Object.create(null);
+                var count = Object.keys(valuesSoFar).length;
+                for (var i = 0; i < count; ++i) {
+                    var value = valuesSoFar[i];
+                    if (value in valuesInObj) {
+                        //alert('This SerialNo Already Existed!');
+                        swal("Cancelled", "This SerialNo Already Existed!", "error");
+                        return true;
+                    }
+                    valuesInObj[value] = true;
+                }
+                $('#frm').submit();
+            }
+        }
+        function SaveVendorInvoice() {
+            debugger;
+            if ($('#frm').valid()) {
+                var v = $('#Quantity').val();
+                var deleteCount=$('.deleteCss').length;
+                var length = $('.detailCount').length-deleteCount;
+                if(v == 0)
+                {
+                    swal("Cancelled", "Atleast add one serial No.", "error");
+                }
+               else if (v != length) {
+                    //alert("Quantity and items in uploaded files not matched. Please try with another file.");
+                    swal("Cancelled", "Quantity and items in uploaded files not matched. Please try with another file.", "error");
+                }
+                else {
+                    var i = $('#InvoiceDate').val();
+                    if (confirm("Are you sure ? You want to save \nProduct Category: " + $('#ProductCategory option:selected').text()
+                        + "\nProduct Code: " + $('#ProductCode').val() + "\nDescription: " + $('#ProductDescription').val() + "\nVendor Name: " + $('#CustomerCode option:selected').text()
+                        + "\nInvoice No: " + $('#InvoiceNo').val() + "\nCus Invoice No: " + $('#CusInvoiceNo').val() + "\nInvoiceDate: " + $('#InvoiceDate').val() + "\nQuantity: " + $('#Quantity').val() + "\nUnit Price: " + $('#UnitPrice').val())) {
+                        $('#frm').attr('action', '@Url.Content("~/Invoice/SaveVendorInvoice")');
+                        $('#frm').submit();
+                    }
+                }
+            }
+        };
+        function WarrantyPeriod_OnChange(el) {
+            var months = parseInt(el.value);
+            var invoiceDate = $('#InvoiceDate').val();
+
+            var expiryDate = moment(invoiceDate, 'DD/MM/YYYY').add(months, 'M');
+            $('#expirtyDtMsg').html('Your invoice will expire on ' + moment(expiryDate).format('DD/MM/YYYY'));
+
+        }
+
+        function productCategoryChanged(el) {
+            var productCategory = el.value;
+            if (productCategory != "") {
+                $('.overlay').show();
+                $('#ProductCode').empty().append($('<option></option>').val("").html("Select Product")).select2();
+                $.ajax({
+                    url: '@Url.Content("~/Invoice/ProductsByCategory?productCategory=")' + productCategory,
+                    method: 'get',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        $.each(data, function (i, item) {
+                            $('#ProductCode').append('<option value="' + item.Value + '">' + item.Text + '</option>').select2();
+                        });
+                        $('#ProductCode').removeAttr('readonly');
+                        setTimeout(function () {
+                            $('.overlay').hide();
+                        }, 500);
+
+                    },
+                    error: function (err) {
+
+                    }
+                });
+            }
+            else {
+                $('#ProductCode').empty().append($('<option></option>').val("").html("Select Product")).val("");
+            }
+
+        }
+        function productChanged(el) {
+            var obj = {};
+            obj.ProductCategory = $('#ProductCategory').val();
+            obj.ProductCode = el.value;
+            $('.overlay').show();
+            $('#ModelNo').empty().append($('<option></option>').val("").html("Select Product"));
+            $.ajax({
+                url: '@Url.Content("~/Invoice/ModelsByProductCode")',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(obj),
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $('#ModelNo').val(item.Value);
+                        $('#ProductDescription').val(item.Text);
+                        //$('#ModelNo').append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    });
+                    $('#ModelNo').removeAttr('readonly');
+                    setTimeout(function () {
+                        $('.overlay').hide();
+                    }, 500);
+
+                },
+                error: function (err) {
+
+                }
+            });
+        }
+
+        function ScanSerialNo() {
+            if ($('#frm').valid()) {
+                $('#ScanProductsModal').modal('show');
+                setTimeout(function () {
+                    $('#serialNos').focus();
+                }, 900);
+            }
+            else{
+                return false;
+            }
+        }
+        function fileChanged(el) {
+            if ($('#frm').valid()) {
+                var file = el.files[0];
+                if (file != null) {
+                    $('#scanBtn').attr('disabled', 'disabled');
+                    ProcessVendorInvoice();
+                }
+                else
+                    $('#scanBtn').removeAttr('disabled');
+            }
+            $('#fileupload').val('');
+        }
+
+        function SaveSerialsNo() {
+            var serialNo = $('#serialNos').val().split(/\n/);
+            var serialNos=[];
+            $.each(serialNo,function(key,val)
+            {
+                if(val != "")
+                {
+                    serialNos.push(val);
+                }
+            });
+
+            var valuesSoFar = Object.create(null);
+            var duplicateSerialNos = [];
+
+            for (var i = 0; i < serialNos.length; ++i) {
+                var value = serialNos[i];
+                if (value in valuesSoFar)
+                    duplicateSerialNos.push(value);
+
+                valuesSoFar[value] = true;
+            }
+
+            if (duplicateSerialNos && duplicateSerialNos.length > 0) {
+                //alert('Please Remove Duplicate Values of ' + duplicateSerialNos + '');
+                swal("Cancelled", "Please Remove Duplicate Values of " + duplicateSerialNos + '', "error");
+                return true;
+            }
+            var settings = $('#frm').validate().settings;
+            settings.rules.file = { required: false };
+            var result=true;
+            var Exsno = $('.detailCount').length;
+            if(Exsno !="")
+            {
+                for (var i = 0; i <= Exsno; i++) {
+                    var values = $('#InvoiceDetailItems_' + i + '__SerialNo').val();
+                    $.each(serialNos,function(key,value)
+                    {
+                        if(values == value)
+                        {
+                            result=false;
+                            swal("Cancelled", "This SerialNo"+'  '+value+'  '+"Already Existed!", "error");
+                            return false;
+                        }
+                    });
+                }
+            }
+            if(result)
+            {
+                var Qty=$('#Quantity').val();
+                if(Qty == serialNos.length+Exsno)
+                {
+                    var length = $('.detailCount').length;
+                    var invoiceDetailHtml = '';
+                    if (length == 0)
+                    {
+                        $.each(serialNos, function (index, item) {
+                            if (item != '') {
+                                invoiceDetailHtml += '<input type="hidden" id="InvoiceDetailItems_' + index + '__SerialNo" name="InvoiceDetailItems[' + index + '].SerialNo" value="' + item + '" />'
+                            }
+                        });
+                    }
+                    else {
+                        $.each(serialNos, function (index, item) {
+
+                            index = length + index;
+                            if (item != '') {
+                                invoiceDetailHtml += '<input type="hidden" id="InvoiceDetailItems_' + index + '__SerialNo" name="InvoiceDetailItems[' + index + '].SerialNo" value="' + item + '" />'
+                            }
+                        });
+                    }
+                }
+                else
+                {
+                    swal("Cancelled", "Quantity and items in uploaded files not matched.", "error");
+                    return true;
+                }
+                $('#invoiceHeaderDetailDiv').html(invoiceDetailHtml);
+                $('#fileupload').attr('disabled', 'disabled');
+                $('#ScanProductsModal').modal('hide');
+
+                if ($('#frm').valid()) {
+                    $('#frm').submit();
+                }
+            }
+        };
+    </script>
+
+}
+

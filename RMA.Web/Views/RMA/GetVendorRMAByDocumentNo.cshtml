@@ -1,0 +1,131 @@
+﻿@model EZY.RMAS.Contract.VendorRMAOutwardHeader
+@{
+    ViewBag.Title = "GetVendorRMAByDocumentNo";
+}
+<style type="text/css">
+    .CreditCost {
+        width: 50px;
+    }
+</style>
+<section class="content">
+    @using (Html.BeginForm("SaveVendorRMAOutWard", "RMA", FormMethod.Post, new { id = "frm", name = "frm" }))
+    {
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Vendor Inward</h3>
+            </div>
+            <div class="box-body">
+                <div class="row css10">
+                    <div class="col-md-2">
+                        <label class="control-label pull-right">Vendor RMA No</label>
+                    </div>
+                    <div class="col-md-2">
+                        @Html.TextBoxFor(x => x.ReferenceNo, new { @class = "form-control input-sm", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Document No</th>
+                                    <th></th>
+                                    <th>Old Serial No</th>
+                                    <th>Replacement Serial No</th>
+                                    <th>Product Code</th>
+                                    <th>Replacement Product Code</th>
+                                    <th>Product Description</th>
+                                    <th>Cost</th>
+                                    <th>Credit Value</th>
+                                    <th>Is Credit Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (var i = 0; i < Model.VendorRmaDetails.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Model.VendorRmaDetails[i].DocumentNo
+                                            @Html.HiddenFor(x => x.VendorRmaDetails[i].DocumentNo)
+                                        </td>
+                                        <td>
+                                        <a href="@Url.Content("~/RMA/VendorPdf?DoNo=" + Model.VendorRmaDetails[i].DocumentNo)">Download Pdf</a>
+                                        </td>
+                                        <td>
+                                            @Model.VendorRmaDetails[i].OldSerialNo
+                                            @Html.HiddenFor(x => x.VendorRmaDetails[i].OldSerialNo)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.VendorRmaDetails[i].NewSerialNo, new { @class = "form-control input-sm", onkeypress = "onKeyPress(event)" })
+                                        </td>
+                                        <td>
+                                            @Model.VendorRmaDetails[i].ProductCode
+                                            @Html.HiddenFor(x => x.VendorRmaDetails[i].ProductCode)
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(x => x.VendorRmaDetails[i].ReplacementProductCode, new SelectList(ViewBag.vProducts, "Value", "Text"), "Select Product", new { @class = "form-control input-sm prd" })
+                                        </td>
+                                        <td>
+                                            @Model.VendorRmaDetails[i].ProductDescription
+                                            @Html.HiddenFor(x => x.VendorRmaDetails[i].ProductDescription)
+                                        </td>
+                                        <td>
+                                            @Model.VendorRmaDetails[i].Cost
+                                            @Html.HiddenFor(x => x.VendorRmaDetails[i].Cost)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.VendorRmaDetails[i].IsCreditCost, new { @class = "CreditCost" })
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(x => x.VendorRmaDetails[i].IsCreditNote, new { onchange = "chkOnChanged(" + i + ")" })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row css10">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary btn-sm" type="button" onclick="btnSave()"><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+                        <button class="btn btn-default btn-sm" type="button" onclick="location.href = '@Url.Content("~/RMA/VendorRMAOutwardList")'"><i class="fa fa-backward"></i>&nbsp;Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+@section secscripts{
+    <script type="text/javascript">
+        //$('.prd').select2();
+        function chkOnChanged(index) {
+            
+            if ($('#VendorRmaDetails_' + index + '__IsCreditNote').is(':checked')) {
+                $('#VendorRmaDetails_' + index + '__NewSerialNo').val('').attr('readonly', 'readonly');
+                $('#VendorRmaDetails_' + index + '__ReplacementProductCode').attr('disabled', 'disabled');
+                $('#VendorRmaDetails_' + index + '__IsCreditCost').val('').attr('readonly', 'readonly');
+
+            }
+            else
+            {
+                $('#VendorRmaDetails_' + index + '__NewSerialNo').val('').removeAttr('readonly');
+                $('#VendorRmaDetails_' + index + '__ReplacementProductCode').removeAttr('disabled');
+                $('#VendorRmaDetails_' + index + '__IsCreditCost').val('').removeAttr('readonly');
+            }
+        }
+
+        function onKeyPress(e) {
+            var key = e.which;
+            if (key == 13) {
+                var currentIndex = parseInt(e.currentTarget.id.split('_')[1]);
+                $('#VendorRmaDetails_' + currentIndex + '__IsCreditNote').prop('checked', false);
+                $('#VendorRmaDetails_' + (currentIndex + 1) + '__NewSerialNo').focus();
+            }
+        }
+
+        function btnSave() {
+            $('#frm').submit();
+        }
+    </script>
+}
+

@@ -1,0 +1,114 @@
+﻿@model List<EZY.RMAS.Contract.Lookup>
+@{
+    ViewBag.Title = "CategoryList";
+}
+@section seccss{
+    <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+}
+<section class="content">
+    <div class="box box-dnex">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-product-hunt" aria-hidden="true"></i>&nbsp;Category Group</h3>
+            <div class="box-tools">
+                <button class="btn btn-default btn-sm" type="button" onclick="AddProductCategory()"><i class="fa fa-plus"></i>&nbsp;Add New Category Group</button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-8">
+                    <table class="table table-striped" id="tblProducts">
+                        <thead>
+                            <tr>
+                                <th>Product Code</th>
+                                <th>Description</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td>@Model[i].LookupCode</td>
+                                    <td>@Model[i].LookupDescription</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" onclick="EditProductCategory(@Model[i].LookupID)"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
+                                        @*<button class="btn btn-danger btn-sm" onclick="DeleteProductCategory(@Model[i].LookupID)"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="box-footer">
+            <div class="row">
+            </div>
+        </div>
+    </div>
+</section>
+@using (Html.BeginForm("SaveCategoryGroup", "Master", FormMethod.Post, new { id = "frmProductCategory", name = "frmProductCategory" }))
+{
+    <div id="ProductCategoryModal" class="modal fade" role="dialog">
+    </div>
+}
+@section secscripts{
+    <script type="text/javascript">
+        function AddProductCategory() {
+            $.ajax({
+                url: '@Url.Content("~/Master/CategoryGroup")',
+                method: 'get',
+                contentType: 'text/html',
+                success: function (html) {
+
+                    $('#ProductCategoryModal').html(html);
+                    $('#ProductCategoryModal').modal('show');
+                },
+                error: function (err) {
+
+                }
+            });
+        }
+
+        $('#frmProductCategory').validate({
+            rules: {
+                LookupCode: {
+                    required: true
+                },
+                LookupDescription: {
+                    required: true
+                }
+            }
+        });
+
+        function EditProductCategory(lookupID) {
+            $.ajax({
+                url: '@Url.Content("~/Master/ProductCategory?lookupID=")' + lookupID,
+                method: 'get',
+                contentType: 'text/html',
+                success: function (html) {
+                    $('#ProductCategoryModal').html(html);
+                    $('#ProductCategoryModal').modal('show');
+                },
+                error: function (err) {
+
+                }
+            });
+        }
+
+        function SaveCategoryGroup() {
+
+
+            if ($('#frmProductCategory').valid()) {
+                $('#frmProductCategory').submit();
+            }
+        };
+
+        function DeleteProductCategory(lookupID) {
+
+        }
+    </script>
+}
+

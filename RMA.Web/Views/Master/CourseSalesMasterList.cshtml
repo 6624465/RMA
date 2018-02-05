@@ -1,0 +1,97 @@
+﻿@using System.Globalization;
+@model IEnumerable<EZY.RMAS.Contract.CourseSalesMasterViewModel>
+@{
+    ViewBag.Title = "CourseSalesMasterList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section seccss{
+    <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+}
+@functions {
+    public string GetMonthById(int id)
+    {
+        var monthData = DateTimeFormatInfo.CurrentInfo.MonthNames.ToList();
+
+        var month = monthData[id - 1];
+        return month;
+    }
+}
+<section class="content">
+    <div class="box box-dnex">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href='@Url.Content("~/Home/education")'> Master Data</a></li>
+                        <li class="active">Course Sales Master List</li>
+                    </ol>
+                </section>
+            </div>
+            <div class="box-tools">
+                <button class="btn btn-default btn-sm" type="button" onclick="location.href = '@Url.Content("~/Master/CourseSalesMaster?Id=-1")'"><i class="fa fa-plus"></i>&nbsp;Add New Course Sales Master</button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <table class="table table-striped" id="tblProducts">
+                        <thead>
+                            <tr>
+                                <th>Country</th>
+                                <th>Product</th>
+                                <th>Course</th>
+                                <th>No Of Days</th>
+                                <th>Month</th>
+                                <th>Start Dt</th>
+                                <th>End Dt</th>
+                                <th>Min. Reg</th>
+                                <th>Lead On Head</th>
+                                <th>Registered</th>
+                                <th>Avl. Seats</th>
+                                <th>Reg. Closing Dt</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Count(); i++)
+                            {
+                                <tr>
+                                    <td>@Model.ElementAt(i).CountryName</td>
+                                    <td>@Model.ElementAt(i).ProductName</td>
+                                    <td>@Model.ElementAt(i).CourseName</td>
+                                    <td>@Model.ElementAt(i).NoOfDays</td>
+                                    <td>@GetMonthById(Model.ElementAt(i).Month)</td>
+                                    <td>@Model.ElementAt(i).StartDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@Model.ElementAt(i).EndDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@Model.ElementAt(i).MinimumReg</td>
+                                    <td>@Model.ElementAt(i).LeadsOnHead</td>
+                                    <td>@Model.ElementAt(i).Registered</td>
+                                    <td>@Model.ElementAt(i).AvailableSeats</td>
+                                    <td>@Model.ElementAt(i).RegClosingDate.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" onclick="location.href = '@Url.Content("~/Master/CourseSalesMaster?Id=" + Model.ElementAt(i).Id)'"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
+                                        @*<button class="btn btn-danger btn-sm" onclick="DeleteProductCategory(@Model[i].LookupID)"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Education")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@section secscripts{
+
+}
+

@@ -1,0 +1,168 @@
+﻿@model RMA.Web.Controllers.LayoutVm
+<header class="main-header">
+    <a href="@Url.Content("~/Home/Index")" class="logo">
+        <span class="logo-mini"><b><img src="@Url.Content("~/images/RMA-Logo.png")" /></b></span>
+        <span class="logo-lg"><b>EZY PMS</b></span>
+    </a>
+
+    <nav class="navbar navbar-static-top">
+        @*<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+      </a>*@
+        @*<button class="btn btn-default btn-sm" style="margin-top: 12px; margin-left:10px;" onclick="location.href = '@Url.Content("~/Home/Dashboard")'">Dashboard</button>
+        &nbsp;
+        <button class="btn btn-default btn-sm" style="margin-top: 12px; margin-left:10px;" onclick="location.href = '@Url.Content("~/Home/Dashboard1")'">Dashboard1</button>
+        &nbsp;
+        <button class="btn btn-default btn-sm" style="margin-top: 12px; margin-left:10px;" onclick="location.href = '@Url.Content("~/Home/Dashboard2")'">Dashboard2</button>
+        &nbsp;
+        <button class="btn btn-default btn-sm" style="margin-top: 12px; margin-left:10px;" onclick="location.href = '@Url.Content("~/Home/Dashboard3")'">Dashboard3</button>
+        &nbsp;
+        <button class="btn btn-default btn-sm" style="margin-top: 12px; margin-left:10px;" onclick="location.href = '@Url.Content("~/Home/Dashboard4")'">Dashboard4</button>*@
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        <span class="hidden-xs">Admin</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            <i class="fa fa-user fa-5x"></i>
+                            <p>
+                                @Model.Country
+                                <small>@Model.RoleCode</small>
+                            </p>
+                        </li>
+                        @*<li class="user-body">
+                            <div class="row">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Sales</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
+                            </div>
+                        </li>*@
+                        <li class="user-footer">
+                            @*<div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                </div>*@
+                            <div class="pull-right">
+                                <a href="@Url.Content("~/Layout/LogOut")" class="btn btn-default btn-flat">Sign out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+@*<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="header">MAIN NAVIGATION</li>
+            
+                <li class="treeview">
+                    <a href="@Url.Content("~/home/index")">
+                        <i class="fa fa-share"></i> <span>Masters</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="@Url.Content("~/Master/CurrencyList")">
+                                <i class="fa fa-users" aria-hidden="true"></i>&nbsp;Currency
+                            </a>
+                        </li>
+                        <li><a href="@Url.Content("~/Master/ProductCategoryList")">
+                            <i class="fa fa-users" aria-hidden="true"></i>&nbsp;Product Category</a>
+                        </li>
+                        @if (UTILITY.HasRight("Products", "Menu"))
+                        {
+                            <li><a href="@Url.Content("~/Master/Products")"><i class="fa fa-product-hunt" aria-hidden="true"></i>&nbsp;Products</a></li>
+                        }
+                        @if (UTILITY.HasRight("Customers", "Menu"))
+                        {
+                            <li><a href="@Url.Content("~/Customer/Customers")"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Contact Database</a></li>
+                        }
+                    </ul> 
+                </li>
+            
+            
+                <li class="treeview">
+                    <a href="~/home/transaction">
+                        <i class="fa fa-retweet" aria-hidden="true"></i>
+                        <span>Transactions</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        @if (UTILITY.HasRight("VendorInvoiceList", "Menu"))
+                        {
+                            <li><a href="@Url.Content("~/Invoice/VendorInvoiceList")"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Material Inward</a></li>
+                        }
+                        @if (UTILITY.HasRight("CustomerInvoiceList", "Menu"))
+                        {
+                            <li><a href="@Url.Content("~/Invoice/CustomerInvoiceList")"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;Material Outward</a></li>
+                        }
+                        
+                        <li><a href="@Url.Content("~/RMA/Inward")"><i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;RMA Inward</a></li>                        
+                        <li><a href="@Url.Content("~/RMA/OutwardList")"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;RMA Outward</a></li>
+                    </ul>
+                </li>
+            
+                <li class="treeview">
+                    <a href="~/home/administration">
+                        <i class="fa fa-laptop"></i>
+                        <span>Administration</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        @if (UTILITY.HasRight("CompanyProfile", "Menu"))
+                        {
+                            <li><a href="@Url.Content("~/Company/CompanyProfile")"><i class="fa fa-building"></i>&nbsp;Company Details</a></li>
+                        }
+                        @if (UTILITY.HasRight("RoleRights", "Menu"))
+                        {
+                            <li><a href="@Url.Content("~/Roles/RoleRights")"><i class="fa fa-user"></i>&nbsp;Role Rights</a></li>
+                        }
+                        @if (UTILITY.HasRight("UsersList", "Menu"))
+                        {
+                            <li><a href="@Url.Content("~/Users/Index")"><i class="fa fa-users"></i>&nbsp;User list</a></li>
+                        }
+                        @if (UTILITY.HasRight("Config", "Menu"))
+                        {
+                            <li><a href="#"><i class="fa fa-gears"></i>&nbsp;Config</a></li>
+                        }
+                    </ul>
+                </li>
+            
+            <li class="treeview">
+                <a href="~/home/reports">
+                    <i class="fa fa-table"></i> <span>Reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    @if (UTILITY.HasRight("OperationalReports", "Menu"))
+                    {
+                        <li><a href="#"><i class="fa fa-line-chart"></i>&nbsp;Operational Reports</a></li>
+                    }
+                    @if (UTILITY.HasRight("ManagementReports", "Menu"))
+                    {
+                        <li><a href="#"><i class="fa fa-pie-chart"></i>&nbsp;Management Reports</a></li>
+                    }
+                </ul>
+            </li>
+            
+        </ul>
+    </section>
+</aside>*@

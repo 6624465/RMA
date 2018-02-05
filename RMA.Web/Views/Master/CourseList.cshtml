@@ -1,0 +1,149 @@
+﻿@model IEnumerable<EZY.RMAS.Contract.CourseVm>
+@{
+    ViewBag.Title = "CourseList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section seccss{
+    <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+}
+
+<section class="content">
+    <div class="box box-dnex">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href='@Url.Content("~/Home/education")'> Master Data</a></li>
+                        <li class="active">Courses</li>
+                    </ol>
+                </section>
+            </div>
+            <div class="box-tools">
+                <button class="btn btn-default btn-sm" type="button" onclick="AddCourse()"><i class="fa fa-plus"></i>&nbsp;Add New Course</button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <table class="table table-striped" id="tblProducts">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Course Name</th> 
+                                <th>No Of Days</th>
+                                <th>Country</th>
+                                <th>Available Seats</th>
+                                <th>Public Price</th>
+                                <th>Private Price</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Count(); i++)
+                            {
+                                <tr>
+                                    <td>@Model.ElementAt(i).ProductName</td>
+                                    <td>@Model.ElementAt(i).CourseName</td>                                    
+                                    <td>@Model.ElementAt(i).NoOfDays</td>
+                                    <td>@Model.ElementAt(i).CountryName</td>
+                                    <td>@Model.ElementAt(i).AvailableSeats</td>
+                                    <td>@Model.ElementAt(i).PublicPrice</td>
+                                    <td>@Model.ElementAt(i).PrivatePrice</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" onclick="EditCourse(@Model.ElementAt(i).Id)"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
+                                        @*<button class="btn btn-danger btn-sm" onclick="DeleteProductCategory(@Model[i].LookupID)"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Education")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@using (Html.BeginForm("SaveCourse", "Master", FormMethod.Post, new { id = "frmCourse", name = "frmCourse" }))
+{
+    <div id="CourseModal" class="modal fade" role="dialog">
+    </div>
+}
+@section secscripts{
+    <script type="text/javascript">
+        function AddCourse() {
+            $.ajax({
+                url: '@Url.Content("~/Master/Course")',
+                method: 'get',
+                contentType: 'text/html',
+                success: function (html) {
+                    $('#CourseModal').html(html).modal('show');
+                },
+                error: function (err) {
+
+                }
+            });
+        }
+
+        function EditCourse(Id) {            
+            $.ajax({
+                url: '@Url.Content("~/Master/Course?Id=")' + Id,
+                method: 'get',
+                contentType: 'text/html',
+                success: function (html) {
+                    $('#CourseModal').html(html).modal('show');
+                },
+                error: function (err) {
+
+                }
+            });
+        }
+
+        $('#frmCourse').validate({
+            rules: {
+                Country: {
+                    required: true
+                },
+                Product: {
+                    required: true
+                },
+                CourseName: {
+                    required: true,
+                    maxlength: 50
+                },
+                CourseDescription: {
+                    required: true,
+                    maxlength: 255
+                },
+                NoOfDays: {
+                    required: true,
+                    maxlength:  4
+                },
+                PublicPrice: {
+                    required: true
+                },
+                PrivatePrice: {
+                    required: true
+                }
+            }
+        });
+
+        function SaveCourse() {
+            if ($('#frmCourse').valid()) {
+                $('#frmCourse').submit();
+            }
+        };        
+    </script>
+}
+
+
+
+

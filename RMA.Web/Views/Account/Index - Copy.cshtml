@@ -1,0 +1,168 @@
+﻿@model RMA.Web.ViewModels.Account.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>RMA</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="@Url.Content("~/Css/bootstrap.min.css")">
+    <link href="@Url.Content("~/Css/font-awesome-4.5.0/css/font-awesome.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link href="@Url.Content("~/Css/jquery-jvectormap-1.2.2.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/style.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/skin-green.min.css")" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+    <link href="@Url.Content("~/Css/loginpage.css")" rel="stylesheet" />
+
+</head>
+<body ng-app="LogiCon">
+    <div growl limit-messages="3"></div>
+    <div class="main-container">
+        <div class="left-container">
+            <div class="bg-img">
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="">
+                <div class="">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "signin", id = "frmLogin", name = "frmLogin" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group" style="margin-bottom:70px;">
+                            <div class="logo">
+                                <div class="icon-logo">
+                                    <img src="@Url.Content("~/images/RMA-Logo.png")" />
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="form-group has-feedback" style="display:none">
+                            @Html.DropDownListFor(m => m.CompanyCode, Model.CompaniesList, "Select Company", new { @class = "form-control input-sm" })
+                        </div>*@
+                        <div class="form-group has-feedback">
+                            @*@if (Model.BranchList != null)
+                            {
+                                @Html.DropDownListFor(m => m.BranchID, Model.BranchList, "Select Branch", new { @class = "form-control input-sm", onchange = "OnBranchChanged(this);" });
+                            }
+                            else
+                            {
+                                <select id="BranchID" name="BranchID" class="form-control input-sm" disabled="disabled">
+                                    <option value="">
+                                        Select Branch
+                                    </option>
+                                </select>
+                            }*@
+                            @Html.DropDownListFor(m => m.BranchID, Model.BranchList, "Select Branch", new { @class = "form-control input-sm", onchange = "OnBranchChanged(this);" })
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(x => x.UserID, new
+                               {
+                                   @class = "form-control",
+                                   placeholder = "User ID",
+                                   required = "required"
+                               })
+                        </div>
+                        <div class="form-group">
+                            @Html.PasswordFor(x => x.Password, new
+                               {
+                                   @class = "form-control",
+                                   placeholder = "Password",
+                                   required = "required"
+                               })
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger btn-frmt green">
+                                &nbsp;&nbsp;&nbsp;Sign in&nbsp;&nbsp;&nbsp;
+                            </button>
+                            @*<button type="button" class="btn btn-danger btn-frmt green pull-right">
+                                Subscribe
+                            </button>*@
+                        </div>
+                        @*<div class="form-group">
+                            <a href="#">Forgot password ?</a>
+                        </div>*@
+                        <input type="hidden" name="hdnBranchSelected" id="hdnBranchSelected" />     
+                        @Html.HiddenFor(x => x.CompanyCode)
+                                           
+                    }
+                </div>
+                <div style="color:red;">
+                    @ViewBag.ErrMsg
+                </div>
+            </div>
+            <footer>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-9 copyright">
+                            <div style="margin-bottom:3px;"><b>&copy 2017 EZY PM.</b>  All rights reserved.</div>
+                            <a href="http://www.dnex.com.my/privacy-policy/">Privacy policy</a>
+                            <div class="pull-right hidden-xs">
+                                0.0.3 <b>beta</b>
+                            </div>
+                        </div>
+                        <div class="col-md-3 version"><img src="@Url.Content("~/images/RMA-Logo.png")" alt="logo" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="font-size:10px; margin-top:2px;">
+                            This application is best viewed in the higher versions for : IE 11.0, Firefox 45.5.0, Google Chrome 50.0.0
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#CompanyCode').on('change', function () {
+                var compCode = $('#CompanyCode').val();
+                sessionStorage.setItem('SsnLoginID', $('#Email').val());
+                sessionStorage.setItem('SsnPassword', $('#Password').val());
+                $('#frmLogin').attr('action', '@Url.Content("~/Account/Login?companyCode=")' + compCode)
+                $('#frmLogin').submit();
+            });
+        });
+        function OnBranchChanged(el) {
+            $('#hdnBranchSelected').val($('#BranchID option:selected').text());
+        }
+
+        function LoginFrmValidation() {
+            $('#frmLogin').validate({
+                rules: {
+                    CompanyCode: {
+                        required: true
+                    },
+                    BranchID: {
+                        required: true
+                    },
+                    Email: {
+                        required: true
+                    },
+                    Password: {
+                        required: true
+                    }
+                },
+                messages: {
+                    CompanyCode: {
+                        required: 'Company Code is required'
+                    },
+                    BranchID: {
+                        required: 'BranchID is required'
+                    },
+                    Email: {
+                        required: 'Username is required'
+                    },
+                    Password: {
+                        required: 'Password is required'
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
