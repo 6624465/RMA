@@ -29,6 +29,7 @@ namespace RMA.Web.Controllers
             var branchList = new BranchBO().GetList().Where(x => x.CompanyCode == companyCode).ToList();
             model.BranchList = new SelectList(branchList, "BranchID", "BranchName").ToList();
 
+
             var compist = new CompanyBO().GetList();
             for (var i = 0; i < compist.Count; i++)
             {
