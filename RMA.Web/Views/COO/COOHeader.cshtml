@@ -239,6 +239,31 @@
 
 		$(function () {
 
+		    $("#DeclarantName").autocomplete({
+		        source: function (request, response) {
+
+		            $.ajax({
+		                url: '@Url.Content("~/Declarant/GetDeclarantNames?term=")' + $("#DeclarantName").val(),
+		                type: "GET",
+		                dataType: "json",
+		                //data: { term: request.term },
+		                success: function (data) {
+		                    if (data != null) {
+		                        response($.map(data, function (item) {
+		                            return { label: item.CustomerName, value: item.CustomerName };
+		                        }));
+		                    } else {
+		                        $("#DeclarantName").val('');
+		                    }
+
+		                }
+		            });
+		        },
+		        messages: {
+		            noResults: "", results: ""
+		        }
+		    });
+
 			$("#DeclarantName").on("change", function () {
 
 				if ($("#DeclarantName").val().length > 2) {

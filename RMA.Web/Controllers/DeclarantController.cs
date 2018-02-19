@@ -65,10 +65,21 @@ namespace RMA.Web.Controllers
 		{
 			var declarant = new DeclarantBO().GetDeclarant(new Declarant { DeclarantName = declarantName, BranchID = BRANCH_ID });
 			return View(declarant);
-
 		}
 
-		[HttpPost]
+        [HttpGet]
+        public JsonResult GetDeclarantNames (string term)
+        {
+            //Note : you can bind same list from database  
+            var declarantNameList = new DeclarantBO().GetList(BRANCH_ID).ToList();// .Where(x => x.CustomerName.StartsWith(term)).ToList();
+            var customerNames = (from N in declarantNameList
+                                 where N.DeclarantName.ToUpper().StartsWith(term.ToUpper())
+                                 select new { CustomerName = N.DeclarantName }).ToList();//customerNameList.Where(x => x.CustomerName.StartsWith(term)).ToList();
+            return Json(customerNames, JsonRequestBehavior.AllowGet);
+        }
+        
+
+        [HttpPost]
 		public JsonResult GetDeclarantbyName(string declarantName)
 		{
 			var declarant = new DeclarantBO().GetDeclarant(new Declarant { DeclarantName = declarantName, BranchID = BRANCH_ID });
