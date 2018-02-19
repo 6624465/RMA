@@ -181,7 +181,7 @@ namespace EZY.RMAS.DataFactory
             List<string> lstMissingSerailNos = new List<string>();
             foreach (var serialNo in serialNumbers)
             {
-                var deleteCommand = db.GetStoredProcCommand(DBRoutine.CHECKINWARDSERIALNO);
+                var deleteCommand = db.GetStoredProcCommand(DBRoutine.CHECKVENDORSERIALNODUPLICATE);
                 db.AddInParameter(deleteCommand, "@BranchID", System.Data.DbType.Int16, branchID);
                 db.AddInParameter(deleteCommand, "@SerialNo", System.Data.DbType.String, serialNo);
                 if ((int)db.ExecuteScalar(deleteCommand) != 0)

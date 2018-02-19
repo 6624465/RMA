@@ -10,16 +10,17 @@
             margin-top: 2px;
             margin-bottom: 2px;
         }
-        .table-width{
-            table-layout:fixed;
-            
+
+        .table-width {
+            table-layout: fixed;
         }
-        .width-auto{
-            width:66%;
-            margin:0 auto;
-            position:relative;
-            right:90px;
-            top:10px;
+
+        .width-auto {
+            width: 66%;
+            margin: 0 auto;
+            position: relative;
+            right: 90px;
+            top: 10px;
         }
     </style>
 }
@@ -48,9 +49,9 @@
                     </div>
                     <div class="col-md-3">
                         @Html.DropDownListFor(x => x.CountryCode,
-                             new SelectList(ViewBag.countries, "Value", "Text"),
-                             "Select Country",
-                             new { @class = "form-control input-sm" })
+                                                                     new SelectList(ViewBag.countries, "Value", "Text"),
+                                                                     "Select Country",
+                                                                     new { @class = "form-control input-sm" })
                     </div>
                 </div>
                 <div class="row css10">
@@ -313,11 +314,35 @@
     <script src="@Url.Content("~/Scripts/sweetalert.js")"></script>
     <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
     <script type="text/javascript">
-        $(function () {
+		var allSerialNos = [];
+		$(function () {
+			
+			//GetAllSerialNos();
+			//$("#poptable tbody tr td:nth-child(3)").each(function () {
+			$("#poptable tbody tr").each(function () {
+				var i = 1;
+				if ($(this).find("td:nth-child(3)").text().trim() === "deleted") {
+					//var id = this.id;
+					
+					$('#' + this.id).hide();
+				}
+				else {
+					//allSerialNos.push($(this).find("td:nth-child(3)").text().trim());
+					
+					//$(this).find("td:nth-child(1)").text().trim()=i;
+					i = i + 1;
+				}
+				allSerialNos.push($(this).find("td:nth-child(3)").text().trim());
+				 //put elements into array
+				//if (allSerialNos.length > 1) {
+				//	$('#btnGenRMA').removeAttr('disabled');
+				//}
+			});
+
             var length = $('.isinvalid').length;
             if (length >= 1) {
                 $('#btnGenRMA').attr('disabled', 'disabled');
-            }      
+            }
             var isSaved = '@TempData["isSaved"]';
             if (isSaved) {
                 swal("RMA Generated", "RMA Number is Sent To Your Mail!!", "success")
@@ -345,11 +370,30 @@
                     }
                 }
             });
-        });
+		});
+
+		function GetAllSerialNos() {
+			$("#poptable tbody tr").each(function () {
+				allSerialNos.push($(this).find("td:nth-child(3)").text().trim());
+			});
+		}
+
+
         var i = 0;
         //var s = 0;
 
-        function DeleteSerial(id, serialNo) {
+		function DeleteSerial(id, serialNo) {
+			
+			allSerialNos = $.grep(allSerialNos, function (value) {
+				return value != serialNo;
+			});
+			//GetAllSerialNos();
+
+			if (allSerialNos.length > 1) {
+				$('#btnGenRMA').removeAttr('disabled');
+			} else {
+				$('#btnGenRMA').attr('disabled', 'disabled');
+			}
             var serialNoId = id - 1;
             var changeSerialNo = $('#rmaDetails_' + serialNoId + '__SerialNo').val('deleted');
             $('#' + id).hide();
@@ -361,7 +405,11 @@
 
                 var sno = serialNoId + 1;
                 $('#poptable tr:eq(' + sno + ')').hide();
-            }
+			}
+			if ($('#frmRMAInward').valid()) {
+				$('#frmRMAInward').submit();
+			}
+
         }
 
         //var invalidlength = $('.popinvalid').length;
@@ -404,7 +452,8 @@
             format: 'DD/MM/YYYY'
         });
 
-        function ScanSerialNo() {
+		function ScanSerialNo() {
+
             $('#ScanProductsModal').modal('show');
             setTimeout(function () {
                 $('#serialNos').focus();
@@ -412,37 +461,59 @@
 
         }
 
-        function SaveSerialsNo() {
+		function SaveSerialsNo() {
+			
+			var serialNos = $('#serialNos').val().split(/\n/);
+			var duplicateSerialNos = [];
+			//if ($.inArray(serialNos, allSerialNos) != -1) {
 
-            var serialNos = $('#serialNos').val().split(/\n/);
 
-            var valuesSoFar = Object.create(null);
-            var duplicateSerialNos = [];
-            for (var i = 0; i < serialNos.length; ++i) {
-                var value = serialNos[i];
-                if (value in valuesSoFar)
-                    duplicateSerialNos.push(value);
+				//allSerialNos.push(serialNos);
+				//var vals = allSerialNos;
+				var valuesSoFar = Object.create(null);
 
-                valuesSoFar[value] = true;
-            }
+				//for (var i = 0; i < serialNos.length; ++i) {
+				//    var value = serialNos[i];
+				//    if (value in valuesSoFar)
+				//        duplicateSerialNos.push(value);
 
-            if (duplicateSerialNos && duplicateSerialNos.length > 0) {
-                swal("Cancelled", "Please Remove Duplicate SerialNos"+" " + duplicateSerialNos + "", "error");
-               // alertify.error('Please Remove Duplicate Values of' + duplicateSerialNos + '');
-                return false;
-            }
+				//    valuesSoFar[value] = true;
+				//}
 
-            var rmaDetailHtml = '';
-            $.each(serialNos, function (index, item) {
-                if (item != '') {
-                    rmaDetailHtml += '<input type="hidden" id="rmaDetails_' + index + '__SerialNo" name="rmaDetails[' + index + '].SerialNo" value="' + item + '" />'
-                }
-            });
-            $('#RMADetailDiv').html(rmaDetailHtml);
-            $('#ScanProductsModal').modal('hide');
-            if ($('#frmRMAInward').valid()) {
-                $('#frmRMAInward').submit();
-            }
+				for (var i = 0; i < serialNos.length; ++i) {
+					var value = serialNos[i];
+
+					//if (value in allSerialNos)
+					if ($.inArray(value, allSerialNos) != -1) {
+						duplicateSerialNos.push(value);
+					}
+					else {
+						allSerialNos.push(value);
+
+					}
+					valuesSoFar[value] = true;
+				}
+
+				if (duplicateSerialNos && duplicateSerialNos.length > 0) {
+					swal("Cancelled", "Please Remove Duplicate SerialNos" + " " + duplicateSerialNos + "", "error");
+					// alertify.error('Please Remove Duplicate Values of' + duplicateSerialNos + '');
+					return false;
+				}
+
+				var rmaDetailHtml = '';
+				$.each(allSerialNos, function (index, item) {
+					
+					//$.each(allSerialNos, function (index, item) {
+					if (item != '') {
+						rmaDetailHtml += '<input type="hidden" id="rmaDetails_' + index + '__SerialNo" name="rmaDetails[' + index + '].SerialNo" value="' + item + '" />'
+					}
+				});
+				$('#RMADetailDiv').html(rmaDetailHtml);
+				$('#ScanProductsModal').modal('hide');
+				if ($('#frmRMAInward').valid()) {
+					$('#frmRMAInward').submit();
+				}
+			//}
         }
 
         function GenerateRMA() {

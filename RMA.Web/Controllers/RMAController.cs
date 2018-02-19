@@ -275,7 +275,7 @@ namespace RMA.Web.Controllers
 
                 for (var i = 0; i < rmaHeader.rmaDetails.Count; i++)
                 {
-                    //Comment by krishna 31/08/2017 
+                    //Commented by krishna 31/08/2017 
                     //  var rmaInwardDTO = new InvoiceDetailBO().GetVendorInvoiceDetailBySerialNo(rmaHeader.rmaDetails[i].SerialNo, BRANCH_ID, UTILITY.CONFIG_INVOICETYPE_VENDOR);//CONFIG_INVOICETYPE_CUSTOMER
                     var rmaInwardDTO = new InvoiceDetailBO().GetVendorInvoiceDetailBySerialNo(rmaHeader.rmaDetails[i].SerialNo, rmaHeader.CountryCode, BRANCH_ID, UTILITY.CONFIG_INVOICETYPE_CUSTOMER);//CONFIG_INVOICETYPE_CUSTOMER
                     if (rmaInwardDTO != null)

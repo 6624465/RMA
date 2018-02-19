@@ -12,6 +12,7 @@ namespace RMA.Web.ActionFilters
         {
             if (filterContext.HttpContext.Session["BranchId"] == null)
             {
+
                 try
                 {
                     if (!filterContext.HttpContext.Request.IsAjaxRequest())
