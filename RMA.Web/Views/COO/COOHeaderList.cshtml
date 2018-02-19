@@ -1,0 +1,340 @@
+﻿@model List<EZY.RMAS.Contract.COOHeader>
+@{
+	ViewBag.Title = "COOHeaderList";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section seccss{
+	<link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+	<link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
+	<link href="@Url.Content("~/Css/sweetalert.css")" rel="stylesheet" />
+}
+
+<section class="content">
+	<div class="box box-dnex">
+		<div class="box-header with-border">
+
+			<div class="row">
+				<section class="content-header">
+					<ol class="breadcrumb">
+						<li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+						<li><a href='@Url.Content("~/COO/COOHeaderList")'> COO Header List</a></li>
+						<li class="active">COO Header List</li>
+					</ol>
+				</section>
+			</div>
+			<div class="box-tools pull-right">
+				<button class="btn btn-box-tool" type="button" onclick="AddCOOHeader();"><i class="fa fa-plus"></i>&nbsp;Add New COO</button>
+
+			</div>
+		</div>
+		<div class="box-body">
+			@using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmSearch", name = "frmSearch" }))
+			{
+				<div class="row" style="margin-top:10px;">
+					<div class="col-md-1"></div>
+					<div class="col-md-2">
+						<label>Date From</label>
+					</div>
+					<div class="col-md-2">
+						<input type="text" placeholder="Date From" id="DateFrom" name="DateFrom" class="form-control input-sm datepick" />
+					</div>
+					<div class="col-md-2">
+						<label>Date From</label>
+					</div>
+					<div class="col-md-2">
+						<input type="text" placeholder="Date To" id="DateTo" name="DateTo" class="form-control input-sm datepick" />
+					</div>
+				</div>
+				<div class="row" style="margin-top:10px;">
+					<div class="col-md-1">
+					</div>
+					<div class="col-md-2">
+						<label>Vessel Name</label>
+					</div>
+					<div class="col-md-2">
+						<input type="text" placeholder="Vessel Name" id="VesselName" name="VesselName" class="form-control input-sm" />
+					</div>
+					<div class="col-md-2">
+						<label>Consignee Name</label>
+					</div>
+					<div class="col-md-2">
+						<input type="text" placeholder="Consignee Name" id="ConsigneeName" name="ConsigneeName" class="form-control input-sm" />
+					</div>
+					<div class="col-md-3">
+						<button class="btn btn-primary btn-sm" onclick="Search();" type="button">Search</button>&nbsp;&nbsp;
+						<button class="btn btn-default btn-sm" onclick="Clear();" type="button">Clear</button>
+					</div>
+				</div>
+
+			}
+			<div class="row" style="margin-top:20px;">
+				<div class="col-md-12">
+					<table class="table table-striped" id="tblCOOHeader">
+						<thead>
+							<tr>
+								@*<th>Product Code</th>*@
+								<th>COO Number</th>
+								<th>Consignee Name</th>
+								<th>Declaration Date</th>
+								<th>Vessel Name</th>
+								<th>Port Of Discharge</th>
+								<th>Declarant Name</th>
+								<th>#Action</th>
+							</tr>
+						</thead>
+						<tbody id="tblBody">
+							@for (var i = 0; i < Model.Count; i++)
+							{
+								<tr>									
+									<td>@Model[i].DocumentNo</td>
+									<td>@Model[i].ConsigneeName</td>
+									<td>@Model[i].DepartureDate.ToString("dd/MM/yyyy")</td>
+									<td>@Model[i].VesselName</td>
+									<td>@Model[i].DestinationPort</td>
+									<td>@Model[i].DeclarantName</td>
+									<td>
+										<button class="btn btn-primary btn-sm" onclick="EditCOOHeader('@Model[i].DocumentNo')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
+										<button class="btn btn-danger btn-sm" onclick="DeleteCOOHeader('@Model[i].DocumentNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-md-12">
+					<button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/COO")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+@using (Html.BeginForm("SAVECOO", "COO", FormMethod.Post, new { id = "frmCOO", name = "frmCOO" }))
+{
+	<div id="COOModal" class="modal fade" role="dialog">
+
+	</div>
+}
+
+
+
+@section secscripts{
+	<script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+	<script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
+	<script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
+	<script src="@Url.Content("~/Scripts/select2.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/sweetalert.js")"></script>
+	<script type="text/javascript">
+
+		$(function () {
+
+			$('#frmSearch').validate({
+				rules: {
+					DateFrom: {
+						required: true
+					},
+					DateTo: {
+						required: true
+					}				
+				}
+			});
+					
+
+			$('.datepick').datetimepicker({
+				icons: {
+					time: 'fa fa-clock-o',
+					date: 'fa fa-calendar',
+					up: 'fa fa-arrow-up',
+					down: 'fa fa-arrow-down'
+				},
+				format: 'DD/MM/YYYY'
+			});
+
+			var isDefaultCol = false;
+			var isDefaultDir = false;
+			var obj = {};
+			var oTable = $('#tblCOOHeader').dataTable({
+				"bStateSave": true,
+				"sPaginationType": "full_numbers",
+				"bServerSide": true,
+				"bProcessing": true,
+				"bSortClasses": false,
+				"bDeferRender": true,
+				"sAjaxSource": '@Url.Content("~/COO/GetCOOs")',
+				"bFilter": false,
+				"aaSorting": [[0, "asc"]],
+				"aoColumnDefs": [{
+					bSortable: false,
+					aTargets: [-1]
+				}
+				],
+
+				"fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+					var sortColArr = ['COO Number', 'Consignee Name', 'Declaration Date', 'Vessel Name', 'Port Of Discharge', 'Declarant Name', 'Action'];
+					var paramData = {};
+					var sExt = "?";
+					var sAnd = "";
+					var r = 0;
+
+					for (var key in aoData) {
+						paramData[aoData[key]['name']] = aoData[key]['value'];
+
+						if (r > 0) sAnd = "&";
+						if (aoData[key]['name'].trim() == "iDisplayLength") {
+							sExt += sAnd + "limit=" + aoData[key]['value']; r++
+							obj.limit = aoData[key]['value'];
+						}
+						if (aoData[key]['name'].trim() == "iDisplayStart") {
+							sExt += sAnd + "offset=" + aoData[key]['value']; r++
+							obj.offset = aoData[key]['value'];
+						}
+						if (aoData[key]['name'].trim() == "iSortCol_0") {
+							sExt += sAnd + "sort_col=" + aoData[key]['value']; r++
+							obj.sortColumn = sortColArr[aoData[key]['value']];
+						}
+						if (aoData[key]['name'].trim() == "sSortDir_0") {
+							sExt += sAnd + "sort=" + aoData[key]['value']; r++
+							obj.sortType = aoData[key]['value'].toUpperCase();
+						}
+						if (aoData[key]['name'].trim() == "sEcho") var sEcho = aoData[key]['value'];
+					}
+
+					oSettings.jqXHR = $.ajax({
+						"type": "POST",
+						"contentType": "application/json;charset=utf-8",
+						"accept": "application/json",
+						"dataType": "json",
+						"url": sSource,
+						cache: false,
+						"data": JSON.stringify(obj),
+						"success": function (result) {
+
+							var tempdset = {};
+							var dataSet = [];
+							for (var key in result['coos']) {
+
+								var objinner = [];
+								//objinner.push(result['products'][key]['ProductCode']);
+								objinner.push(result['coos'][key]['DocumentNo']);
+								objinner.push(result['coos'][key]['ConsigneeName']);
+								objinner.push(moment(result['coos'][key]['DepartureDate']).format('DD/MM/YYYY'));
+								objinner.push(result['coos'][key]['VesselName']);
+								objinner.push(result['coos'][key]['DestinationPort']);
+								objinner.push(result['coos'][key]['DeclarantName']);
+								var htmlAction = '';
+							
+								@if (1 == 1)
+								{
+									<text>htmlAction += '<button class="btn btn-primary btn-sm" onclick="EditCOOHeader(\'' + result['coos'][key]['DocumentNo'] + '\')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>&nbsp;';</text>;
+									<text>htmlAction += '<button class="btn btn-danger btn-sm" onclick="DeleteCOOHeader(\'' + result['coos'][key]['DocumentNo'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>'</text>;
+									}
+
+								objinner.push(htmlAction);
+								dataSet.push(objinner);
+							}
+
+							tempdset['sEcho'] = sEcho;
+							tempdset['iTotalRecords'] = result['totalRecords'];
+							tempdset['iTotalDisplayRecords'] = result['totalRecords'];
+							tempdset['aaData'] = dataSet;
+							fnCallback(tempdset);
+						}
+					});
+				}
+			});
+		});
+
+		function AddCOO() {
+		
+            $.ajax({
+                url: '@Url.Content("~/COO/ADDCOO")',
+                method: 'get',
+                contentType: 'text/html',
+				success: function (html) {
+
+					$('#COOModal').html(html);
+					$('#COOModal').modal('show');
+                },
+				error: function (err) {
+				
+                }
+            });
+		}
+
+		function Search() {
+		
+			if ($('#frmSearch').valid()) {				
+				
+				var data = {};
+				data.FromDate = $("#DateFrom").val();
+				data.ToDate = $("#DateTo").val();
+				data.VesselName = $("#VesselName").val();
+				data.ConsigneeName = $("#ConsigneeName").val();
+				$.ajax({
+					url: '@Url.Content("~/COO/GetCOOHeaderbySearch")',
+					method: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(data),
+					success: function (data) {
+						$("#tblBody").empty();
+						var html = "";
+						if (data.length > 0) {
+
+							for (var i = 0; i < data.length; i++) {
+								html += "<tr><td>" + data[i].DocumentNo + "</td><td> " + data[i].ConsigneeName + "</td><td>" + moment(data[i].DepartureDate).format('DD/MM/YYYY') + "</td><td>" + data[i].VesselName + "</td><td>" + data[i].DestinationPort + "</td><td>" + data[i].DeclarantName + '</td><td><button class="btn btn-primary btn-sm" onclick="EditCOOHeader(\'' + data[i].DocumentNo + '\')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>&nbsp;<button class="btn btn-danger btn-sm" onclick="DeleteCOOHeader(\'' + data[i].DocumentNo +'\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button></td></tr>';
+							}							
+							$("#tblBody").append(html);
+						}
+						else {
+							html += "<span>No Records Found</span>"
+							$("#tblBody").append(html);
+						}
+					},
+					error: function (err) {
+
+					}
+				});
+			}
+			else {
+				
+			}
+		}
+
+		function EditCOOHeader(documentNumber) {
+			location.href = '@Url.Content("~/COO/EditCOOHeader?DocumentNumber=")' + documentNumber;
+		}
+
+		function DeleteCOOHeader(documentNumber) {
+			var result = confirm('Are you sure, do you want to delete ' + documentNumber);
+			if (result) {
+				location.href = '@Url.Content("~/COO/DeleteCOOHeader?DocumentNumber=")' + documentNumber;
+			}
+		}
+
+		function COODetails(cooNumber) {
+			location.href = '@Url.Content("~/COO/GetCOODetails?cooNumber=")' + cooNumber;
+		}
+
+		function AddCOOHeader() {
+			location.href = '@Url.Content("~/COO/COOHeader")';
+		}
+
+		function Clear() {
+			location.href = '@Url.Content("~/COO/COOHeaderList")';
+		}
+
+
+
+	</script>
+}

@@ -45,12 +45,15 @@
     <Compile Include="AddressBO.cs" />
     <Compile Include="BranchBO.cs" />
     <Compile Include="CompanyBO.cs" />
+    <Compile Include="COODetailBO.cs" />
+    <Compile Include="COOHeaderBO.cs" />
     <Compile Include="CountryBO.cs" />
     <Compile Include="CourseBO.cs" />
     <Compile Include="CourseDetailBO.cs" />
     <Compile Include="CourseSalesMasterBO.cs" />
     <Compile Include="CustomerBO.cs" />
     <Compile Include="DashBoardBO.cs" />
+    <Compile Include="DeclarantBO.cs" />
     <Compile Include="EduProductBO.cs" />
     <Compile Include="LookupBO.cs" />
     <Compile Include="ProductBO.cs" />

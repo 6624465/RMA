@@ -1,0 +1,96 @@
+﻿@model EZY.RMAS.Contract.COODetail
+@{
+	ViewBag.Title = "GetCOODetails";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section seccss{
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
+	<link href="@Url.Content("~/Css/sweetalert.css")" rel="stylesheet" />
+}
+
+<section class="content">
+	<div class="box box-default">
+		<div class="box-header with-border">
+			<div class="row">
+				<section class="content-header">
+					<ol class="breadcrumb">
+						<li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+						<li><a href='@Url.Content("~/COO/DeclarantList")'> COO</a></li>
+						<li><a href='@Url.Content("~/Users/Index")'><i class="fa fa-users" aria-hidden="true"></i>&nbsp; COO Details</a></li>
+
+					</ol>
+				</section>
+			</div>
+		</div>
+		<div class="box-body">
+			<fieldset class="form-horizontal">
+				<div class="form-group">
+					<div>
+						@Html.LabelFor(m => m.DocumentNo, new { @class = "control-label input-sm col-md-2" })
+						<div class="col-md-4">
+							@Html.TextBoxFor(m => m.DocumentNo, new { @class = "form-control input-sm " })
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div>
+						@Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label input-sm" })
+						<div class="col-md-4">
+							@Html.TextBoxFor(m => m.Description, new { @class = "form-control input-sm " })
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div>
+						@Html.LabelFor(m => m.ModelNo, new { @class = "col-md-2 control-label input-sm" })
+						<div class="col-md-4">
+							@Html.TextBoxFor(m => m.ModelNo, new { @class = "form-control input-sm " })
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div>
+						@Html.LabelFor(m => m.Qty, new { @class = "col-md-2 control-label input-sm" })
+						<div class="col-md-4">
+							@Html.TextBoxFor(m => m.Qty, new { @class = "form-control input-sm " })
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div>
+						@Html.LabelFor(m => m.Origin, new { @class = "col-md-2 control-label input-sm" })
+						<div class="col-md-4">
+							@Html.TextBoxFor(m => m.Origin, new { @class = "form-control input-sm " })
+						</div>
+					</div>
+				</div>				
+			</fieldset>
+		</div>
+		<div class="box-footer">
+			<div class="row  no-print">
+				<div class="col-xs-12">
+
+					<button type="button" id="btnSave1" class="btn btn-success btn-sm">
+						<i class="fa fa-save"></i>
+						Save
+					</button>
+
+					@Html.EncodedActionLink("<i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Clear",
+										   "EditUser", "Users",
+										   new { userID = "NEW" }, new { @class = "btn btn-default btn-sm" })
+					<button class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+					<a href="@Url.Content("~/COO/COOHeaderList")" class="btn btn-info pull-right btn-sm">
+						<i class="fa fa-backward"></i>
+						Back
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+

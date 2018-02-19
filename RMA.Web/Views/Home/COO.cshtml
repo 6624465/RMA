@@ -1,0 +1,67 @@
+﻿
+@{
+	ViewBag.Title = "Index";
+}
+
+
+<section class="content">
+	<div class="bs-example list-items">
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<div class="row">
+					<section class="content-header">
+						<h1>
+							&nbsp;
+							@*<small>Control panel</small>*@
+						</h1>
+						<ol class="breadcrumb">
+							<li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+							<li><a href='@Url.Content("~/Home/Transactions")'>Transactions</a></li>
+							<li class="active">COO</li>
+						</ol>
+					</section>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="main-section grey ">
+							<a href='@Url.Content("~/Declarant/Index")'>
+								<div class="menu_section  grey">
+									<span><i class="fa fa-list-alt fa-4x" aria-hidden="true"></i></span>
+								</div>
+								<div class="content-section grey-btm">
+									<b> Declarant</b>
+									<p>Create or Modify the Declarant </p>
+									<div class="btn btn-lg btn-danger"></div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="main-section blue">
+							<a href='@Url.Content("~/COO/COOHeaderList")'>
+								<div class="menu_section blue">
+									<span> <i class="fa fa-list fa-4x" aria-hidden="true"></i></span>
+								</div>
+								<div class="content-section blue-btm">
+									<b>COO</b>
+									<p>Create or Modify the Certificate of Origin</p>
+									<div class="btn btn-lg btn-danger"></div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<div class="row">
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

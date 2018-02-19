@@ -63,6 +63,8 @@
     <Compile Include="AddressDAL.cs" />
     <Compile Include="BranchDAL.cs" />
     <Compile Include="CompanyDAL.cs" />
+    <Compile Include="COODetailDAL.cs" />
+    <Compile Include="COOHeaderDAL.cs" />
     <Compile Include="CountryDAL.cs" />
     <Compile Include="CourseDAL.cs" />
     <Compile Include="CourseDetailDAL.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="CustomerDAL.cs" />
     <Compile Include="DashboardDAL.cs" />
     <Compile Include="DBRoutine.cs" />
+    <Compile Include="DeclarantDAL.cs" />
     <Compile Include="EduProductDAL.cs" />
     <Compile Include="IDataFactory.cs" />
     <Compile Include="LookupDAL.cs" />

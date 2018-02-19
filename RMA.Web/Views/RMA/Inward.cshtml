@@ -22,12 +22,47 @@
             right: 90px;
             top: 10px;
         }
+
+
+        /*lOADING*/
+
+        loadcss {
+            position: absolute;
+            display: bolock;
+            z-index: 99;
+            font-size: 24px;
+        }
+
+        .bg {
+            margin: 0px;
+            padding: 0px;
+            background: #ccc;
+            opacity: 0.9;
+            height: 100%;
+            position: relative;
+            padding: 0px;
+            z-index: 99;
+        }
+
+        #load {
+            text-align: center;
+            position: absolute;
+            z-index: 999;
+            top: 50%;
+            left: 50%;
+            color: #000;
+        }
+
+        /*img {
+            width: 100%;
+        }*/
     </style>
 }
 
 
 @using (Html.BeginForm("ProcessRMAInward", "RMA", FormMethod.Post, new { id = "frmRMAInward", name = "frmRMAInward" }))
 {
+
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
@@ -49,9 +84,9 @@
                     </div>
                     <div class="col-md-3">
                         @Html.DropDownListFor(x => x.CountryCode,
-                                                                     new SelectList(ViewBag.countries, "Value", "Text"),
-                                                                     "Select Country",
-                                                                     new { @class = "form-control input-sm" })
+                                                                                        new SelectList(ViewBag.countries, "Value", "Text"),
+                                                                                        "Select Country",
+                                                                                        new { @class = "form-control input-sm" })
                     </div>
                 </div>
                 <div class="row css10">
@@ -207,10 +242,13 @@
             </div>
         </div>
     </section>
-    <div id="RMADetailDiv">
-    </div>
+        <div id="RMADetailDiv">
+        </div>
 
 }
+
+<div class="bg"></div>
+<b id="load">Processing...</b>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -239,7 +277,7 @@
                                 <tbody>
                                     @for (var i = 0; i < Model.rmaDetails.Count; i++)
                                     {
-                                        <tr class="trCss" id="@(i + 1)" style="@if (Model.rmaDetails[i].IsValid)
+                                        <tr class="trCss_@(i + 1)" id="@(i + 1)" style="@if (Model.rmaDetails[i].IsValid)
                                     { <text>background-color: rgba(14, 128, 0, 0.22);</text>}
                                     else { <text>background-color: rgba(255, 0, 0, 0.12);</text>}">
                                             <td>
@@ -316,20 +354,23 @@
     <script type="text/javascript">
 		var allSerialNos = [];
 		$(function () {
-			
+			//debugger;
 			//GetAllSerialNos();
 			//$("#poptable tbody tr td:nth-child(3)").each(function () {
+
+			$(this.body).addClass('loadcss');
+
 			$("#poptable tbody tr").each(function () {
 				var i = 1;
 				if ($(this).find("td:nth-child(3)").text().trim() === "deleted") {
 					//var id = this.id;
-					
+					//debugger;
 					$('#' + this.id).hide();
 				}
 				else {
 					//allSerialNos.push($(this).find("td:nth-child(3)").text().trim());
-					
-					//$(this).find("td:nth-child(1)").text().trim()=i;
+					//debugger;
+					$(this).find("td:first").html(i);
 					i = i + 1;
 				}
 				allSerialNos.push($(this).find("td:nth-child(3)").text().trim());
@@ -339,10 +380,7 @@
 				//}
 			});
 
-            var length = $('.isinvalid').length;
-            if (length >= 1) {
-                $('#btnGenRMA').attr('disabled', 'disabled');
-            }
+
             var isSaved = '@TempData["isSaved"]';
             if (isSaved) {
                 swal("RMA Generated", "RMA Number is Sent To Your Mail!!", "success")
@@ -369,7 +407,15 @@
                         required: true
                     }
                 }
-            });
+			});
+
+		
+			var length = $('.isinvalid').length;
+		
+			if (length >= 1) {
+				$('#btnGenRMA').attr('disabled', 'disabled');
+			}
+
 		});
 
 		function GetAllSerialNos() {
@@ -383,32 +429,43 @@
         //var s = 0;
 
 		function DeleteSerial(id, serialNo) {
-			
+
 			allSerialNos = $.grep(allSerialNos, function (value) {
 				return value != serialNo;
 			});
-			//GetAllSerialNos();
 
+			//debugger;
 			if (allSerialNos.length > 1) {
 				$('#btnGenRMA').removeAttr('disabled');
 			} else {
 				$('#btnGenRMA').attr('disabled', 'disabled');
 			}
             var serialNoId = id - 1;
-            var changeSerialNo = $('#rmaDetails_' + serialNoId + '__SerialNo').val('deleted');
-            $('#' + id).hide();
+			var changeSerialNo = $('#rmaDetails_' + serialNoId + '__SerialNo').val('deleted');
+			//$('#rmaDetails_' + serialNoId + '__SerialNo').remove();
 
-            var length = $('.isinvalid').length;
-            length = length - (i++);
-            if (length == 1) {
-                $('#btnGenRMA').removeAttr('disabled');
+			$('#' + id).hide();
+			//$(".trCss_" + id).remove();
 
-                var sno = serialNoId + 1;
-                $('#poptable tr:eq(' + sno + ')').hide();
-			}
+			//var rmaDetailHtml = '';
+
+
 			if ($('#frmRMAInward').valid()) {
+
 				$('#frmRMAInward').submit();
 			}
+
+           // var length = $('.isinvalid').length;
+            //length = length - (i++);
+   //         if (length == 1) {
+   //             $('#btnGenRMA').removeAttr('disabled');
+
+   //             var sno = serialNoId + 1;
+   //             $('#poptable tr:eq(' + sno + ')').hide();
+			//}
+			//if ($('#frmRMAInward').valid()) {
+				//$('#frmRMAInward').submit();
+			//}
 
         }
 
@@ -459,7 +516,30 @@
                 $('#serialNos').focus();
             }, 900);
 
-        }
+		}
+
+		function CheckDuplicates(serialNos, duplicateSerialNos) {
+
+			for (var i = 0; i < serialNos.length; ++i) {
+				var value = serialNos[i];
+
+				//if (value in allSerialNos)
+				if ($.inArray(value, allSerialNos) != -1) {
+					duplicateSerialNos.push(value);
+				}
+
+				if (duplicateSerialNos && duplicateSerialNos.length > 0) {
+					swal("Cancelled", "Please Remove Duplicate SerialNos" + " " + duplicateSerialNos + "", "error");
+					// alertify.error('Please Remove Duplicate Values of' + duplicateSerialNos + '');
+					duplicateSerialNos = [];
+					return false;
+
+
+				}
+
+			}
+			return true;
+		}
 
 		function SaveSerialsNo() {
 			
@@ -467,7 +547,7 @@
 			var duplicateSerialNos = [];
 			//if ($.inArray(serialNos, allSerialNos) != -1) {
 
-
+			if (CheckDuplicates(serialNos, duplicateSerialNos)) {
 				//allSerialNos.push(serialNos);
 				//var vals = allSerialNos;
 				var valuesSoFar = Object.create(null);
@@ -482,9 +562,10 @@
 
 				for (var i = 0; i < serialNos.length; ++i) {
 					var value = serialNos[i];
-
+				
 					//if (value in allSerialNos)
 					if ($.inArray(value, allSerialNos) != -1) {
+						
 						duplicateSerialNos.push(value);
 					}
 					else {
@@ -499,21 +580,25 @@
 					// alertify.error('Please Remove Duplicate Values of' + duplicateSerialNos + '');
 					return false;
 				}
+				else {
 
-				var rmaDetailHtml = '';
-				$.each(allSerialNos, function (index, item) {
-					
-					//$.each(allSerialNos, function (index, item) {
-					if (item != '') {
-						rmaDetailHtml += '<input type="hidden" id="rmaDetails_' + index + '__SerialNo" name="rmaDetails[' + index + '].SerialNo" value="' + item + '" />'
+					var rmaDetailHtml = '';
+					$.each(allSerialNos, function (index, item) {
+						
+						//$.each(serialNos, function (index, item) {
+						
+						if (item != '') {
+							rmaDetailHtml += '<input type="hidden" id="rmaDetails_' + index + '__SerialNo" name="rmaDetails[' + index + '].SerialNo" value="' + item + '" />'
+						}
+					});
+				
+					$('#RMADetailDiv').html(rmaDetailHtml);
+					$('#ScanProductsModal').modal('hide');
+					if ($('#frmRMAInward').valid()) {
+						$('#frmRMAInward').submit();
 					}
-				});
-				$('#RMADetailDiv').html(rmaDetailHtml);
-				$('#ScanProductsModal').modal('hide');
-				if ($('#frmRMAInward').valid()) {
-					$('#frmRMAInward').submit();
 				}
-			//}
+			}
         }
 
         function GenerateRMA() {

@@ -392,6 +392,37 @@ namespace EZY.RMAS.DataFactory
         public const string DELETEVENDORRMAINVOICEDIMENSION = "[Operation].[usp_VendorRMAInvoiceDimensionDelete]";
 
 
+        /// <summary>
+        /// [Master].[Declarant]
+        /// </summary>
+
+        public const string SELECTDECLARANT = "[Master].[usp_DeclarantSelect]";
+        public const string LISTDECLARANT = "[Master].[usp_DeclarantList]";
+        public const string SAVEDECLARANT = "[Master].[usp_DeclarantSave]";
+        public const string DELETEDECLARANT = "[Master].[usp_DeclarantDelete]";
+
+
+        /// <summary>
+        /// [Operation].[COOHeader]
+        /// </summary>
+
+
+        public const string SELECTCOOHEADER = "[Operation].[usp_COOHeaderSelect]";
+        public const string LISTCOOHEADER = "[Operation].[usp_COOHeaderList]";
+        public const string SAVECOOHEADER = "[Operation].[usp_COOHeaderSave]";
+        public const string DELETECOOHEADER = "[Operation].[usp_COOHeaderDelete]";
+        public const string SEARCHCOOHEADER = "[Operation].[usp_COOHeaderAutoCompleteSearch]";
+
+
+
+        /// <summary>
+        /// [Operation].[COODetail]
+        /// </summary>
+
+        public const string SELECTCOODETAIL = "[Operation].[usp_COODetailSelect]";
+        public const string LISTCOODETAIL = "[Operation].[usp_COODetailList]";
+        public const string SAVECOODETAIL = "[Operation].[usp_COODetailSave]";
+        public const string DELETECOODETAIL = "[Operation].[usp_COODetailDelete]";
 
     }
 }

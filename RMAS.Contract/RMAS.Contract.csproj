@@ -56,12 +56,15 @@
     <Compile Include="Branch.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="Contact.cs" />
+    <Compile Include="COODetail.cs" />
+    <Compile Include="COOHeader.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="CourseDetail.cs" />
     <Compile Include="CourseSalesMaster.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="DashBoardParams.cs" />
+    <Compile Include="Declarant.cs" />
     <Compile Include="MaterialInandOutYear.cs" />
     <Compile Include="MaterialInwardDashboardDTO.cs" />
     <Compile Include="MaterialInwardInvoices.cs" />

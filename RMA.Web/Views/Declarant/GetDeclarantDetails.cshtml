@@ -1,0 +1,85 @@
+﻿@model EZY.RMAS.Contract.Declarant
+@{
+	ViewBag.Title = "GetDeclarantDetails";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section seccss{
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
+	<link href="@Url.Content("~/Css/sweetalert.css")" rel="stylesheet" />
+}
+
+<section class="content">
+	<div class="box box-default">
+		<div class="box-header with-border">
+			<div class="row">
+				<section class="content-header">
+					<ol class="breadcrumb">
+						<li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+						<li><a href='@Url.Content("~/Declarant/Index")'> Declarant List</a></li>
+						<li><a href='#'><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Declrant Details</a></li>
+
+					</ol>
+				</section>
+			</div>
+		</div>
+		<div class="box-body">
+			<fieldset class="form-horizontal">
+				@*<div class="form-group">
+			<div>
+				@Html.LabelFor(m => m.DeclarantCode, new { @class = "control-label input-sm col-md-2" })
+				<div class="col-md-4">
+					@Html.TextBoxFor(m => m.DeclarantCode, new { @class = "form-control input-sm " })
+				</div>
+			</div>
+		</div>*@
+				<div class="form-group">
+					<div>
+						@Html.LabelFor(m => m.DeclarantName, new { @class = "col-md-2 control-label input-sm" })
+						<div class="col-md-4">
+							@Html.TextBoxFor(m => m.DeclarantName, new { @class = "form-control input-sm " })
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div>
+						@Html.LabelFor(m => m.Designation, new { @class = "col-md-2 control-label input-sm" })
+						<div class="col-md-4">
+							@Html.TextBoxFor(m => m.Designation, new { @class = "form-control input-sm " })
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div>
+						@Html.LabelFor(m => m.IsActive, new { @class = "col-md-2 control-label input-sm" })
+						<div class="col-md-4">
+							@Html.TextBoxFor(m => m.IsActive, new { @class = "form-control input-sm " })
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="box-footer">
+			<div class="row  no-print">
+				<div class="col-xs-12">
+
+					<button type="button" onclick="SaveUser()" id="btnSave" class="btn btn-success btn-sm">
+						<i class="fa fa-save"></i>
+						Save
+					</button>
+
+					@Html.EncodedActionLink("<i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Clear",
+										   "EditUser", "Users",
+										   new { userID = "NEW" }, new { @class = "btn btn-default btn-sm" })
+					<button class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+					<a href="@Url.Content("~/Declarant/Index")" class="btn btn-info pull-right btn-sm">
+						<i class="fa fa-backward"></i>
+						Back
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
