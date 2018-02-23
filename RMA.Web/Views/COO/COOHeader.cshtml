@@ -1,495 +1,552 @@
 ﻿@model EZY.RMAS.Contract.COOHeader
 @{
-	ViewBag.Title = "COO Header";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "COO Header";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section seccss{
-	<link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
-	<link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
-	<link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
-	<link href="@Url.Content("~/Css/sweetalert.css")" rel="stylesheet" />
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Css/sweetalert.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 }
 <style>
+    #frmCOOHeader label {
+        font-weight: normal;
+    }
 
-	#frmCOOHeader label {
-		font-weight: normal;
-	}
+   
 </style>
 
 
 <section class="content">
-	<div class="box box-default">
-		<div class="box-header with-border">
-			<div class="row">
-				<section class="content-header">
-					<ol class="breadcrumb">
-						<li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
-						<li><a href='@Url.Content("~/COO/COOHeader")'> COO Header</a></li>
-						<li><a href='#'><i class="fa fa-users" aria-hidden="true"></i>&nbsp; COO Details</a></li>
-					</ol>
-				</section>
-			</div>
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href='@Url.Content("~/COO/COOHeader")'> COO Header</a></li>
+                        <li><a href='#'><i class="fa fa-users" aria-hidden="true"></i>&nbsp; COO Details</a></li>
+                    </ol>
+                </section>
+            </div>
 
-		</div>
-		@using (Html.BeginForm("SaveCOOHeader", "COO", FormMethod.Post, new { @id = "frmCOOHeader", @name = "frmCOOHeader" }))
-		{
-			<div class="box-body">
-				<fieldset class="form-horizontal">
-					<div class="row" style="margin-bottom:10px;">
-						<div class="col-md-6">
-							<label id="lblExporters" name="lblExporters">EXPORTERS(NAME & ADDRESS)</label>
-							@Html.HiddenFor(x => x.DocumentNo)
-							@Html.HiddenFor(x => x.BranchID)
-						</div>
-						<div class="col-md-6">
-							<label id="lblConsignee" name="lblConsignee">CONSIGNEE(NAME, FULL ADDRESS AND COUNTRY)</label>
-						</div>
-					</div>
-					<div class="row" style="margin-bottom:10px;">
-						<div class="col-md-6">
-							@Html.TextBoxFor(x => x.ExporterName, new { @class = "form-control input-sm", @placeholder = "Exporter Name" })
-						</div>
-						<div class="col-md-6">
-							@Html.TextBoxFor(x => x.ConsigneeName, new { @class = "form-control input-sm", @placeholder = "Consignee Name" })
-						</div>
-					</div>
-					<div class="row" style="margin-bottom:10px;">
-						<div class="col-md-6">
-							@Html.TextAreaFor(x => x.ExporterAddress, new { @class = "form-control input-sm", @placeholder = "Exporter Address" })
-						</div>
-						<div class="col-md-6">
-							@Html.TextAreaFor(x => x.ConsigneeAddress, new { @class = "form-control input-sm", @placeholder = "Consignee Address" })
-						</div>
-					</div>
-					<div class="row" style="margin-bottom:10px;">
-						<div class="col-md-3">
-							<label class="control-label"> Departure Date</label>
-						</div>
-						<div class="col-md-3">
-							@Html.TextBoxFor(m => m.DepartureDate, new { @class = "form-control input-sm date datepick" })
-						</div>
-						<div class="col-md-6">
-							<label class="control-label"> DECLARATION BY THE EXPORTER</label>
-						</div>
-					</div>
-					<div class="row" style="margin-bottom:10px;">
-						<div class="col-md-3">
-							<label class="control-label">Port of Discharge</label>
-						</div>
-						<div class="col-md-3">
-							@Html.TextBoxFor(m => m.DestinationPort, new { @class = "form-control input-sm ", @placeholder = "Port of Discharge" })
-						</div>
-						<div class="col-md-3">
-							<label class="control-label">Name</label>
-						</div>
-						<div class="col-md-3">
-							@Html.TextBoxFor(x => x.DeclarantName, new { @class = "form-control input-sm ", @placeholder = "Declarant Name" })
-						</div>
-					</div>
-					<div class="row" style="margin-bottom:10px;">
-						<div class="col-md-3">
-							<label class="control-label">Country of Final Destination</label>
-						</div>
-						<div class="col-md-3">
-							@Html.TextBoxFor(m => m.DestinationCountry, new { @class = "form-control input-sm ", @placeholder = "Counttry of Final Destination" })
-						</div>
-						<div class="col-md-3">
-							<label class="control-label">Designation</label>
-						</div>
-						<div class="col-md-3">
-							@Html.TextBoxFor(m => m.Designation, new { @class = "form-control input-sm " })
-						</div>
-					</div>
-					<div class="row" style="margin-bottom:10px;">
-						<div class="col-md-3">
-							<label class="control-label">Vessel Name</label>
-						</div>
-						<div class="col-md-3">
-							@Html.TextBoxFor(m => m.VesselName, new { @class = "form-control input-sm ", @placeholder = "Vessel Name" })
-						</div>
-						<div class="col-md-3">
-							<label class="control-label">Date</label>
-						</div>
-						<div class="col-md-3">
-							@Html.TextBoxFor(m => m.CreatedOn, new { @class = "form-control input-sm datepick" })
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							@*<div class="box box-dnex">
-									<div class="box-header with-border">
-										<div class="box-tools pull-right">
-											<button class="btn btn-default btn-sm" type="button" onclick="AddCOODetails()"><i class="fa fa-plus"></i>&nbsp;Add Item</button>
+        </div>
+        @using (Html.BeginForm("COOHeader", "COO", FormMethod.Post, new { id = "frmCOOHeader", name = "frmCOOHeader", enctype = "multipart/form-data" }))
+        {
+            <div class="box-body">
+                <fieldset class="form-horizontal">
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-4">
+                            <label id="lblExporters" name="lblExporters">EXPORTERS(NAME & ADDRESS)</label>
+                            @Html.HiddenFor(x => x.DocumentNo)
+                            @Html.HiddenFor(x => x.BranchID)
+                        </div>
+                        <div class="col-md-4">
+                            <label id="lblConsignee" name="lblConsignee">CONSIGNEE(NAME, FULL ADDRESS AND COUNTRY)</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.ExporterName, new { @class = "form-control input-sm", @placeholder = "Exporter Name" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.ConsigneeName, new { @class = "form-control input-sm", @placeholder = "Consignee Name" })
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-4">
+                            @Html.TextAreaFor(x => x.ExporterAddress, new { @class = "form-control input-sm", @placeholder = "Exporter Address", @rows = 5 })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextAreaFor(x => x.ConsigneeAddress, new { @class = "form-control input-sm", @placeholder = "Consignee Address", @rows = 5 })
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                            <label class="control-label"> Departure Date</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.DepartureDate, new { @class = "form-control input-sm datepick" })
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label"> DECLARATION BY THE EXPORTER</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                            <label class="control-label">Port of Discharge</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.DestinationPort, new { @class = "form-control input-sm ", @placeholder = "Port of Discharge" })
+                        </div>
+                        <div class="col-md-2">
+                            <label class="control-label">Name</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(x => x.DeclarantName, new { @class = "form-control input-sm ", @placeholder = "Declarant Name" })
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                            <label class="control-label">Country of Final Destination</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.DestinationCountry, new { @class = "form-control input-sm ", @placeholder = "Counttry of Final Destination" })
+                        </div>
+                        <div class="col-md-2">
+                            <label class="control-label">Designation</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.Designation, new { @class = "form-control input-sm " })
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                            <label class="control-label">Vessel Name</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.VesselName, new { @class = "form-control input-sm ", @placeholder = "Vessel Name" })
+                        </div>
+                        <div class="col-md-2">
+                            <label class="control-label">Date</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.CreatedOn, new { @class = "form-control input-sm datepick" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="control-label">
+                                COO Header Details
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="fileupload" type="file" name="file" onchange="fileChanged(this)" />
+                        </div>
+                        <div class="col-md-2">
 
-										</div>
-									</div>
-								</div>*@
-							<div class="box-tools pull-right" style="margin-bottom:10px;">
-								<button class="btn btn-default btn-sm" type="button" onclick="AddCOODetails()"><i class="fa fa-plus"></i>&nbsp;Add Item</button>
+                        </div>
 
-							</div>
-							<div class="box-body">
-								<div class="row" style="margin-bottom:10px;">
-									<div class="col-md-12">
-										<table class="table table-striped" id="tblCooHeader">
-											<thead>
-												<tr id="cooHeader_0" style="background-color: #D4E4EF;">
-													<th>Model</th>
-													<th>Description</th>
-													<th>Quantity (pieces)</th>
-													<th>Origin</th>
-												</tr>
-											</thead>
-											<tbody id="tblCooHeaderBody">
-												@if (Model.COODetails.Count() > 0)
-												{
-													for (var i = 0; i < Model.COODetails.Count(); i++)
-													{
-														<tr id="cooHeader_@i" class="tblCOODetailsCss">
-															<td>
-																@Html.HiddenFor(x => x.COODetails[i].ModelNo)
-																@Html.DisplayFor(x => x.COODetails[i].ModelNo)
-															</td>
-															<td>
-																@Html.HiddenFor(x => x.COODetails[i].Description)
-																@Html.DisplayFor(x => x.COODetails[i].Description)
-															</td>
-															<td>
-																@Html.HiddenFor(x => x.COODetails[i].Qty)
-																@Html.DisplayFor(x => x.COODetails[i].Qty)
-															</td>
-															<td>
-																@Html.HiddenFor(x => x.COODetails[i].Origin)
-																@Html.DisplayFor(x => x.COODetails[i].Origin)
-															</td>
-														</tr>
-													}
-												}
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row" style="margin-bottom:10px;">
-						<div class="col-md-6">
-							@Html.CheckBoxFor(x => x.IsInvoiceConfirm, new { @class = "" })
-							<label class="control-label">THIS C/O IS APPLIED TO INVOICE NO.</label>
-						</div>
-						<div class="col-md-2">
-							@Html.TextBoxFor(x => x.InvoiceNo, new { @class = "form-control input-sm ", @placeholder = "Invice No" })
-						</div>
-						<div class="col-md-2">
-							<label class="control-label pull-right">DATE</label>
-						</div>
-						<div class="col-md-2">
-							@Html.TextBoxFor(x => x.InvoiceDate, new { @class = "form-control input-sm datepick" })
-						</div>
-					</div>
-					<div class="row" style="margin-bottom:10px;">
-						<div class="col-md-6">
-							<input type="checkbox" />
-							<label class="control-label">WE HEREBY CERTIFY THAT THE ABOVE MENTIONED GOODS ARE ORIGIN OF</label>
-						</div>
-						<div class="col-md-6">
-						</div>
-					</div>
-				</fieldset>
-			</div>
-			<div class="box-footer">
-				<div class="row  no-print">
-					<div class="col-xs-12">
-						<button type="button" onclick="SaveHeader();" id="btnSave" class="btn btn-success btn-sm">
-							<i class="fa fa-save"></i>
-							Save
-						</button>
-						<button class="btn btn-danger btn-sm" type="button" onclick="DeleteCOOHeader('@Model.DocumentNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
-						<button class="btn btn-default btn-sm" type="button" onclick="GenerateCOOHeaderReportPDF('@Model.DocumentNo')"><i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Print</button>
-						<a href="@Url.Content("~/COO/COOHeaderList")" class="btn btn-info pull-right btn-sm">
-							<i class="fa fa-backward"></i>
-							Back
-						</a>
-					</div>
-				</div>
-			</div>
-		}
-	</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            @*<div class="box-tools pull-right" style="margin-bottom:10px;">
+                                    <button class="btn btn-default btn-sm" type="button" onclick="AddCOODetails()"><i class="fa fa-plus"></i>&nbsp;Add Item</button>
+                                </div>*@
+                            <div class="box-body">
+                                <div class="row" style="margin-bottom:10px;">
+                                    <div class="col-md-10">
+                                        <table class="table table-striped" id="tblCooHeader">
+                                            <thead>
+                                                <tr id="cooHeader_0">
+                                                    <th bgcolor="#5D7B9D" style="color:white; width:10%">Model</th>
+                                                    <th bgcolor="#5D7B9D" style="color:white; width:30%">Description</th>
+                                                    <th bgcolor="#5D7B9D" style="color:white; width:10%">Quantity (pieces)</th>
+                                                    <th bgcolor="#5D7B9D" style="color:white; width:10%">Origin</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tblCooHeaderBody">
+                                                @if (Model.COODetails.Count() > 0)
+                                                {
+                                                    for (var i = 0; i < Model.COODetails.Count(); i++)
+                                                    {
+                                                        <tr id="cooHeader_@i" class="tblCOODetailsCss">
+                                                            <td>
+                                                                @Html.HiddenFor(x => x.COODetails[i].ModelNo)
+                                                                @Html.DisplayFor(x => x.COODetails[i].ModelNo)
+                                                            </td>
+                                                            <td>
+                                                                @Html.HiddenFor(x => x.COODetails[i].Description)
+                                                                @Html.DisplayFor(x => x.COODetails[i].Description)
+                                                            </td>
+                                                            <td>
+                                                                @Html.HiddenFor(x => x.COODetails[i].Qty)
+                                                                @Html.DisplayFor(x => x.COODetails[i].Qty)
+                                                            </td>
+                                                            <td>
+                                                                @Html.HiddenFor(x => x.COODetails[i].Origin)
+                                                                @Html.DisplayFor(x => x.COODetails[i].Origin)
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-3">
+                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, new { })&nbsp;&nbsp;
+                            <label class="control-label">THIS C/O IS APPLIED TO INVOICE NO.</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(x => x.InvoiceNo, new { @class = "form-control input-sm ", @placeholder = "Invice No" })
+                        </div>
+                        <div class="col-md-1">
+                            <label class="control-label pull-right">DATE</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(x => x.InvoiceDate, new { @class = "form-control input-sm datepick" })
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-6">
+                            <input type="radio" class="" />&nbsp;&nbsp;
+                            <label class="control-label">WE HEREBY CERTIFY THAT THE ABOVE MENTIONED GOODS ARE ORIGIN OF</label>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+            <div class="box-footer">
+                <div class="row  no-print">
+                    <div class="col-xs-12">
+                        <button type="button" onclick="SaveHeader();" id="btnSave" class="btn btn-success btn-sm">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                        <button class="btn btn-danger btn-sm" type="button" onclick="DeleteCOOHeader('@Model.DocumentNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                        <button class="btn btn-default btn-sm" type="button" onclick="GenerateCOOHeaderReportPDF('@Model.DocumentNo')"><i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Print</button>
+                        <a href="@Url.Content("~/COO/COOHeaderList")" class="btn btn-info pull-right btn-sm">
+                            <i class="fa fa-backward"></i>
+                            Back
+                        </a>
+                    </div>
+                </div>
+            </div>}
+    </div>
 </section>
 
 @using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmCOODetails", name = "frmCOODetails" }))
 {
-	<div id="COODetialModal" class="modal fade" role="dialog">
+    <div id="COODetialModal" class="modal fade" role="dialog">
 
-	</div>
+    </div>
 }
 
 @section secscripts{
-	<script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
-	<script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
-	<script src="@Url.Content("~/Scripts/moment.min.js")"></script>
-	<script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
-	<script src="@Url.Content("~/Scripts/select2.min.js")"></script>
-	<script src="@Url.Content("~/Scripts/sweetalert.js")"></script>
-	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script type="text/javascript">
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
+    <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
+    <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/sweetalert.js")"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
 
-		$(function () {
+        $(function () {
 
-		    $("#DeclarantName").autocomplete({
-		        source: function (request, response) {
+            if (@Model.COODetails.Count > 0) {
+                $("#tblCooHeader").show();
+            }
+            else {
+                $("#tblCooHeader").hide();
+            }
 
-		            $.ajax({
-		                url: '@Url.Content("~/Declarant/GetDeclarantNames?term=")' + $("#DeclarantName").val(),
-		                type: "GET",
-		                dataType: "json",
-		                //data: { term: request.term },
-		                success: function (data) {
-		                    if (data != null) {
-		                        response($.map(data, function (item) {
-		                            return { label: item.CustomerName, value: item.CustomerName };
-		                        }));
-		                    } else {
-		                        $("#DeclarantName").val('');
-		                    }
+            $("#DeclarantName").autocomplete({
+                source: function (request, response) {
 
-		                }
-		            });
-		        },
-		        messages: {
-		            noResults: "", results: ""
-		        }
-		    });
+                    $.ajax({
+                        url: '@Url.Content("~/Declarant/GetDeclarantNames?term=")' + $("#DeclarantName").val(),
+                        type: "GET",
+                        dataType: "json",
+                        //data: { term: request.term },
+                        success: function (data) {
+                            if (data != null) {
+                                response($.map(data, function (item) {
+                                    return { label: item.CustomerName, value: item.CustomerName };
+                                }));
+                            } else {
+                                $("#DeclarantName").val('');
+                            }
 
-			$("#DeclarantName").on("change", function () {
+                        }
+                    });
+                },
+                messages: {
+                    noResults: "", results: ""
+                }
+            });
 
-				if ($("#DeclarantName").val().length > 2) {
+            $("#DeclarantName").on("change", function () {
 
-					$.ajax({
-						url: '@Url.Content("~/Declarant/GetDeclarantbyName?declarantName=")' + $("#DeclarantName").val(),
-						method: 'POST',
-						contentType: 'application/json',
-						success: function (data) {
+                if ($("#DeclarantName").val().length > 2) {
 
-							if (data != null) {
-								$("#DeclarantName").val(data.DeclarantName);
-								$("#Designation").val(data.Designation);
-							}
-							else {
-								$("#Designation").val('');
-							}
-						},
-						error: function (err) {
-							$("#Designation").val('');
-						}
-					});
-				}
-				else {
+                    $.ajax({
+                        url: '@Url.Content("~/Declarant/GetDeclarantbyName?declarantName=")' + $("#DeclarantName").val(),
+                        method: 'POST',
+                        contentType: 'application/json',
+                        success: function (data) {
 
-				}
-			});
-
-
-			$("#ConsigneeName").autocomplete({
-				source: function (request, response) {
-				
-					$.ajax({
-						url: '@Url.Content("~/COO/GetConsigneeNames?term=")' + $("#ConsigneeName").val(),
-						type: "GET",
-						dataType: "json",
-						//data: { term: request.term },
-						success: function (data) {	
-							if (data != null) {
-								response($.map(data, function (item) {
-									return { label: item.CustomerName, value: item.CustomerName };
-								}));
-							} else {
-								$("#ConsigneeName").val('');
-							}
-
-						}
-					});
-				},
-				messages: {
-					noResults: "", results: ""
-				}
-			});
+                            if (data != null) {
+                                $("#DeclarantName").val(data.DeclarantName);
+                                $("#Designation").val(data.Designation);
+                            }
+                            else {
+                                $("#Designation").val('');
+                            }
+                        },
+                        error: function (err) {
+                            $("#Designation").val('');
+                        }
+                    });
+                }
+                else {
+                    $("#Designation").val('');
+                }
+            });
 
 
+            $("#ConsigneeName").autocomplete({
+                source: function (request, response) {
 
-			$('#ConsigneeName').on("change", function () {
-			
-				//$("#ConsigneeName").val('');
-				//$("#ConsigneeAddress").val('');
+                    $.ajax({
+                        url: '@Url.Content("~/COO/GetConsigneeNames?term=")' + $("#ConsigneeName").val(),
+                        type: "GET",
+                        dataType: "json",
+                        //data: { term: request.term },
+                        success: function (data) {
+                            if (data != null) {
+                                response($.map(data, function (item) {
+                                    return { label: item.CustomerName, value: item.CustomerName };
+                                }));
+                            } else {
+                                $("#ConsigneeName").val('');
+                            }
 
-				if ($("#ConsigneeName").val().length > 2) {
-
-					$.ajax({
-						url: '@Url.Content("~/COO/GetConsigneeNameAddress?consigneeName=")' + $("#ConsigneeName").val(),
-						method: 'POST',
-						contentType: 'application/json',
-						success: function (data) {
-
-							if (data != null) {
-								$("#ConsigneeName").val(data.CustomerName);
-								$("#ConsigneeAddress").val(data.Address1 + "\n" + data.Address2 + "\n" + data.State + "\n" + data.PostCode);
-							}
-							else {
-								$("#ConsigneeName").val('');
-								$("#ConsigneeAddress").val('');
-							}
-						},
-						error: function (err) {
-							$("#ConsigneeName").val('');
-							$("#ConsigneeAddress").val('');
-						}
-					});
-				}
-				else {
-					$("#ConsigneeName").val('');
-					$("#ConsigneeAddress").val('');
-				}
-			});
+                        }
+                    });
+                },
+                messages: {
+                    noResults: "", results: ""
+                }
+            });
 
 
 
-			$('.datepick').datetimepicker({
-				icons: {
-					time: 'fa fa-clock-o',
-					date: 'fa fa-calendar',
-					up: 'fa fa-arrow-up',
-					down: 'fa fa-arrow-down'
-				},
-				format: 'DD/MM/YYYY'
-			});
+            $('#ConsigneeName').on("change", function () {
 
+                if ($("#ConsigneeName").val().length > 2) {
 
-			$('#frmCOODetails').validate({
-				rules: {
-					ModelNo: {
-						required: true
-					},
-					Description: {
-						required: true
-					},
-					Qty: {
-						number: true,
-						required:true
-					},
-					Origin: {
-						required:true
-					}
-				}
-			});
+                    $.ajax({
+                        url: '@Url.Content("~/COO/GetConsigneeNameAddress?consigneeName=")' + $("#ConsigneeName").val(),
+                        method: 'POST',
+                        contentType: 'application/json',
+                        success: function (data) {
 
-
-			$('#frmCOOHeader').validate({
-				rules: {
-					ExporterName: {
-						required: true
-					},
-					ExporterAddress: {
-						required: true
-					},
-					ConsigneeName: {
-						required: true
-					},
-					ConsigneeAddress: {
-						required: true
-					},
-
-					DestinationPort: {
-						required: true
-					},
-					VesselName: {
-						required: true
-					},
-					DestinationCountry: {
-						required: true
-					},
-					DeclarantName: {
-						required: true
-					},
-					//InvoiceNo: {
-					//	required: true
-					//},
-					InvoiceDate: {
-						required: true
-					},
-					IsInvoiceConfirm:{
-					required: true
-					}
-				}
-			});
-
-		});
-
-		function AddCOODetails() {
-			//$('#COODetialModal').modal('show');
-		$.ajax({
-			url: '@Url.Content("~/COO/ADDCOODetails")',
-			method: 'get',
-			contentType: 'text/html',
-			success: function (html) {
-
-				$('#COODetialModal').html(html);
-				$('#COODetialModal').modal('show');
-			},
-			error: function (err) {
-
-			}
-			});
-		}
-
-		function SaveCOODetails() {
-
-			if ($("#frmCOODetails").valid()) {
-
-				var id=$('.tblCOODetailsCss').length;
-				var currentId = id;
-				var modelNo = $("#ModelNo").val();
-				var htmlData = "";
-
-				htmlData += "<tr id='cooHeader_" + currentId + "' class='tblCOODetailsCss'>";
-				htmlData += "<td><input type='hidden' id='COODetails_" + currentId + "__BranchID' name='COODetails[" + currentId + "].BranchID'><input type='hidden' id='COODetails_" + currentId + "__DocumentNO' name='COODetails[" + currentId + "].DocumentNO'><input type='hidden' id='COODetails_" + currentId + "__ModelNo' name='COODetails[" + currentId + "].ModelNo' value=" + $("#ModelNo").val() + "> <span id='COODetails_" + currentId + "__ModelNo_span'>" + $("#ModelNo").val() + "</span></td >";
-				htmlData += "<td><input type='hidden' id='COODetails_" + currentId + "__Description' name='COODetails[" + currentId + "].Description' value=" + $("#Description").val() + "> <span id='COODetails_" + currentId + "__Description_span'>" + $("#Description").val() + "</span></td>";
-				htmlData += "<td><input type='hidden' id='COODetails_" + currentId + "__Qty' name='COODetails[" + currentId + "].Qty' value=" + $("#Qty").val() + "> <span id='COODetails_" + currentId + "__Qty_span'>" + $("#Qty").val() + "</span></td>";
-				htmlData += "<td><input type='hidden' id='COODetails_" + currentId + "__Origin' name='COODetails[" + currentId + "].Origin' value=" + $("#Origin").val() + "> <span id='COODetails_" + currentId + "__Origin_span'>" + $("#Origin").val() + "</span></td></tr>";
+                            if (data != null) {
+                                $("#ConsigneeName").val(data.CustomerName);
+                                $("#ConsigneeAddress").val(data.Address1 + "\n" + data.Address2 + "\n" + data.State + "\n" + data.PostCode);
+                            }
+                            else {
+                                $("#ConsigneeName").val('');
+                                $("#ConsigneeAddress").val('');
+                            }
+                        },
+                        error: function (err) {
+                            $("#ConsigneeName").val('');
+                            $("#ConsigneeAddress").val('');
+                        }
+                    });
+                }
+                else {
+                    $("#ConsigneeName").val('');
+                    $("#ConsigneeAddress").val('');
+                }
+            });
 
 
 
-				$("#tblCooHeaderBody").append(htmlData);
-				$("#ModelNo").val('');
-				$("#Description").val('');
-				$("#Qty").val('');
-				$("#Origin").val('');
-				$('#COODetialModal').modal('hide');
-
-			}
-		}
-
-		function SaveHeader() {
-
-			var ExporterName = $("#ExporterName").val();
-			if ($('#frmCOOHeader').valid()) {
-				$('#frmCOOHeader').submit();
-			}
-		}
-
-		function DeleteCOOHeader(documentNumber) {
-			var result = confirm('Are you sure, do you want to delete ' + documentNumber);
-			if (result) {
-				location.href = '@Url.Content("~/COO/DeleteCOOHeader?DocumentNumber=")' + documentNumber;
-			}
-		}
-
-			function GenerateCOOHeaderReportPDF(documentNumber) {
-				location.href = '@Url.Content("~/COO/PrintCOOHeaderReport")' + '?branchID=' + $('#BranchID').val() + ' &documentNo=' + documentNumber;
-			}
+            $('.datepick').datetimepicker({
+                icons: {
+                    time: 'fa fa-clock-o',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-arrow-up',
+                    down: 'fa fa-arrow-down'
+                },
+                format: 'DD/MM/YYYY'
+            });
 
 
-	</script>
+            $('#frmCOODetails').validate({
+                rules: {
+                    ModelNo: {
+                        required: true
+                    },
+                    Description: {
+                        required: true
+                    },
+                    Qty: {
+                        number: true,
+                        required: true
+                    },
+                    Origin: {
+                        required: true
+                    }
+                }
+            });
+
+
+            $('#frmCOOHeader').validate({
+                rules: {
+                    ExporterName: {
+                        required: true
+                    },
+                    ExporterAddress: {
+                        required: true
+                    },
+                    ConsigneeName: {
+                        required: true
+                    },
+                    ConsigneeAddress: {
+                        required: true
+                    },
+                    DepartureDate: {
+                        required: true
+                    },
+                    DestinationPort: {
+                        required: true
+                    },
+                    VesselName: {
+                        required: true
+                    },
+                    DestinationCountry: {
+                        required: true
+                    },
+                    DeclarantName: {
+                        required: true
+                    },
+                    InvoiceDate: {
+                        required: true
+                    },
+                    IsInvoiceConfirm: {
+                        required: true
+                    }
+                }
+            });
+
+        });
+
+        function AddCOODetails() {
+            //$('#COODetialModal').modal('show');
+            $.ajax({
+                url: '@Url.Content("~/COO/ADDCOODetails")',
+                method: 'get',
+                contentType: 'text/html',
+                success: function (html) {
+
+                    $('#COODetialModal').html(html);
+                    $('#COODetialModal').modal('show');
+                },
+                error: function (err) {
+
+                }
+            });
+        }
+
+        function SaveCOODetails() {
+
+            if ($("#frmCOODetails").valid()) {
+
+                var id = $('.tblCOODetailsCss').length;
+                var currentId = id;
+                var modelNo = $("#ModelNo").val();
+                var htmlData = "";
+
+                htmlData += "<tr id='cooHeader_" + currentId + "' class='tblCOODetailsCss'>";
+                htmlData += "<td><input type='hidden' id='COODetails_" + currentId + "__BranchID' name='COODetails[" + currentId + "].BranchID'><input type='hidden' id='COODetails_" + currentId + "__DocumentNO' name='COODetails[" + currentId + "].DocumentNO'><input type='hidden' id='COODetails_" + currentId + "__ModelNo' name='COODetails[" + currentId + "].ModelNo' value=" + $("#ModelNo").val() + "> <span id='COODetails_" + currentId + "__ModelNo_span'>" + $("#ModelNo").val() + "</span></td >";
+                htmlData += "<td><input type='hidden' id='COODetails_" + currentId + "__Description' name='COODetails[" + currentId + "].Description' value=" + $("#Description").val() + "> <span id='COODetails_" + currentId + "__Description_span'>" + $("#Description").val() + "</span></td>";
+                htmlData += "<td><input type='hidden' id='COODetails_" + currentId + "__Qty' name='COODetails[" + currentId + "].Qty' value=" + $("#Qty").val() + "> <span id='COODetails_" + currentId + "__Qty_span'>" + $("#Qty").val() + "</span></td>";
+                htmlData += "<td><input type='hidden' id='COODetails_" + currentId + "__Origin' name='COODetails[" + currentId + "].Origin' value=" + $("#Origin").val() + "> <span id='COODetails_" + currentId + "__Origin_span'>" + $("#Origin").val() + "</span></td></tr>";
+
+
+
+                $("#tblCooHeaderBody").append(htmlData);
+                $("#ModelNo").val('');
+                $("#Description").val('');
+                $("#Qty").val('');
+                $("#Origin").val('');
+                $('#COODetialModal').modal('hide');
+
+            }
+        }
+
+        function SaveHeader() {
+
+            var ExporterName = $("#ExporterName").val();
+            if ($('#frmCOOHeader').valid()) {
+
+                $('#frmCOOHeader').attr('action', '@Url.Content("~/COO/SaveCOOHeader")');
+                $('#frmCOOHeader').submit();
+            }
+        }
+
+        function DeleteCOOHeader(documentNumber) {
+            var result = confirm('Are you sure, do you want to delete ' + documentNumber);
+            if (result) {
+                location.href = '@Url.Content("~/COO/DeleteCOOHeader?DocumentNumber=")' + documentNumber;
+            }
+        }
+
+        function GenerateCOOHeaderReportPDF(documentNumber) {
+            location.href = '@Url.Content("~/COO/PrintCOOHeaderReport")' + '?branchID=' + $('#BranchID').val() + ' &documentNo=' + documentNumber;
+        }
+
+        function fileChanged(el) {
+
+
+            var file = el.files[0];
+            if (file != null) {
+                $('#scanBtn').attr('disabled', 'disabled');
+                ProcessCOODetails();
+            }
+            else
+                $('#scanBtn').removeAttr('disabled');
+
+
+        }
+
+        function ProcessCOODetails() {
+            if ($('#frmCOOHeader').valid()) {
+                $('#frmCOOHeader').submit();
+            } else {
+                $('#fileupload').val('');
+            }
+        }
+
+
+
+    </script>
 }

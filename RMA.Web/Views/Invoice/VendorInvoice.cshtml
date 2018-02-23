@@ -168,8 +168,7 @@
                         <label class="control-label pull-right">Unit Price&nbsp; <span class="error-req">*</span></label>
                     </div>
                     <div class="col-md-3">
-                        @Html.TextBoxFor(x => x.UnitPrice,
-                            new { @class = "form-control input-sm decimalCss" })
+                        @Html.TextBoxFor(x => x.UnitPrice, new { @class = "form-control input-sm decimalCss" })
                     </div>
                 </div>
                 <div class="row css10">
@@ -544,13 +543,13 @@
         }*@
 
         function ProcessVendorInvoice() {
-
+            debugger;
             if ($('#frm').valid()) {
                 $('#frm').submit();
             }
         }
         function ProcessVendorInvoices() {
-
+            debugger;
             if ($('#frm').valid()) {
                 var serialNos = $('#serialNos').val().split(/\n/);
                 var Exsno = $('.detailCount').length;
@@ -666,6 +665,7 @@
         }
 
         function ScanSerialNo() {
+            
             if ($('#frm').valid()) {
                 $('#ScanProductsModal').modal('show');
                 setTimeout(function () {
@@ -677,6 +677,7 @@
             }
         }
         function fileChanged(el) {
+            debugger;
             if ($('#frm').valid()) {
                 var file = el.files[0];
                 if (file != null) {
@@ -690,6 +691,7 @@
         }
 
         function SaveSerialsNo() {
+            debugger;
             var serialNo = $('#serialNos').val().split(/\n/);
             var serialNos=[];
             $.each(serialNo,function(key,val)
@@ -737,7 +739,9 @@
             }
             if(result)
             {
-                var Qty=$('#Quantity').val();
+                //added by Kiran//
+                var Qty=parseInt($('#Quantity').val());
+                //added by Kiran//
                 if(Qty == serialNos.length+Exsno)
                 {
                     var length = $('.detailCount').length;
