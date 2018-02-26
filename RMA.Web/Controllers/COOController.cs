@@ -22,21 +22,8 @@ namespace RMA.Web.Controllers
     [WebSsnFilter]
     public class COOController : BaseController
     {
-
-        //public PartialViewResult ADDCOO(string cooNumber = "")
-        //{
-        //	if (cooNumber == "")
-        //	{
-        //		ViewBag.Title = "New COO";
-        //		return PartialView();
-        //	}
-        //	else
-        //	{
-        //		ViewBag.Title = "Edit COO";
-        //		//var coo = GetCOOList().Where(x => x.COONumber == cooNumber).FirstOrDefault();
-        //		return PartialView();
-        //	}
-        //}
+        public static int PageNo = 1;
+        
 
         public ActionResult COOHeaderList()
         {
@@ -64,6 +51,7 @@ namespace RMA.Web.Controllers
                 cooHeader.InvoiceDate = DateTime.Now;
                 cooHeader.DepartureDate = DateTime.Now;
                 cooHeader.CreatedOn = DateTime.Now;
+                cooHeader.IsInvoiceConfirm = true;
 
             }
             else
@@ -94,49 +82,37 @@ namespace RMA.Web.Controllers
                     var fileName = Path.GetFileName(file.FileName);
                     var path = Path.Combine(Server.MapPath(appSettingsPath), fileName);
                     file.SaveAs(path);
-                    var lstInvoice = ProcessFile(path);
+                    var lstcoo = ProcessFile(path);
 
                     List<string> lstSerialNos = new List<string>();
                     List<string> returnItems = new List<string>();
-                    foreach (var NewSerialNo in lstInvoice)
+                    foreach (var NewModelNo in lstcoo)
                     {
-                        lstSerialNos.Add(NewSerialNo.ModelNo);
-                        //returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, lstSerialNos);
+                        lstSerialNos.Add(NewModelNo.ModelNo);                       
                     }
-                    //if (returnItems.Count > 0)
-                    //{
-                    //    foreach (var item in returnItems)
-                    //    {
-                    //        lstInvoice.RemoveAll(x => x.SerialNo == item);
-                    //        ViewBag.Dupsno = true;
-                    //    }
-                    //}
+                 
 
                     if (cooHeader.COODetails != null)
                     {
                         foreach (var item in cooHeader.COODetails)
                         {
-                            lstInvoice.Add(item);
+                            lstcoo.Add(item);
                         }
                     }
-                    // invoiceHeader.Quantity =Convert.ToInt16(lstInvoice.Count);
-
-                    // cooHeader.FileName = fileName;
-
+                   
                     List<string> DuplicateSNos = new List<string>();
-                    //if (cooHeader.Quantity == lstInvoice.Count + returnItems.Count)
-                    //{
-                    var invoiceList = lstInvoice;
+                    
+                    var cooList = lstcoo;
                     cooHeader.COODetails = new List<COODetail>();
-                    for (var i = 0; i < invoiceList.Count; i++)
+                    for (var i = 0; i < cooList.Count; i++)
                     {
                         var tempObj = cooHeader.COODetails
-                                        .Where(x => x.ModelNo == invoiceList[i].ModelNo)
+                                        .Where(x => x.ModelNo == cooList[i].ModelNo && x.Description== cooList[i].Description && x.Origin==cooList[i].Origin && x.Qty == cooList[i].Qty)
                                         .FirstOrDefault();
 
                         if (tempObj == null)
                         {
-                            cooHeader.COODetails.Add(invoiceList[i]);
+                            cooHeader.COODetails.Add(cooList[i]);
                         }
                         else
                         {
@@ -147,10 +123,7 @@ namespace RMA.Web.Controllers
                     {
                         ViewData["DuplicateSNo"] = DuplicateSNos;
                     }
-                    //}
-                    //else
-                    //    ViewBag.QuantityMismatched = true;
-
+                  
                 }
             }
 
@@ -196,15 +169,11 @@ namespace RMA.Web.Controllers
             var strxlsProvider = string.Empty;
             short rowCount;
 
-
-
-
             if (ext.ToLower() == ".xls")
-                strxlsProvider = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileName + ";Extended Properties=Excel 8.0";
+                strxlsProvider = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileName + ";Extended Properties=Excel 8.0;";
             else if (ext.ToLower() == ".xlsx")
                 strxlsProvider = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileName + ";Extended Properties=Excel 12.0;";
 
-            //var sheets= GetExcelSheetNames(fileName);
 
             var objXlsConnection = new OleDbConnection(strxlsProvider);
 
@@ -244,14 +213,14 @@ namespace RMA.Web.Controllers
                     rowCount = Convert.ToInt16(DS.Tables[0].Rows.Count);
 
                     var tableHeaderValue = DS.Tables[0].Columns[0].ColumnName;
-                    lstInvoice.Add(new COODetail { ModelNo = tableHeaderValue.Trim() });
+                    //lstInvoice.Add(new COODetail { ModelNo = tableHeaderValue.Trim() });
                     foreach (DataRow row in DS.Tables[0].Rows)
                     {
                         var currentItem = new COODetail();
 
-                        currentItem.ModelNo = row[0].ToString().Trim();//row["Part #"].ToString();
+                        currentItem.ModelNo = row[0].ToString().Trim();
                         currentItem.Description = row[1].ToString().Trim();
-                        currentItem.Qty = Convert.ToInt16(row[2].ToString().Trim());//currentItem.SerialNo = row["Serial Number"].ToString();
+                        currentItem.Qty = Convert.ToInt16(row[2].ToString().Trim());
                         currentItem.Origin = row[3].ToString().Trim();
 
                         lstInvoice.Add(currentItem);
@@ -365,7 +334,7 @@ namespace RMA.Web.Controllers
 
                 return File(bytesInStream, "application/pdf");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -407,6 +376,7 @@ namespace RMA.Web.Controllers
                         copy.AddPage(copy.GetImportedPage(reader, 1));
                     }
                     i = i + 15;
+                    PageNo = PageNo + 1;
                 }
             }
         }
@@ -430,9 +400,9 @@ namespace RMA.Web.Controllers
                 pdfFormFields.SetField("InvoiceDate", cooHeader.InvoiceDate != null ? cooHeader.InvoiceDate.ToShortDateString() : "");
                 pdfFormFields.SetField("MODEL", "MODEL");
                 pdfFormFields.SetField("DESCRIPTION", "DESCRIPTION");
-                pdfFormFields.SetField("QUANTITY", "QUANTITY");
+                pdfFormFields.SetField("QUANTITY", "QUANTITY(Pieces)");
                 pdfFormFields.SetField("ORIGIN", "ORIGIN");
-
+                pdfFormFields.SetField("PageNo", PageNo.ToString());
                 int count = dcount;
                 for (int i = 0; i < validcount; i++)
                 {

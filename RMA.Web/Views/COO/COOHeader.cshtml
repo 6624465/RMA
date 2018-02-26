@@ -16,8 +16,6 @@
     #frmCOOHeader label {
         font-weight: normal;
     }
-
-   
 </style>
 
 
@@ -118,10 +116,10 @@
                             @Html.TextBoxFor(m => m.CreatedOn, new { @class = "form-control input-sm datepick" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-3">
+                    <div class="row" style="margin-bottom:30px;">
+                        <div class="col-md-4">
                             <label class="control-label">
-                                COO Header Details
+                                <b>Please Upload .xls/.xlsx file for Add COO Details</b>
                             </label>
                         </div>
                         <div class="col-md-2">
@@ -132,59 +130,62 @@
                         </div>
 
                     </div>
-                    <div class="row">
-                        <div class="col-md-10">
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-8">
                             @*<div class="box-tools pull-right" style="margin-bottom:10px;">
                                     <button class="btn btn-default btn-sm" type="button" onclick="AddCOODetails()"><i class="fa fa-plus"></i>&nbsp;Add Item</button>
                                 </div>*@
                             <div class="box-body">
-                                <div class="row" style="margin-bottom:10px;">
-                                    <div class="col-md-10">
-                                        <table class="table table-striped" id="tblCooHeader">
-                                            <thead>
-                                                <tr id="cooHeader_0">
-                                                    <th bgcolor="#5D7B9D" style="color:white; width:10%">Model</th>
-                                                    <th bgcolor="#5D7B9D" style="color:white; width:30%">Description</th>
-                                                    <th bgcolor="#5D7B9D" style="color:white; width:10%">Quantity (pieces)</th>
-                                                    <th bgcolor="#5D7B9D" style="color:white; width:10%">Origin</th>
+                                @*<div class="row" style="margin-bottom:10px;">
+                                    <div class="col-md-10">*@
+                                <table class="table table-striped" id="tblCooHeader">
+                                    <thead>
+                                        <tr id="cooHeader_0">
+                                            <th bgcolor="#5D7B9D" style="color:white; width:10%">Model</th>
+                                            <th bgcolor="#5D7B9D" style="color:white; width:25%">Description</th>
+                                            <th bgcolor="#5D7B9D" style="color:white; width:10%">Quantity (pieces)</th>
+                                            <th bgcolor="#5D7B9D" style="color:white; width:10%">Origin</th>
 
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tblCooHeaderBody">
-                                                @if (Model.COODetails.Count() > 0)
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tblCooHeaderBody">
+                                        @if (Model.COODetails != null)
+                                        {
+                                            if (Model.COODetails.Count() > 0)
+                                            {
+                                                for (var i = 0; i < Model.COODetails.Count(); i++)
                                                 {
-                                                    for (var i = 0; i < Model.COODetails.Count(); i++)
-                                                    {
-                                                        <tr id="cooHeader_@i" class="tblCOODetailsCss">
-                                                            <td>
-                                                                @Html.HiddenFor(x => x.COODetails[i].ModelNo)
-                                                                @Html.DisplayFor(x => x.COODetails[i].ModelNo)
-                                                            </td>
-                                                            <td>
-                                                                @Html.HiddenFor(x => x.COODetails[i].Description)
-                                                                @Html.DisplayFor(x => x.COODetails[i].Description)
-                                                            </td>
-                                                            <td>
-                                                                @Html.HiddenFor(x => x.COODetails[i].Qty)
-                                                                @Html.DisplayFor(x => x.COODetails[i].Qty)
-                                                            </td>
-                                                            <td>
-                                                                @Html.HiddenFor(x => x.COODetails[i].Origin)
-                                                                @Html.DisplayFor(x => x.COODetails[i].Origin)
-                                                            </td>
-                                                        </tr>
-                                                    }
+                                                    <tr id="cooHeader_@i" class="tblCOODetailsCss">
+                                                        <td>
+                                                            @Html.HiddenFor(x => x.COODetails[i].ModelNo)
+                                                            @Html.DisplayFor(x => x.COODetails[i].ModelNo)
+                                                        </td>
+                                                        <td>
+                                                            @Html.HiddenFor(x => x.COODetails[i].Description)
+                                                            @Html.DisplayFor(x => x.COODetails[i].Description)
+                                                        </td>
+                                                        <td>
+                                                            @Html.HiddenFor(x => x.COODetails[i].Qty)
+                                                            @Html.DisplayFor(x => x.COODetails[i].Qty)
+                                                        </td>
+                                                        <td>
+                                                            @Html.HiddenFor(x => x.COODetails[i].Origin)
+                                                            @Html.DisplayFor(x => x.COODetails[i].Origin)
+                                                        </td>
+                                                    </tr>
                                                 }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
+                            @*</div>
+                                </div>*@
                         </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
                         <div class="col-md-3">
-                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, new { })&nbsp;&nbsp;
+                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, true, new { @class = "rbtCss" }) &nbsp;&nbsp;
                             <label class="control-label">THIS C/O IS APPLIED TO INVOICE NO.</label>
                         </div>
                         <div class="col-md-2">
@@ -199,7 +200,7 @@
                     </div>
                     <div class="row" style="margin-bottom:10px;">
                         <div class="col-md-6">
-                            <input type="radio" class="" />&nbsp;&nbsp;
+                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, false, new { @class = "rbtCss" }) &nbsp;&nbsp;
                             <label class="control-label">WE HEREBY CERTIFY THAT THE ABOVE MENTIONED GOODS ARE ORIGIN OF</label>
                         </div>
                         <div class="col-md-4">
@@ -238,7 +239,7 @@
                             Save
                         </button>
                         <button class="btn btn-danger btn-sm" type="button" onclick="DeleteCOOHeader('@Model.DocumentNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
-                        <button class="btn btn-default btn-sm" type="button" onclick="GenerateCOOHeaderReportPDF('@Model.DocumentNo')"><i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Print</button>
+                        <button class="btn btn-default btn-sm" id="c" type="button" onclick="GenerateCOOHeaderReportPDF('@Model.DocumentNo')"><i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Print</button>
                         <a href="@Url.Content("~/COO/COOHeaderList")" class="btn btn-info pull-right btn-sm">
                             <i class="fa fa-backward"></i>
                             Back
@@ -268,12 +269,15 @@
 
         $(function () {
 
-            if (@Model.COODetails.Count > 0) {
-                $("#tblCooHeader").show();
-            }
-            else {
-                $("#tblCooHeader").hide();
-            }
+
+            $('.rbtCss').on('select', function () {
+                if (this.value == true) {
+                    alert("Allot Thai Gayo Bhai");
+                }
+                else if (this.value == false) {
+                    alert("Transfer Thai Gayo");
+                }
+            });
 
             $("#DeclarantName").autocomplete({
                 source: function (request, response) {
@@ -387,8 +391,6 @@
                 }
             });
 
-
-
             $('.datepick').datetimepicker({
                 icons: {
                     time: 'fa fa-clock-o',
@@ -447,12 +449,6 @@
                     },
                     DeclarantName: {
                         required: true
-                    },
-                    InvoiceDate: {
-                        required: true
-                    },
-                    IsInvoiceConfirm: {
-                        required: true
                     }
                 }
             });
@@ -460,7 +456,7 @@
         });
 
         function AddCOODetails() {
-            //$('#COODetialModal').modal('show');
+
             $.ajax({
                 url: '@Url.Content("~/COO/ADDCOODetails")',
                 method: 'get',
@@ -475,6 +471,8 @@
                 }
             });
         }
+
+
 
         function SaveCOODetails() {
 
@@ -505,37 +503,61 @@
 
         function SaveHeader() {
 
-            var ExporterName = $("#ExporterName").val();
-            if ($('#frmCOOHeader').valid()) {
+            if ($('.tblCOODetailsCss').length > 0) {
+                if ($('#frmCOOHeader').valid()) {
 
-                $('#frmCOOHeader').attr('action', '@Url.Content("~/COO/SaveCOOHeader")');
-                $('#frmCOOHeader').submit();
+                    $('#frmCOOHeader').attr('action', '@Url.Content("~/COO/SaveCOOHeader")');
+                    $('#frmCOOHeader').submit();
+                }
+            }
+            else {
+                swal("Cancelled", "Atleast add one COO Details.", "error");
             }
         }
 
         function DeleteCOOHeader(documentNumber) {
-            var result = confirm('Are you sure, do you want to delete ' + documentNumber);
-            if (result) {
-                location.href = '@Url.Content("~/COO/DeleteCOOHeader?DocumentNumber=")' + documentNumber;
+            if (documentNumber != '') {
+                var result = confirm('Are you sure, do you want to delete ' + documentNumber);
+                if (result) {
+                    location.href = '@Url.Content("~/COO/DeleteCOOHeader?DocumentNumber=")' + documentNumber;
+                }
             }
         }
 
         function GenerateCOOHeaderReportPDF(documentNumber) {
-            location.href = '@Url.Content("~/COO/PrintCOOHeaderReport")' + '?branchID=' + $('#BranchID').val() + ' &documentNo=' + documentNumber;
+            if (documentNumber != '') {
+                location.href = '@Url.Content("~/COO/PrintCOOHeaderReport")' + '?branchID=' + $('#BranchID').val() + ' &documentNo=' + documentNumber;
+            }
         }
 
         function fileChanged(el) {
-
-
+           
             var file = el.files[0];
-            if (file != null) {
-                $('#scanBtn').attr('disabled', 'disabled');
-                ProcessCOODetails();
+            if (checkfile(file)) {
+
+                if (file != null) {
+                    // $('#scanBtn').attr('disabled', 'disabled');
+                    ProcessCOODetails();
+                }
+                // else
+                // $('#scanBtn').removeAttr('disabled');
             }
-            else
-                $('#scanBtn').removeAttr('disabled');
+            else {              
+                $('#fileupload').val('');
+            }
+        }
 
+        function checkfile(sender) {
 
+            var validExts = new Array(".xlsx", ".xls");
+            var fileExt = sender.name;
+            fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+            if (validExts.indexOf(fileExt) < 0) {
+                swal("Cancelled", "Invalid file selected, valid files are of " +
+                         validExts.toString() + " types.", "error");               
+                return false;
+            }
+            else return true;
         }
 
         function ProcessCOODetails() {
@@ -545,8 +567,6 @@
                 $('#fileupload').val('');
             }
         }
-
-
 
     </script>
 }
