@@ -49,7 +49,7 @@
                     </div>
                     <div class="row" style="margin-bottom:10px;">
                         <div class="col-md-4">
-                            @Html.TextBoxFor(x => x.ExporterName, new { @class = "form-control input-sm", @placeholder = "Exporter Name" })
+                            @Html.TextBoxFor(x => x.ExporterName, new { @class = "form-control input-sm", @placeholder = "Exporter Name", @readonly = "readonly" })
                         </div>
                         <div class="col-md-4">
                             @Html.TextBoxFor(x => x.ConsigneeName, new { @class = "form-control input-sm", @placeholder = "Consignee Name" })
@@ -57,7 +57,7 @@
                     </div>
                     <div class="row" style="margin-bottom:10px;">
                         <div class="col-md-4">
-                            @Html.TextAreaFor(x => x.ExporterAddress, new { @class = "form-control input-sm", @placeholder = "Exporter Address", @rows = 5 })
+                            @Html.TextAreaFor(x => x.ExporterAddress, new { @class = "form-control input-sm", @placeholder = "Exporter Address", @rows = 5, @readonly = "readonly" })
                         </div>
                         <div class="col-md-4">
                             @Html.TextAreaFor(x => x.ConsigneeAddress, new { @class = "form-control input-sm", @placeholder = "Consignee Address", @rows = 5 })
@@ -99,7 +99,7 @@
                             <label class="control-label">Designation</label>
                         </div>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.Designation, new { @class = "form-control input-sm " })
+                            @Html.TextBoxFor(m => m.Designation, new { @class = "form-control input-sm ", @readonly = "readonly" })
                         </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
@@ -123,7 +123,9 @@
                             </label>
                         </div>
                         <div class="col-md-2">
-                            <input id="fileupload" type="file" name="file" onchange="fileChanged(this)" />
+                            <input id="fileupload" type="file" name="file" onchange="fileChanged(this)" /><br />
+                            <label id="lblUploadFile" name="lblUploadFile" style="color:red;" >@ViewBag.FileName</label>
+                            
                         </div>
                         <div class="col-md-2">
 
@@ -185,7 +187,7 @@
                     </div>
                     <div class="row" style="margin-bottom:10px;">
                         <div class="col-md-3">
-                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, true, new { @class = "rbtCss" }) &nbsp;&nbsp;
+                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, true, new { @class = "rbtCss" })&nbsp;&nbsp;
                             <label class="control-label">THIS C/O IS APPLIED TO INVOICE NO.</label>
                         </div>
                         <div class="col-md-2">
@@ -200,7 +202,7 @@
                     </div>
                     <div class="row" style="margin-bottom:10px;">
                         <div class="col-md-6">
-                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, false, new { @class = "rbtCss" }) &nbsp;&nbsp;
+                            @Html.RadioButtonFor(x => x.IsCertified, true, new { @class = "rbtCss" })&nbsp;&nbsp;
                             <label class="control-label">WE HEREBY CERTIFY THAT THE ABOVE MENTIONED GOODS ARE ORIGIN OF</label>
                         </div>
                         <div class="col-md-4">
@@ -210,22 +212,22 @@
                         <div class="col-md-1">
                         </div>
                         <div class="col-md-1">
-                            <input type="text" class="form-control input-sm" />
+                            @Html.TextBoxFor(x => x.Country1, new { @class = "form-control input-sm" })
                         </div>
                         <div class="col-md-1">
-                            <input type="text" class="form-control input-sm" />
+                            @Html.TextBoxFor(x => x.Country2, new { @class = "form-control input-sm" })
                         </div>
                         <div class="col-md-1">
-                            <input type="text" class="form-control input-sm" />
+                            @Html.TextBoxFor(x => x.Country3, new { @class = "form-control input-sm" })
                         </div>
                         <div class="col-md-1">
-                            <input type="text" class="form-control input-sm" />
+                            @Html.TextBoxFor(x => x.Country4, new { @class = "form-control input-sm" })
                         </div>
                         <div class="col-md-1">
-                            <input type="text" class="form-control input-sm" />
+                            @Html.TextBoxFor(x => x.Country5, new { @class = "form-control input-sm" })
                         </div>
                         <div class="col-md-1">
-                            <input type="text" class="form-control input-sm" />
+                            @Html.TextBoxFor(x => x.Country6, new { @class = "form-control input-sm" })
                         </div>
                     </div>
 
@@ -268,15 +270,22 @@
     <script type="text/javascript">
 
         $(function () {
+           
+         
+            var va = $("#IsInvoiceConfirm").val();
+          
+            if ($("#IsInvoiceConfirm").val() == "True") {
+                IsInvoiceCheck();
+            }
 
+            $('#IsCertified').on('change', function () {
+                IsCertifeidCheck();
+            });
 
-            $('.rbtCss').on('select', function () {
-                if (this.value == true) {
-                    alert("Allot Thai Gayo Bhai");
-                }
-                else if (this.value == false) {
-                    alert("Transfer Thai Gayo");
-                }
+            $('#IsInvoiceConfirm').on('change', function () {
+
+                IsInvoiceCheck();
+
             });
 
             $("#DeclarantName").autocomplete({
@@ -372,7 +381,7 @@
 
                             if (data != null) {
                                 $("#ConsigneeName").val(data.CustomerName);
-                                $("#ConsigneeAddress").val(data.Address1 + "\n" + data.Address2 + "\n" + data.State + "\n" + data.PostCode);
+                                $("#ConsigneeAddress").val(data.Address1 + "\n" + data.Address2 + "\n" + data.State + "\n" + data.Country + "\n" + data.PostCode);
                             }
                             else {
                                 $("#ConsigneeName").val('');
@@ -531,7 +540,7 @@
         }
 
         function fileChanged(el) {
-           
+
             var file = el.files[0];
             if (checkfile(file)) {
 
@@ -542,7 +551,7 @@
                 // else
                 // $('#scanBtn').removeAttr('disabled');
             }
-            else {              
+            else {
                 $('#fileupload').val('');
             }
         }
@@ -551,10 +560,11 @@
 
             var validExts = new Array(".xlsx", ".xls");
             var fileExt = sender.name;
+          
             fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
             if (validExts.indexOf(fileExt) < 0) {
                 swal("Cancelled", "Invalid file selected, valid files are of " +
-                         validExts.toString() + " types.", "error");               
+                         validExts.toString() + " types.", "error");
                 return false;
             }
             else return true;
@@ -566,6 +576,44 @@
             } else {
                 $('#fileupload').val('');
             }
+        }
+
+        function IsInvoiceCheck() {
+            $("#IsCertified").val(false);
+            $("#IsCertified").prop('checked', false);
+
+            $("#InvoiceNo").attr('readonly', false);
+            $("#InvoiceDate").attr('readonly', false);
+            $("#Country1").attr('readonly', true);
+            $("#Country2").attr('readonly', true);
+            $("#Country3").attr('readonly', true);
+            $("#Country4").attr('readonly', true);
+            $("#Country5").attr('readonly', true);
+            $("#Country6").attr('readonly', true);
+
+           // $("#InvoiceNo").val('');
+          
+        }
+
+        function IsCertifeidCheck() {
+            $("#IsInvoiceConfirm").val(false);
+            $("#IsInvoiceConfirm").prop('checked', false);
+
+            $("#InvoiceNo").attr('readonly', true);
+            $("#InvoiceDate").attr('readonly', true);
+            $("#Country1").attr('readonly', false);
+            $("#Country2").attr('readonly', false);
+            $("#Country3").attr('readonly', false);
+            $("#Country4").attr('readonly', false);
+            $("#Country5").attr('readonly', false);
+            $("#Country6").attr('readonly', false);
+
+            $("#Country1").val('');
+            $("#Country2").val('');
+            $("#Country3").val('');
+            $("#Country4").val('');
+            $("#Country5").val('');
+            $("#Country6").val('');
         }
 
     </script>

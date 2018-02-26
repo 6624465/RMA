@@ -23,7 +23,7 @@ namespace RMA.Web.Controllers
     public class COOController : BaseController
     {
         public static int PageNo = 1;
-        
+
 
         public ActionResult COOHeaderList()
         {
@@ -44,7 +44,7 @@ namespace RMA.Web.Controllers
             cooHeader.ExporterName = branchprofile.CompanyCode;
             //cooHeader.ExporterAddress = branchprofile.BranchAddress.Address1 + "\n" + branchprofile.BranchAddress.Address2 + "\n" + branchprofile.BranchAddress.CityName + "\n" + branchprofile.BranchAddress.StateName + "\n" + branchprofile.BranchAddress.ZipCode + "\n" + branchprofile.BranchName;
             cooHeader.ExporterAddress = branchprofile.BranchAddress.FullAddress.Replace(",", "\n");
-
+            ViewBag.FileName = "";
             if (DocumentNo == "")
             {
                 cooHeader.COODetails = new List<COODetail>();
@@ -72,6 +72,7 @@ namespace RMA.Web.Controllers
             var appSettingsPath = ConfigurationManager.AppSettings["CooFileSharePath"];
             var folderPath = Server.MapPath(appSettingsPath);
             CreateDirectory(folderPath);
+            var fileName = "";
             var Message = "";
             if (Request.Files.Count > 0 && Request.Files[0] != null
                 && ValidateFile(Request.Files[0], ref Message))
@@ -79,7 +80,7 @@ namespace RMA.Web.Controllers
                 var file = Request.Files[0];
                 if (file != null && file.ContentLength > 0)
                 {
-                    var fileName = Path.GetFileName(file.FileName);
+                    fileName = Path.GetFileName(file.FileName);
                     var path = Path.Combine(Server.MapPath(appSettingsPath), fileName);
                     file.SaveAs(path);
                     var lstcoo = ProcessFile(path);
@@ -88,9 +89,9 @@ namespace RMA.Web.Controllers
                     List<string> returnItems = new List<string>();
                     foreach (var NewModelNo in lstcoo)
                     {
-                        lstSerialNos.Add(NewModelNo.ModelNo);                       
+                        lstSerialNos.Add(NewModelNo.ModelNo);
                     }
-                 
+
 
                     if (cooHeader.COODetails != null)
                     {
@@ -99,15 +100,15 @@ namespace RMA.Web.Controllers
                             lstcoo.Add(item);
                         }
                     }
-                   
+
                     List<string> DuplicateSNos = new List<string>();
-                    
+
                     var cooList = lstcoo;
                     cooHeader.COODetails = new List<COODetail>();
                     for (var i = 0; i < cooList.Count; i++)
                     {
                         var tempObj = cooHeader.COODetails
-                                        .Where(x => x.ModelNo == cooList[i].ModelNo && x.Description== cooList[i].Description && x.Origin==cooList[i].Origin && x.Qty == cooList[i].Qty)
+                                        .Where(x => x.ModelNo == cooList[i].ModelNo && x.Description == cooList[i].Description && x.Origin == cooList[i].Origin && x.Qty == cooList[i].Qty)
                                         .FirstOrDefault();
 
                         if (tempObj == null)
@@ -123,7 +124,7 @@ namespace RMA.Web.Controllers
                     {
                         ViewData["DuplicateSNo"] = DuplicateSNos;
                     }
-                  
+                    ViewBag.FileName = fileName;
                 }
             }
 
@@ -429,8 +430,10 @@ namespace RMA.Web.Controllers
         {
             var customerList = new CustomerBO().GetList(BRANCH_ID).Where(x => x.CustomerName.Contains(consigneeName)).Select(x => x).FirstOrDefault();
             var customerDetails = new CustomerBO().GetCustomer(new Customer { BranchID = BRANCH_ID, CustomerCode = customerList.CustomerCode });
-
-            return Json(customerDetails, JsonRequestBehavior.AllowGet);
+            var countryName = new CountryBO().GetCountry(new Country { CountryCode = customerDetails.CountryCode }).CountryName;
+            //var fullAddress = customerDetails.Address1 + "\n" + customerDetails.Address2 + "\n" + customerDetails.State + "\n" + countryName + "\n" + customerDetails.PostCode;
+            var consigneeAddress = new ConsigneeAddress() { CustomerName = customerDetails.CustomerName, Address1 = customerDetails.Address1, Address2 = customerDetails.Address2, State = customerDetails.State, Country = countryName, PostCode = customerDetails.PostCode };
+            return Json(consigneeAddress, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -442,6 +445,7 @@ namespace RMA.Web.Controllers
             var customerNames = (from N in customerNameList
                                  where N.CustomerName.ToUpper().StartsWith(term.ToUpper())
                                  select new { CustomerName = N.CustomerName }).ToList();//customerNameList.Where(x => x.CustomerName.StartsWith(term)).ToList();
+
             return Json(customerNames, JsonRequestBehavior.AllowGet);
         }
 
@@ -454,6 +458,17 @@ namespace RMA.Web.Controllers
         public string VesselName { get; set; }
         public string ConsigneeName { get; set; }
 
+    }
+
+    public class ConsigneeAddress
+    {
+
+        public string CustomerName { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public string PostCode { get; set; }
     }
 
 }

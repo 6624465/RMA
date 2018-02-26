@@ -11,9 +11,9 @@ namespace EZY.RMAS.Contract
         // Constructor 
         public COOHeader() { }
 
-		// Public Members 
+        // Public Members 
 
-		public Int16 BranchID { get; set; }
+        public Int16 BranchID { get; set; }
 
         public string DocumentNo { get; set; }
 
@@ -33,17 +33,23 @@ namespace EZY.RMAS.Contract
 
         public string DestinationCountry { get; set; }
 
-		public string DeclarantName { get; set; }
-		public string Designation { get; set; }
+        public string DeclarantName { get; set; }
+        public string Designation { get; set; }
 
-
-
-
-		public string InvoiceNo { get; set; }
+        public string InvoiceNo { get; set; }
 
         public DateTime InvoiceDate { get; set; }
 
         public bool IsInvoiceConfirm { get; set; }
+
+        public bool IsCertified { get; set; }
+
+        public string Country1 { get; set; }
+        public string Country2 { get; set; }
+        public string Country3 { get; set; }
+        public string Country4 { get; set; }
+        public string Country5 { get; set; }
+        public string Country6 { get; set; }
 
         public string CreatedBy { get; set; }
 

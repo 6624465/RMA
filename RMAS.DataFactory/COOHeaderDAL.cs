@@ -22,22 +22,22 @@ namespace EZY.RMAS.DataFactory
 
         }
 
-		#region IDataFactory Members
+        #region IDataFactory Members
 
-		public List<COOHeader> GetList(short branchID)
-		{
-			return db.ExecuteSprocAccessor(DBRoutine.LISTCOOHEADER, MapBuilder<COOHeader>.MapAllProperties()
-										   .DoNotMap(hd => hd.COODetails)
-										   .Build(), branchID).ToList();
-		}
-		public List<COOHeader> SearchList(short branchID,string vesselName, string consigneeName, DateTime dateFrom , DateTime dateTo)
-		{
-			return db.ExecuteSprocAccessor(DBRoutine.SEARCHCOOHEADER, MapBuilder<COOHeader>.MapAllProperties()
-										   .DoNotMap(hd => hd.COODetails)
-										   .Build(), branchID, consigneeName, vesselName,dateFrom,dateTo).ToList();
-		}
+        public List<COOHeader> GetList(short branchID)
+        {
+            return db.ExecuteSprocAccessor(DBRoutine.LISTCOOHEADER, MapBuilder<COOHeader>.MapAllProperties()
+                                           .DoNotMap(hd => hd.COODetails)
+                                           .Build(), branchID).ToList();
+        }
+        public List<COOHeader> SearchList(short branchID, string vesselName, string consigneeName, DateTime dateFrom, DateTime dateTo)
+        {
+            return db.ExecuteSprocAccessor(DBRoutine.SEARCHCOOHEADER, MapBuilder<COOHeader>.MapAllProperties()
+                                           .DoNotMap(hd => hd.COODetails)
+                                           .Build(), branchID, consigneeName, vesselName, dateFrom, dateTo).ToList();
+        }
 
-		public bool Save<T>(T item, DbTransaction parentTransaction) where T : IContract
+        public bool Save<T>(T item, DbTransaction parentTransaction) where T : IContract
         {
             currentTransaction = parentTransaction;
             return Save(item);
@@ -77,8 +77,15 @@ namespace EZY.RMAS.DataFactory
                 db.AddInParameter(savecommand, "InvoiceNo", System.Data.DbType.String, cooheader.InvoiceNo);
                 db.AddInParameter(savecommand, "InvoiceDate", System.Data.DbType.Date, cooheader.InvoiceDate);
                 db.AddInParameter(savecommand, "IsInvoiceConfirm", System.Data.DbType.Boolean, cooheader.IsInvoiceConfirm);
-                db.AddInParameter(savecommand, "CreatedBy", System.Data.DbType.String, cooheader.CreatedBy);
+                db.AddInParameter(savecommand, "IsCertified", System.Data.DbType.Boolean, cooheader.IsInvoiceConfirm);
                 db.AddOutParameter(savecommand, "NewDocumentNo", System.Data.DbType.String, 50);
+                db.AddInParameter(savecommand, "Country1", System.Data.DbType.String, cooheader.Country1);
+                db.AddInParameter(savecommand, "Country2", System.Data.DbType.String, cooheader.Country2);
+                db.AddInParameter(savecommand, "Country3", System.Data.DbType.String, cooheader.Country3);
+                db.AddInParameter(savecommand, "Country4", System.Data.DbType.String, cooheader.Country4);
+                db.AddInParameter(savecommand, "Country5", System.Data.DbType.String, cooheader.Country5);
+                db.AddInParameter(savecommand, "Country6", System.Data.DbType.String, cooheader.Country6);
+                db.AddInParameter(savecommand, "CreatedBy", System.Data.DbType.String, cooheader.CreatedBy);             
 
 
 
@@ -105,7 +112,7 @@ namespace EZY.RMAS.DataFactory
                     transaction.Commit();
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 if (currentTransaction == null)
                     transaction.Rollback();
@@ -160,7 +167,7 @@ namespace EZY.RMAS.DataFactory
 
             if (cooheaderItem == null) return null;
 
-			
+
             cooheaderItem.COODetails = new COODetailDAL().GetList(cooheaderItem.BranchID, cooheaderItem.DocumentNo);
 
 
