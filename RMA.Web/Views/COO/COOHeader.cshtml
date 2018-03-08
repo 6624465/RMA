@@ -16,6 +16,10 @@
     #frmCOOHeader label {
         font-weight: normal;
     }
+
+    .hideCntrl {
+        display: none;
+    }
 </style>
 
 
@@ -35,9 +39,11 @@
         </div>
         @using (Html.BeginForm("COOHeader", "COO", FormMethod.Post, new { id = "frmCOOHeader", name = "frmCOOHeader", enctype = "multipart/form-data" }))
         {
-            <div class="box-body">
-                <fieldset class="form-horizontal">
+            <div class="box-body ">
+                <fieldset class="form-horizontal cooCss">
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-4">
                             <label id="lblExporters" name="lblExporters">EXPORTERS(NAME & ADDRESS)</label>
                             @Html.HiddenFor(x => x.DocumentNo)
@@ -46,24 +52,36 @@
                         <div class="col-md-4">
                             <label id="lblConsignee" name="lblConsignee">CONSIGNEE(NAME, FULL ADDRESS AND COUNTRY)</label>
                         </div>
+                        <div class="col-md-2">
+                        </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-4">
                             @Html.TextBoxFor(x => x.ExporterName, new { @class = "form-control input-sm", @placeholder = "Exporter Name", @readonly = "readonly" })
                         </div>
                         <div class="col-md-4">
                             @Html.TextBoxFor(x => x.ConsigneeName, new { @class = "form-control input-sm", @placeholder = "Consignee Name" })
                         </div>
+                        <div class="col-md-2">
+                        </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-4">
                             @Html.TextAreaFor(x => x.ExporterAddress, new { @class = "form-control input-sm", @placeholder = "Exporter Address", @rows = 5, @readonly = "readonly" })
                         </div>
                         <div class="col-md-4">
                             @Html.TextAreaFor(x => x.ConsigneeAddress, new { @class = "form-control input-sm", @placeholder = "Consignee Address", @rows = 5 })
                         </div>
+                        <div class="col-md-2">
+                        </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-2">
                             <label class="control-label"> Departure Date</label>
                         </div>
@@ -73,8 +91,12 @@
                         <div class="col-md-4">
                             <label class="control-label"> DECLARATION BY THE EXPORTER</label>
                         </div>
+                        <div class="col-md-2">
+                        </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-2">
                             <label class="control-label">Port of Discharge</label>
                         </div>
@@ -87,8 +109,12 @@
                         <div class="col-md-2">
                             @Html.TextBoxFor(x => x.DeclarantName, new { @class = "form-control input-sm ", @placeholder = "Declarant Name" })
                         </div>
+                        <div class="col-md-2">
+                        </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-2">
                             <label class="control-label">Country of Final Destination</label>
                         </div>
@@ -101,8 +127,12 @@
                         <div class="col-md-2">
                             @Html.TextBoxFor(m => m.Designation, new { @class = "form-control input-sm ", @readonly = "readonly" })
                         </div>
+                        <div class="col-md-2">
+                        </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-2">
                             <label class="control-label">Vessel Name</label>
                         </div>
@@ -115,31 +145,31 @@
                         <div class="col-md-2">
                             @Html.TextBoxFor(m => m.CreatedOn, new { @class = "form-control input-sm datepick" })
                         </div>
+                        <div class="col-md-2">
+                        </div>
                     </div>
-                    <div class="row" style="margin-bottom:30px;">
-                        <div class="col-md-4">
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-3">
                             <label class="control-label">
                                 <b>Please Upload .xls/.xlsx file for Add COO Details</b>
                             </label>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <input id="fileupload" type="file" name="file" onchange="fileChanged(this)" /><br />
-                            <label id="lblUploadFile" name="lblUploadFile" style="color:red;" >@ViewBag.FileName</label>
-                            
+                            <label id="lblUploadFile" name="lblUploadFile" style="color:red;">@ViewBag.FileName</label>
                         </div>
                         <div class="col-md-2">
-
                         </div>
-
                     </div>
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-8">
-                            @*<div class="box-tools pull-right" style="margin-bottom:10px;">
-                                    <button class="btn btn-default btn-sm" type="button" onclick="AddCOODetails()"><i class="fa fa-plus"></i>&nbsp;Add Item</button>
-                                </div>*@
+
                             <div class="box-body">
-                                @*<div class="row" style="margin-bottom:10px;">
-                                    <div class="col-md-10">*@
+
                                 <table class="table table-striped" id="tblCooHeader">
                                     <thead>
                                         <tr id="cooHeader_0">
@@ -181,35 +211,41 @@
                                     </tbody>
                                 </table>
                             </div>
-                            @*</div>
-                                </div>*@
+                        </div>
+                        <div class="col-md-2">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-3">
-                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, true, new { @class = "rbtCss" })&nbsp;&nbsp;
+                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, new { @class = "rbtCss" })&nbsp;&nbsp; &nbsp;&nbsp;
                             <label class="control-label">THIS C/O IS APPLIED TO INVOICE NO.</label>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             @Html.TextBoxFor(x => x.InvoiceNo, new { @class = "form-control input-sm ", @placeholder = "Invice No" })
                         </div>
                         <div class="col-md-1">
-                            <label class="control-label pull-right">DATE</label>
+                            <label class="control-label">DATE</label>
+                        </div>
+                        <div class="col-md-1">
+                            @Html.TextBoxFor(x => x.InvoiceDate, new { @class = "form-control input-sm datepick" })
                         </div>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(x => x.InvoiceDate, new { @class = "form-control input-sm datepick" })
                         </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
+                        <div class="col-md-2">
+                        </div>
                         <div class="col-md-6">
-                            @Html.RadioButtonFor(x => x.IsCertified, true, new { @class = "rbtCss" })&nbsp;&nbsp;
+                            @Html.RadioButtonFor(x => x.IsCertified, new { @class = "rbtCss" })&nbsp;&nbsp;&nbsp;&nbsp;
                             <label class="control-label">WE HEREBY CERTIFY THAT THE ABOVE MENTIONED GOODS ARE ORIGIN OF</label>
                         </div>
                         <div class="col-md-4">
                         </div>
                     </div>
                     <div class="row" style="margin-bottom:10px;">
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                         </div>
                         <div class="col-md-1">
                             @Html.TextBoxFor(x => x.Country1, new { @class = "form-control input-sm" })
@@ -267,24 +303,43 @@
     <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
     <script src="@Url.Content("~/Scripts/sweetalert.js")"></script>
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.6/xlsx.full.min.js"></script>
     <script type="text/javascript">
 
         $(function () {
-           
-         
-            var va = $("#IsInvoiceConfirm").val();
-          
-            if ($("#IsInvoiceConfirm").val() == "True") {
+
+            var success = '@TempData["COOSaved"]';
+            if (success) {
+                swal("Created!", "Your COO Header is Saved Successfully!", "success")
+            }
+
+            var failure = '@ViewBag.WrongFileContent';
+            if (failure) {
+                swal("Cancelled", "Please Upload valid format Excel File.", "error");
+            }
+
+            if ('@Model.IsInvoiceConfirm' == 'True') {
+
                 IsInvoiceCheck();
             }
 
-            $('#IsCertified').on('change', function () {
+            if ('@Model.IsCertified' == 'True') {
+
                 IsCertifeidCheck();
+            }
+
+            $('#IsCertified').on('change', function () {
+
+                IsCertifeidCheck();
+                $("#IsInvoiceConfirm").val("False");
+                $('#IsCertified').val("True");
             });
 
             $('#IsInvoiceConfirm').on('change', function () {
 
                 IsInvoiceCheck();
+                $("#IsInvoiceConfirm").val("True");
+                $('#IsCertified').val("False");
 
             });
 
@@ -295,7 +350,6 @@
                         url: '@Url.Content("~/Declarant/GetDeclarantNames?term=")' + $("#DeclarantName").val(),
                         type: "GET",
                         dataType: "json",
-                        //data: { term: request.term },
                         success: function (data) {
                             if (data != null) {
                                 response($.map(data, function (item) {
@@ -349,7 +403,6 @@
                         url: '@Url.Content("~/COO/GetConsigneeNames?term=")' + $("#ConsigneeName").val(),
                         type: "GET",
                         dataType: "json",
-                        //data: { term: request.term },
                         success: function (data) {
                             if (data != null) {
                                 response($.map(data, function (item) {
@@ -381,7 +434,7 @@
 
                             if (data != null) {
                                 $("#ConsigneeName").val(data.CustomerName);
-                                $("#ConsigneeAddress").val(data.Address1 + "\n" + data.Address2 + "\n" + data.State + "\n" + data.Country + "\n" + data.PostCode);
+                                $("#ConsigneeAddress").val(data.Address1 + "\n" + data.State + "\n" + data.Country + "   " + data.PostCode);
                             }
                             else {
                                 $("#ConsigneeName").val('');
@@ -461,6 +514,7 @@
                     }
                 }
             });
+
 
         });
 
@@ -546,6 +600,7 @@
 
                 if (file != null) {
                     // $('#scanBtn').attr('disabled', 'disabled');
+
                     ProcessCOODetails();
                 }
                 // else
@@ -560,7 +615,7 @@
 
             var validExts = new Array(".xlsx", ".xls");
             var fileExt = sender.name;
-          
+
             fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
             if (validExts.indexOf(fileExt) < 0) {
                 swal("Cancelled", "Invalid file selected, valid files are of " +
@@ -579,11 +634,17 @@
         }
 
         function IsInvoiceCheck() {
-            $("#IsCertified").val(false);
+
+            //$("#IsCertified").val(false);
             $("#IsCertified").prop('checked', false);
+            $("#IsInvoiceConfirm").prop('checked', true);
+
+            $("#IsInvoiceConfirm").val("True");
+            $('#IsCertified').val("False");
 
             $("#InvoiceNo").attr('readonly', false);
             $("#InvoiceDate").attr('readonly', false);
+
             $("#Country1").attr('readonly', true);
             $("#Country2").attr('readonly', true);
             $("#Country3").attr('readonly', true);
@@ -591,16 +652,22 @@
             $("#Country5").attr('readonly', true);
             $("#Country6").attr('readonly', true);
 
-           // $("#InvoiceNo").val('');
-          
+            // $("#InvoiceNo").val('');
+
         }
 
         function IsCertifeidCheck() {
-            $("#IsInvoiceConfirm").val(false);
+
+            //$("#IsInvoiceConfirm").val(false);
+            $("#IsInvoiceConfirm").val("False");
+            $('#IsCertified').val("True");
+
             $("#IsInvoiceConfirm").prop('checked', false);
+            $("#IsCertified").prop('checked', true);
 
             $("#InvoiceNo").attr('readonly', true);
             $("#InvoiceDate").attr('readonly', true);
+
             $("#Country1").attr('readonly', false);
             $("#Country2").attr('readonly', false);
             $("#Country3").attr('readonly', false);
@@ -608,13 +675,14 @@
             $("#Country5").attr('readonly', false);
             $("#Country6").attr('readonly', false);
 
-            $("#Country1").val('');
-            $("#Country2").val('');
-            $("#Country3").val('');
-            $("#Country4").val('');
-            $("#Country5").val('');
-            $("#Country6").val('');
+            //$("#Country1").val('');
+            //$("#Country2").val('');
+            //$("#Country3").val('');
+            //$("#Country4").val('');
+            //$("#Country5").val('');
+            //$("#Country6").val('');
         }
+
 
     </script>
 }

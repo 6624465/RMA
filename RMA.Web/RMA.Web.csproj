@@ -321,6 +321,7 @@
     <Content Include="Content\bootstrap\mixins.less" />
     <Content Include="App_Browsers\qt.browser" />
     <Content Include="COOHeaderTemplate\DOC250118.pdf" />
+    <Content Include="COOHeaderTemplate\COOPdf.pdf" />
     <None Include="Properties\PublishProfiles\RMAS.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\icheck.js" />
