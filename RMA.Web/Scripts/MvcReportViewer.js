@@ -36,12 +36,18 @@
         }
 
         // 2. Add Print button for non-IE browsers
-        if (!isIE) {
+        if (!isIE && window.showPrintButton) {
             var buttonHtml = $('#non-ie-print-button').html();
             $('#ReportViewer_ctl05 > div').append(buttonHtml);
             $('#PrintButton').click(function(e) {
                 e.preventDefault();
                 printReport();
+            });
+
+            $('#mvcreportviewer-btn-print').hover(function () {
+                $(this).css('cursor', 'pointer').css('border', '1px solid rgb(51, 102, 153)').css('background-color', 'rgb(221, 238, 247)');
+            }, function () {
+                $(this).css('cursor', 'pointer').css('border', '1px solid transparent').css('background-color', 'transparent');
             });
         }
     });

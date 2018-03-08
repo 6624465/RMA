@@ -21,11 +21,10 @@
                     </ol>
                 </section>
             </div>
-            <div class="box-tools pull-right">
-                @if (UTILITY.HasRight("ProductAdd"))
-                {
-                    <button class="btn btn-box-tool" type="button" onclick="AddProduct()"><i class="fa fa-plus"></i>&nbsp;Add New Product</button>
-                }                
+            <div class="box-tools pull-right">                 
+                @Html.Button("<i class='fa fa-plus'></i>&nbsp;Add New Product", 
+                    new { @class = "btn btn-box-tool", onclick = "AddProduct()" },
+                    SECURABLE.MASTER_ACTION_PRODUCTADD)
             </div>
         </div>
         <div class="box-body">
@@ -61,8 +60,9 @@
                                         }
                                     </td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" onclick="EditProduct('@Model[i].ProductCode','@Model[i].ModelNo')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="DeleteProduct('@Model[i].ProductCode', '@Model[i].ModelNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                                        @Html.Button("<i class='fa fa-pencil-square-o'></i>&nbsp;Edit", new { @class = "btn btn-primary btn-sm", onclick = "EditProduct('" + Model[i].ProductCode + "','" + Model[i].ModelNo + "')" }, SECURABLE.MASTER_ACTION_PRODUCTEDIT)
+                                        @Html.Button("<i class='fa fa-trash-o'></i>&nbsp;Edit", new { @class = "btn btn-danger btn-sm", onclick = "EditProduct('" + Model[i].ProductCode + "','" + Model[i].ModelNo + "')" }, SECURABLE.MASTER_ACTION_PRODUCTDELETE)
+                                        
                                     </td>
                                 </tr>
                             }
@@ -70,7 +70,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
         <div class="box-footer">
             <div class="row">
@@ -109,12 +108,12 @@
                     $('#ProductModal').modal('show');
                 },
                 error: function (err) {
-                    
+
                 }
             });
         }
         //function SaveCategoryGroup() {
-        //    
+        //
         //    //if ($('#frmProductCategory').valid()) {
         //        $('#frmProductCategory').submit();
         //    }
@@ -152,7 +151,7 @@
                     $('#ProductModal').modal('show');
                 },
                 error: function (err) {
-                    
+
                 }
             });
         }
@@ -239,32 +238,20 @@
                                 objinner.push('<span class="badge bg-red">Inactive</span>');
 
                             var htmlAction = '';
-                            @if(UTILITY.HasRight("ProductEdit"))
+                            @if(CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_PRODUCTEDIT))
                             {
-                                <text>htmlAction += '<button class="btn btn-primary btn-sm" onclick="EditProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>&nbsp;';</text>
+                                <text>
+                                htmlAction += '<button class="btn btn-primary btn-sm" onclick="EditProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>&nbsp;';
+                                </text>
                             }
-                            else
-                            {
-                                <text>htmlAction += '<button class="btn btn-primary btn-sm" disabled="disabled"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>&nbsp;';</text>
-                            }
+                            
                             if (result['products'][key]['Status'])
                             {
-                                @if(UTILITY.HasRight("ProductDelete"))
-                            {
-                                <text>htmlAction += '<button class="btn btn-danger btn-sm" onclick="DeleteProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>'</text>;
+                                @if(CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_PRODUCTDELETE))
+                                {
+                                    <text>htmlAction += '<button class="btn btn-danger btn-sm" onclick="DeleteProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>'</text>;
+                                }                                
                             }
-                            else
-                            {
-                                <text>htmlAction += '<button class="btn btn-danger btn-sm" disabled="disabled"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>'</text>;
-                            }
-                            }
-                            else
-                            {
-                               htmlAction += '<button class="btn btn-danger btn-sm" disabled="disabled" onclick="DeleteProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>'
-                            }
-
-
-
                             objinner.push(htmlAction);
                             dataSet.push(objinner);
                         }

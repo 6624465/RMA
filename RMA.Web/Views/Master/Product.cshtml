@@ -87,7 +87,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            @if (UTILITY.HasRight("ProductSave"))
+            @if (CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_PRODUCTSAVE))
             {
                 <button type="button" onclick="SaveProduct()" class="btn btn-danger btn-frmt green btn-sm">
                     <i class="fa fa-floppy-o"></i>&nbsp;Save

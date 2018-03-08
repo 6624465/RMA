@@ -33,39 +33,39 @@ namespace RMA.Web
         public static string CONFIG_LOOKUPCATEGORY_CURRENCY = "Currency";
 
 
-        public static string SECURABLE_ADMINISTRATION = "Administration";
-        public static string SECURABLE_COMPANYPROFILE = "CompanyProfile";
-        public static string SECURABLE_COMPANYPROFILEEDIT = "CompanyProfileEdit";
-        public static string SECURABLE_COMPANYPROFILESAVE = "CompanyProfileSave";
-        public static string SECURABLE_CONFIG = "Config";
-        public static string SECURABLE_CUSTOMERADD = "CustomerAdd";
-        public static string SECURABLE_CUSTOMERDELETE = "CustomerDelete";
-        public static string SECURABLE_CUSTOMEREDIT = "CustomerEdit";
-        public static string SECURABLE_CUSTOMERINVOICEADD = "CustomerInvoiceAdd";
-        public static string SECURABLE_CUSTOMERINVOICEDELETE = "CustomerInvoiceDelete";
-        public static string SECURABLE_CUSTOMERINVOICEEDIT = "CustomerInvoiceEdit";
-        public static string SECURABLE_CUSTOMERINVOICELIST = "CustomerInvoiceList";
-        public static string SECURABLE_CUSTOMERINVOICESAVE = "CustomerInvoiceSave";
-        public static string SECURABLE_CUSTOMERS = "Customers";
-        public static string SECURABLE_CUSTOMERSAVE = "CustomerSave";
-        public static string SECURABLE_MANAGEMENTREPORTS = "ManagementReports";
-        public static string SECURABLE_MASTER = "Master";
-        public static string SECURABLE_OPERATIONALREPORTS = "OperationalReports";
-        public static string SECURABLE_PRODUCTADD = "ProductAdd";
-        public static string SECURABLE_PRODUCTDELETE = "ProductDelete";
-        public static string SECURABLE_PRODUCTEDIT = "ProductEdit";
-        public static string SECURABLE_PRODUCTS = "Products";
-        public static string SECURABLE_PRODUCTSAVE = "ProductSave";
-        public static string SECURABLE_REPORTS = "Reports";
-        public static string SECURABLE_ROLERIGHTS = "RoleRights";
-        public static string SECURABLE_SERIALNOINVOICE = "SerialNoInvoice";
-        public static string SECURABLE_TRANSACTIONS = "Transactions";
-        public static string SECURABLE_USERSLIST = "UsersList";
-        public static string SECURABLE_VENDORINVOICEADD = "VendorInvoiceAdd";
-        public static string SECURABLE_VENDORINVOICEDELETE = "VendorInvoiceDelete";
-        public static string SECURABLE_VENDORINVOICEEDIT = "VendorInvoiceEdit";
-        public static string SECURABLE_VENDORINVOICELIST = "VendorInvoiceList";
-        public static string SECURABLE_VENDORINVOICESAVE = "VendorInvoiceSave";
+        //public static string SECURABLE_ADMINISTRATION = "Administration";
+        //public static string SECURABLE_COMPANYPROFILE = "CompanyProfile";
+        //public static string SECURABLE_COMPANYPROFILEEDIT = "CompanyProfileEdit";
+        //public static string SECURABLE_COMPANYPROFILESAVE = "CompanyProfileSave";
+        //public static string SECURABLE_CONFIG = "Config";
+        //public static string SECURABLE_CUSTOMERADD = "CustomerAdd";
+        //public static string SECURABLE_CUSTOMERDELETE = "CustomerDelete";
+        //public static string SECURABLE_CUSTOMEREDIT = "CustomerEdit";
+        //public static string SECURABLE_CUSTOMERINVOICEADD = "CustomerInvoiceAdd";
+        //public static string SECURABLE_CUSTOMERINVOICEDELETE = "CustomerInvoiceDelete";
+        //public static string SECURABLE_CUSTOMERINVOICEEDIT = "CustomerInvoiceEdit";
+        //public static string SECURABLE_CUSTOMERINVOICELIST = "CustomerInvoiceList";
+        //public static string SECURABLE_CUSTOMERINVOICESAVE = "CustomerInvoiceSave";
+        //public static string SECURABLE_CUSTOMERS = "Customers";
+        //public static string SECURABLE_CUSTOMERSAVE = "CustomerSave";
+        //public static string SECURABLE_MANAGEMENTREPORTS = "ManagementReports";
+        //public static string SECURABLE_MASTER = "Master";
+        //public static string SECURABLE_OPERATIONALREPORTS = "OperationalReports";
+        //public static string SECURABLE_PRODUCTADD = "ProductAdd";
+        //public static string SECURABLE_PRODUCTDELETE = "ProductDelete";
+        //public static string SECURABLE_PRODUCTEDIT = "ProductEdit";
+        //public static string SECURABLE_PRODUCTS = "Products";
+        //public static string SECURABLE_PRODUCTSAVE = "ProductSave";
+        //public static string SECURABLE_REPORTS = "Reports";
+        //public static string SECURABLE_ROLERIGHTS = "RoleRights";
+        //public static string SECURABLE_SERIALNOINVOICE = "SerialNoInvoice";
+        //public static string SECURABLE_TRANSACTIONS = "Transactions";
+        //public static string SECURABLE_USERSLIST = "UsersList";
+        //public static string SECURABLE_VENDORINVOICEADD = "VendorInvoiceAdd";
+        //public static string SECURABLE_VENDORINVOICEDELETE = "VendorInvoiceDelete";
+        //public static string SECURABLE_VENDORINVOICEEDIT = "VendorInvoiceEdit";
+        //public static string SECURABLE_VENDORINVOICELIST = "VendorInvoiceList";
+        //public static string SECURABLE_VENDORINVOICESAVE = "VendorInvoiceSave";
 
         //public static DateTime SingaporeTime(this DateTime value)
         //{
@@ -112,5 +112,70 @@ namespace RMA.Web
                 return false;
 
         }
+    }
+
+    public static class SECURABLE
+    {
+        /* securable key generator sql code
+        Set nocount On;
+        Select * into #TempLookup From security.Securables 
+        Where GroupID <> ''
+        Select * From #TempLookup
+
+
+        Declare @GroupID nvarchar(30);
+        Declare @SecurableItem nvarchar(30);
+        Declare @ActionType nvarchar(30);
+        While (Select Count(0) From #TempLookup) > 0
+        Begin
+            Select Top(1) @GroupID = GroupID, 
+				          @SecurableItem = SecurableItem,
+				          @ActionType = ActionType From #TempLookup Order By Sequence asc
+            print 'public static string ' + UPPER(@GroupID) + '_' + UPPER(@ActionType) + '_' + UPPER(@SecurableItem) + ' = "' + @SecurableItem + '";'
+	        --print '<add key="' + UPPER(@lookupCode) + '_' + convert(nvarchar(20), @branchId) + '" value="' + convert(nvarchar(20), @lookupId) + '" />'
+
+            Delete From #TempLookup Where GroupID = @GroupID and SecurableItem = @SecurableItem;
+        End
+
+        Drop table #TempLookup
+        Set nocount Off; 
+        */
+
+        public static string _TOPMENU_MASTER = "Master";
+        public static string _TOPMENU_TRANSACTIONS = "Transactions";
+        public static string _TOPMENU_ADMINISTRATION = "Administration";
+        public static string _TOPMENU_REPORTS = "Reports";
+
+        public static string MASTER_MENU_PRODUCTS = "Products";
+        public static string MASTER_MENU_CUSTOMERS = "Customers";
+        public static string TRANSACTIONS_MENU_VENDORINVOICELIST = "VendorInvoiceList";
+        public static string TRANSACTIONS_MENU_CUSTOMERINVOICELIST = "CustomerInvoiceList";
+        public static string TRANSACTIONS_MENU_SERIALNOINVOICE = "SerialNoInvoice";
+        public static string ADMINISTRATION_MENU_COMPANYPROFILE = "CompanyProfile";
+        public static string ADMINISTRATION_MENU_ROLERIGHTS = "RoleRights";
+        public static string ADMINISTRATION_MENU_USERSLIST = "UsersList";
+        public static string ADMINISTRATION_MENU_CONFIG = "Config";
+        public static string REPORTS_MENU_OPERATIONALREPORTS = "OperationalReports";
+        public static string REPORTS_MENU_MANAGEMENTREPORTS = "ManagementReports";
+
+        public static string MASTER_ACTION_PRODUCTEDIT = "ProductEdit";
+        public static string MASTER_ACTION_PRODUCTSAVE = "ProductSave";
+        public static string MASTER_ACTION_PRODUCTDELETE = "ProductDelete";
+        public static string MASTER_ACTION_PRODUCTADD = "ProductAdd";
+        public static string MASTER_ACTION_CUSTOMEREDIT = "CustomerEdit";
+        public static string MASTER_ACTION_CUSTOMERSAVE = "CustomerSave";
+        public static string MASTER_ACTION_CUSTOMERDELETE = "CustomerDelete";
+        public static string MASTER_ACTION_CUSTOMERADD = "CustomerAdd";
+        public static string TRANSACTIONS_ACTION_VENDORINVOICEEDIT = "VendorInvoiceEdit";
+        public static string TRANSACTIONS_ACTION_VENDORINVOICESAVE = "VendorInvoiceSave";
+        public static string TRANSACTIONS_ACTION_VENDORINVOICEDELETE = "VendorInvoiceDelete";
+        public static string TRANSACTIONS_ACTION_VENDORINVOICEADD = "VendorInvoiceAdd";
+        public static string TRANSACTIONS_ACTION_CUSTOMERINVOICEEDIT = "CustomerInvoiceEdit";
+        public static string TRANSACTIONS_ACTION_CUSTOMERINVOICESAVE = "CustomerInvoiceSave";
+        public static string TRANSACTIONS_ACTION_CUSTOMERINVOICEDELETE = "CustomerInvoiceDelete";
+        public static string TRANSACTIONS_ACTION_CUSTOMERINVOICEADD = "CustomerInvoiceAdd";
+        public static string ADMINISTRATION_ACTION_COMPANYPROFILEEDIT = "CompanyProfileEdit";
+        public static string ADMINISTRATION_ACTION_COMPANYPROFILESAVE = "CompanyProfileSave";
+
     }
 }
