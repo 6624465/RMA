@@ -20,12 +20,9 @@
                 </section>
             </div>
             <div class="box-tools">
-                @if (UTILITY.HasRight("CustomerAdd"))
-                {
-                    @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Contact",
-                    "Customer", "Customer",
-                    new { customerCode = "" }, new { @class = "btn btn-default btn-sm" });
-                }
+                @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Contact",
+                 "Customer", "Customer",
+                 new { customerCode = "" }, new { @class = "btn btn-default btn-sm" }, SECURABLE.MASTER_ACTION_CUSTOMERADD);
             </div>
         </div>
         <div class="box-body">
