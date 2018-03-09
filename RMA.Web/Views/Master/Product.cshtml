@@ -87,12 +87,9 @@
             </div>
         </div>
         <div class="modal-footer">
-            @if (CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_PRODUCTSAVE))
-            {
-                <button type="button" onclick="SaveProduct()" class="btn btn-danger btn-frmt green btn-sm">
-                    <i class="fa fa-floppy-o"></i>&nbsp;Save
-                </button>
-            }
+            @Html.Button("<i class='fa fa-floppy-o'></i>&nbsp;Save",
+                 new { @class = "btn btn-danger btn-frmt green btn-sm", onclick = "SaveProduct()" },
+                 SECURABLE.MASTER_ACTION_PRODUCTSAVE)
             <button type="reset" class="btn btn-default btn-frmt btn-sm" data-dismiss="modal">
                 <i class="fa fa-times"></i>Cancel
             </button>
