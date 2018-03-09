@@ -31,6 +31,8 @@ namespace RMA.Web
         public static string CONFIG_LOOKUPCATEGORY_CATEGORY = "CategoryGroup";
         //public static string CONFIG_LOOKUPCATEGORY_PRODUCTCATEGORY = "ProductCategory";
         public static string CONFIG_LOOKUPCATEGORY_CURRENCY = "Currency";
+        public static string DEFAULT_DECLARANT = "Elaine Krishnan";
+        
 
 
         //public static string SECURABLE_ADMINISTRATION = "Administration";

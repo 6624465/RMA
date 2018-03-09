@@ -37,6 +37,11 @@ namespace RMA.Web.Controllers
 
             var branchCode = new BranchBO().GetList().Where(x => x.BranchID == BRANCH_ID).Select(x => x).FirstOrDefault();
 
+            var defaultDeclarant = new DeclarantBO().GetList(BRANCH_ID).Where(x => x.DeclarantName == RMA.Web.UTILITY.DEFAULT_DECLARANT).FirstOrDefault();
+             
+
+
+
 
             var branchprofile = new BranchBO().GetBranch(new Branch { BranchCode = branchCode.BranchCode });
 
@@ -54,6 +59,16 @@ namespace RMA.Web.Controllers
                 cooHeader.CreatedOn = DateTime.Now;
                 cooHeader.IsInvoiceConfirm = true;
                 cooHeader.IsCertified = false;
+                cooHeader.DeclarantName = "";
+                cooHeader.Designation = "";
+
+                if (defaultDeclarant != null)
+                {
+                    cooHeader.DeclarantName = defaultDeclarant.DeclarantName;
+                    cooHeader.Designation = defaultDeclarant.Designation;
+
+                }
+
 
             }
             else
@@ -444,13 +459,55 @@ namespace RMA.Web.Controllers
                 pdfFormFields.SetField("QUANTITY", "QUANTITY(Pieces)");
                 pdfFormFields.SetField("ORIGIN", "ORIGIN");
                 pdfFormFields.SetField("PageNo", PageNo.ToString());
-                pdfFormFields.SetField("IsConformation", IsConfirmation.ToString());
-                pdfFormFields.SetField("Country1", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country1 != null ? cooHeader.Country1.ToString() : "" : "");
-                pdfFormFields.SetField("Country2", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country2 != null ? cooHeader.Country2.ToString() : "" : "");
-                pdfFormFields.SetField("Country3", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country3 != null ? cooHeader.Country3.ToString() : "" : "");
-                pdfFormFields.SetField("Country4", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country4 != null ? cooHeader.Country4.ToString() : "" : "");
-                pdfFormFields.SetField("Country5", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country5 != null ? cooHeader.Country5.ToString() : "" : "");
-                pdfFormFields.SetField("Country6", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country6 != null ? cooHeader.Country6.ToString() : "" : "");
+
+                var country1 = "";
+                var country2 = "";
+
+                if (cooHeader.IsInvoiceConfirm != true)
+                {
+                    if (cooHeader.Country1 != null)
+                    {
+                        country1 = cooHeader.Country1.ToString();
+                    }
+                    if (cooHeader.Country2 != null)
+                    {
+                        country1 = country1 + ", " + cooHeader.Country2.ToString() ;
+                    }
+
+
+                    if (cooHeader.Country3 != null)
+                    {
+                        country2 = cooHeader.Country3.ToString();
+                    }
+                    if (cooHeader.Country4 != null)
+                    {
+                        country2 = country2 + ", " + cooHeader.Country4.ToString();
+                    }
+                    if (cooHeader.Country5 != null)
+                    {
+                        country2 = country2 + ", " + cooHeader.Country5.ToString();
+                    }
+                    if (cooHeader.Country6 != null)
+                    {
+                        country2 = country2 + ", " + cooHeader.Country6.ToString();
+                    }
+
+                }
+
+                pdfFormFields.SetField("IsConformation", IsConfirmation.ToString() + country1);
+                pdfFormFields.SetField("Country2", cooHeader.IsInvoiceConfirm != true ? country2 : "");
+
+
+
+                //pdfFormFields.SetField("Country1", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country1 != null ? cooHeader.Country1.ToString() : "" : "");
+                //pdfFormFields.SetField("Country2", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country2 != null ? cooHeader.Country2.ToString() : "" : "");
+                //pdfFormFields.SetField("Country3", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country3 != null ? cooHeader.Country3.ToString() : "" : "");
+                //pdfFormFields.SetField("Country4", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country4 != null ? cooHeader.Country4.ToString() : "" : "");
+                //pdfFormFields.SetField("Country5", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country5 != null ? cooHeader.Country5.ToString() : "" : "");
+                //pdfFormFields.SetField("Country6", cooHeader.IsInvoiceConfirm != true ? cooHeader.Country6 != null ? cooHeader.Country6.ToString() : "" : "");
+
+
+
                 int count = dcount;
                 for (int i = 0; i < validcount; i++)
                 {
