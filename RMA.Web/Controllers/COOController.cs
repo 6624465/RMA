@@ -53,7 +53,7 @@ namespace RMA.Web.Controllers
             ViewBag.FileName = "";
             if (DocumentNo == "")
             {
-                cooHeader.COODetails = new List<COODetail>();
+                cooHeader.COODetails = new List<COODetail>(); 
                 cooHeader.InvoiceDate = DateTime.Now;
                 cooHeader.DepartureDate = DateTime.Now;
                 cooHeader.CreatedOn = DateTime.Now;
