@@ -56,12 +56,9 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (UTILITY.HasRight("CustomerSave"))
-                                        {
-                                            @Html.EncodedActionLink("<i class='fa fa-pencil-square-o' aria-hidden='true'></i>&nbsp;Edit",
-                                            "Customer", "Customer",
-                                            new { customerCode = Model[i].CustomerCode }, new { @class = "btn btn-primary btn-sm" })
-                                        }
+                                        @Html.EncodedActionLink("<i class='fa fa-pencil-square-o' aria-hidden='true'></i>&nbsp;Edit",
+                                         "Customer", "Customer",
+                                         new { customerCode = Model[i].CustomerCode }, new { @class = "btn btn-primary btn-sm" }, SECURABLE.MASTER_ACTION_CUSTOMERSAVE)
                                         @if (UTILITY.HasRight("CustomerDelete"))
                                         {
                                             <button id="btnDel" class="btn btn-danger btn-sm" type="button" onclick="DeleteCustomer('@Model[i].CustomerName', '@Model[i].CustomerCode')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
