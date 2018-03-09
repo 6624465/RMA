@@ -126,7 +126,7 @@ namespace RMA.Web.HtmlHelpers
             var hasRight = true;
             if(!string.IsNullOrWhiteSpace(roleRightKey))
                 hasRight = checkHasRight(roleRightKey);
-
+            
             string queryString = string.Empty;
             string htmlAttributesString = string.Empty;
             if (routeValues != null)
