@@ -22,7 +22,7 @@
             <div class="box-tools">
                 @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Contact",
                  "Customer", "Customer",
-                 new { customerCode = "" }, new { @class = "btn btn-default btn-sm" }, SECURABLE.MASTER_ACTION_CUSTOMERADD);
+                 new { customerCode = "" }, new { @class = "btn btn-default btn-sm" }, SECURABLE.MASTER_ACTION_ADDCUSTOMER);
             </div>
         </div>
         <div class="box-body">
@@ -57,13 +57,13 @@
                                     </td>
                                     <td>                                        
 
-                                        @Html.EncodedActionLink("<i class='fa fa-pencil-square-o' aria-hidden='true'></i>&nbsp;Edit",
+                                        @Html.EncodedActionLink("<i class='fa fa-pencil-square-o'></i>&nbsp;Edit",
                                           "Customer", "Customer",
-                                          new { customerCode = Model[i].CustomerCode }, new { @class = "btn btn-primary btn-sm" }, SECURABLE.MASTER_ACTION_CUSTOMERSAVE)
+                                          new { customerCode = Model[i].CustomerCode }, new { @class = "btn btn-primary btn-sm" }, SECURABLE.MASTER_ACTION_EDITCUSTOMER)
 
                                         @Html.Button("<i class='fa fa-trash-o'></i>&nbsp;Delete", new {
                                            @class = "btn btn-danger btn-sm", id = "btnDel", onclick = "DeleteCustomer('" + Model[i].CustomerName + "', '" + Model[i].CustomerCode + "')"
-                                       }, SECURABLE.MASTER_ACTION_CUSTOMERDELETE)
+                                       }, SECURABLE.MASTER_ACTION_DELETECUSTOMER)
 
                                     </td>
                                 </tr>
@@ -83,7 +83,7 @@
         </div>
     </div>
 </section>
-@using (Html.BeginForm("DeleteCustomer", "Customer", FormMethod.Post, new { id = "frmDeleteCustomer", name = "frmDeleteCustomer" }))
+@using (Html.RmaBeginForm(Url.Content("~/Customer/DeleteCustomer"), FormMethod.Post, new { id = "frmDeleteCustomer", name = "frmDeleteCustomer" },SECURABLE.MASTER_ACTION_DELETECUSTOMER))
 {
     @Html.Hidden("CustomerCode")
 }
@@ -170,30 +170,29 @@
                                     objinner.push('<span class="badge bg-red">Inactive</span>');
 
                                 var htmlAction = '';
-                                @if(UTILITY.HasRight("CustomerEdit"))
+                                @if (CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_EDITCUSTOMER))
                                 {
                                     <text>htmlAction += '<a class="btn btn-primary btn-sm" href="' + '@Url.Content("~/Customer/Customer")' + '?q=' + result['customers'][key]['EncryptStr'] + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>&nbsp;';</text>
                                 }
-                                else
-                                {
-                                    <text>htmlAction += '<button class="btn btn-primary btn-sm" disabled="disabled"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</button>&nbsp;';</text>
-                                }
+                               //else
+                               //{
+                                  //<text>htmlAction += '<button class="btn btn-primary btn-sm" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</button>&nbsp;';</text>
+                                //}
                                 if (result['customers'][key]['Status']) {
-
-                                    @if(UTILITY.HasRight("CustomerDelete"))
+                                    @if (CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_DELETECUSTOMER))
                                     {
 
                                     <text>htmlAction += '<button id="btnDel" class="btn btn-danger btn-sm" type="button" onclick="DeleteCustomer(\'' + result['customers'][key]['CustomerName'] + '\', \'' + result['customers'][key]['CustomerCode'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>';</text>
 
                                     }
-                                    else
-                                    {
-                                    <text>htmlAction += '<button class="btn btn-danger btn-sm" type="button" disabled="disabled"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>';</text>
+                                    //else
+                                    //{
+                                   // <text>htmlAction += '<button class="btn btn-danger btn-sm" type="button" ><i class="fa fa-trash-o"></i>&nbsp;Delete</button>';</text>
+                               // }
                                 }
-                                }
-                                else {
-                                    htmlAction += '<button id="btnDel" disabled="disabled" class="btn btn-danger btn-sm" type="button" onclick="DeleteCustomer(\'' + result['customers'][key]['CustomerName'] + '\', \'' + result['customers'][key]['CustomerCode'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>';
-                                }
+                                //else {
+                                   // htmlAction += '<button id="btnDel"  class="btn btn-danger btn-sm" type="button" onclick="DeleteCustomer(\'' + result['customers'][key]['CustomerName'] + '\', \'' + result['customers'][key]['CustomerCode'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>';
+                              //  }
 
 
                                 objinner.push(htmlAction);
@@ -215,6 +214,7 @@
         }
 
         function DeleteCustomer(customerName, customerCode) {
+            debugger;
             var r = confirm('Are you sure do you want to delete ' + customerName);
             if (r) {
                 $('#CustomerCode').val(customerCode);

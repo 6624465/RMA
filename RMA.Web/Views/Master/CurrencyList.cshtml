@@ -21,7 +21,13 @@
             </div>
             
             <div class="box-tools">
-                <button class="btn btn-default btn-sm" type="button" onclick="AddProductCategory()"><i class="fa fa-plus"></i>&nbsp;Add New Currency</button>
+                @*<button class="btn btn-default btn-sm" type="button" onclick="AddProductCategory()"><i class="fa fa-plus"></i>&nbsp;Add New Currency</button>*@
+
+                @Html.Button("<i class='fa fa-plus'></i>&nbsp;Add New Currency", new
+            {
+                @class = "btn btn-default btn-sm",
+                onclick = "AddProductCategory()"
+            }, SECURABLE.MASTER_ACTION_ADDCURRENCY)
             </div>
         </div>
         <div class="box-body">
@@ -42,7 +48,14 @@
                                     <td>@Model[i].LookupCode</td>
                                     <td>@Model[i].LookupDescription</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" onclick="EditProductCategory(@Model[i].LookupID)"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
+                                        @*<button class="btn btn-primary btn-sm" onclick="EditProductCategory(@Model[i].LookupID)"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>*@
+
+                                        @Html.Button("<i class='fa fa-pencil-square-o'></i>&nbsp;Edit", new
+                                   {
+                                       @class = "btn btn-primary btn-sm",
+                                       onclick = "EditProductCategory('" + Model[i].LookupID + "')"
+                                   }, SECURABLE.MASTER_ACTION_EDITCURRENCY)
+
                                         @*<button class="btn btn-danger btn-sm" onclick="DeleteProductCategory(@Model[i].LookupID)"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>*@
                                     </td>
                                 </tr>
@@ -63,7 +76,7 @@
         </div>
     </div>
 </section>
-@using (Html.BeginForm("Currency", "Master", FormMethod.Post, new { id = "frmProductCategory", name = "frmProductCategory" }))
+@using (Html.RmaBeginForm(Url.Content("~/Master/Currency"), FormMethod.Post, new { id = "frmProductCategory", name = "frmProductCategory" }, SECURABLE.MASTER_ACTION_SAVECURRENCY))
 {
     <div id="ProductCategoryModal" class="modal fade" role="dialog">
     </div>
@@ -97,6 +110,7 @@
         });
 
         function EditProductCategory(lookupID) {
+            debugger;
             $.ajax({
                 url: '@Url.Content("~/Master/Currency?lookupID=")' + lookupID,
                 method: 'get',

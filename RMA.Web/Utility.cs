@@ -144,11 +144,15 @@ namespace RMA.Web
         */
 
         public static string ADMINISTRATION_MENU_COMPANYPROFILE = "CompanyProfile";
+
         public static string ADMINISTRATION_MENU_ROLERIGHTS = "RoleRights";
+
         public static string ADMINISTRATION_MENU_USERLIST = "UserList";
+
         public static string MASTER_MENU_CURRENCY = "Currency";
         public static string MASTER_MENU_PRODUCTS = "Products";
         public static string MASTER_MENU_CUSTOMER = "Customer";
+
         public static string TRANSACTION_MENU_MATERIALINWARD = "MaterialInward";
         public static string TRANSACTION_MENU_MATERIALOUTWARD = "MaterialOutward";
         public static string TRANSACTION_MENU_RMAVALIDATION = "RMAValidation";
@@ -159,51 +163,83 @@ namespace RMA.Web
         public static string TRANSACTION_MENU_COO = "COO";
         public static string REPORTS_MENU_OPRREPORTS = "OprReports";
         public static string REPORTS_MENU_MGMTREPORTS = "MgmtReports";
+
+
+        /*COMPANY PROFILE*/
+
         public static string ADMINISTRATION_ACTION_COMPANYPROFILEEDIT = "CompanyProfileEdit";
         public static string ADMINISTRATION_ACTION_COMPANYPROFILESAVE = "CompanyProfileSave";
+
+        /* USER LIST */
         public static string ADMINISTRATION_ACTION_ADDUSER = "AddUser";
         public static string ADMINISTRATION_ACTION_DELETEUSER = "DeleteUser";
+
+        /* CURRENCY MASTER */
         public static string MASTER_ACTION_LISTCURRENCY = "ListCurrency";
         public static string MASTER_ACTION_ADDCURRENCY = "AddCurrency";
         public static string MASTER_ACTION_SAVECURRENCY = "SaveCurrency";
         public static string MASTER_ACTION_EDITCURRENCY = "EditCurrency";
         public static string MASTER_ACTION_DELETECURRENCY = "DeleteCurrency";
+
+        /* PRODUCT MASTER */
         public static string MASTER_ACTION_LISTPRODUCT = "ListProduct";
         public static string MASTER_ACTION_ADDPRODUCT = "AddProduct";
         public static string MASTER_ACTION_SAVEPRODUCT = "SaveProduct";
         public static string MASTER_ACTION_EDITPRODUCT = "EditProduct";
         public static string MASTER_ACTION_DELETEPRODUCT = "DeleteProduct";
+        
+        /* CONTACT DATABASE */
         public static string MASTER_ACTION_LISTCUSTOMER = "ListCustomer";
         public static string MASTER_ACTION_ADDCUSTOMER = "AddCustomer";
         public static string MASTER_ACTION_SAVECUSTOMER = "SaveCustomer";
         public static string MASTER_ACTION_EDITCUSTOMER = "EditCustomer";
         public static string MASTER_ACTION_DELETECUSTOMER = "DeleteCustomer";
+
+        /* MATERIAL INWARD */
         public static string TRANSACTION_ACTION_LISTMI = "ListMI";
         public static string TRANSACTION_ACTION_ADDMI = "AddMI";
         public static string TRANSACTION_ACTION_SAVEMI = "SaveMI";
         public static string TRANSACTION_ACTION_EDITMI = "EditMI";
         public static string TRANSACTION_ACTION_DELETEMI = "DeleteMI";
+
+        /* MATERIAL OUTWARD */
         public static string TRANSACTION_ACTION_LISTMO = "ListMO";
         public static string TRANSACTION_ACTION_ADDMO = "AddMO";
         public static string TRANSACTION_ACTION_SAVEMO = "SaveMO";
         public static string TRANSACTION_ACTION_EDITMO = "EditMO";
+
+        /* RMA VALIDATION */
         public static string TRANSACTION_ACTION_LISTRMAVALIDATION = "ListRMAValidation";
         public static string TRANSACTION_ACTION_SAVERMAVALIDATION = "SaveRMAValidation";
+
+        /* VENDOR OUTWARD */
         public static string TRANSACTION_ACTION_LISTVO = "ListVO";
         public static string TRANSACTION_ACTION_SAVEVO = "SaveVO";
+
+        /* VENDRO RETURN */
         public static string TRANSACTION_ACTION_LISTVR = "ListVR";
         public static string TRANSACTION_ACTION_SAVEVR = "SaveVR";
+
+        /* RMA RETURN */
         public static string TRANSACTION_ACTION_LISTRT = "ListRT";
         public static string TRANSACTION_ACTION_ADDRT = "AddRT";
         public static string TRANSACTION_ACTION_SAVERT = "SaveRT";
         public static string TRANSACTION_ACTION_EDITRT = "EditRT";
         public static string TRANSACTION_ACTION_DELETERT = "DeleteRT";
+
+        /* MATERIAL INQUIRY */
         public static string TRANSACTION_ACTION_LISTINQUIRY = "ListInquiry";
+
+        /* COUNTRY OF ORIGIN */
         public static string TRANSACTION_ACTION_LISTCOO = "ListCOO";
         public static string TRANSACTION_ACTION_ADDCOO = "AddCOO";
         public static string TRANSACTION_ACTION_SAVECOO = "SaveCOO";
         public static string TRANSACTION_ACTION_EDITCOO = "EditCOO";
+
+        /* OPERATIONAL REPORTS */
         public static string REPORTS_ACTION_OPRATIONALREPORTS = "OprationalReports";
+
+        /* MANAGEMENT REPORTS */
         public static string REPORTS_ACTION_MANAGEMENTREPORTS = "ManagementReports";
 
 

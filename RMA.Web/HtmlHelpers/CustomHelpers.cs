@@ -195,7 +195,12 @@ namespace RMA.Web.HtmlHelpers
             object htmlAttributes,
             string roleRightKey)
         {
-            if (roleRightKey == "ORDERENTRY.SAVE")
+
+            var hasRight = true;
+            if (!string.IsNullOrWhiteSpace(roleRightKey))
+                hasRight = checkHasRight(roleRightKey);
+
+            if (hasRight)
             {
                 string htmlAttributesString = string.Empty;
                 if (htmlAttributes != null)

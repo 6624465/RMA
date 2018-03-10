@@ -28,9 +28,19 @@
             @Html.HiddenFor(x => x.LookupID)
         </div>
         <div class="modal-footer">
-            <button type="button" onclick="SaveProductCategory()" class="btn btn-danger btn-frmt green btn-sm">
+            @*<button type="button" onclick="SaveProductCategory()" class="btn btn-danger btn-frmt green btn-sm">
                 <i class="fa fa-floppy-o"></i>&nbsp;Save
-            </button>
+            </button>*@
+
+            @Html.Button("<i class='fa fa-floppy-o'></i>&nbsp;Save", new
+         {
+             @class = "btn btn-danger btn-frmt green btn-sm",
+             onclick = "SaveProductCategory()"
+         }, SECURABLE.MASTER_ACTION_SAVECURRENCY)
+
+
+
+
             <button type="reset" class="btn btn-default btn-frmt btn-sm" data-dismiss="modal">
                 <i class="fa fa-times"></i>Cancel
             </button>

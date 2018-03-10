@@ -24,7 +24,7 @@
             <div class="box-tools pull-right">                 
                 @Html.Button("<i class='fa fa-plus'></i>&nbsp;Add New Product", 
                     new { @class = "btn btn-box-tool", onclick = "AddProduct()" },
-                    SECURABLE.MASTER_ACTION_PRODUCTADD)
+                    SECURABLE.MASTER_ACTION_ADDPRODUCT)
             </div>
         </div>
         <div class="box-body">
@@ -60,8 +60,8 @@
                                         }
                                     </td>
                                     <td>
-                                        @Html.Button("<i class='fa fa-pencil-square-o'></i>&nbsp;Edit", new { @class = "btn btn-primary btn-sm", onclick = "EditProduct('" + Model[i].ProductCode + "','" + Model[i].ModelNo + "')" }, SECURABLE.MASTER_ACTION_PRODUCTEDIT)
-                                        @Html.Button("<i class='fa fa-trash-o'></i>&nbsp;Edit", new { @class = "btn btn-danger btn-sm", onclick = "EditProduct('" + Model[i].ProductCode + "','" + Model[i].ModelNo + "')" }, SECURABLE.MASTER_ACTION_PRODUCTDELETE)
+                                        @Html.Button("<i class='fa fa-pencil-square-o'></i>&nbsp;Edit", new { @class = "btn btn-primary btn-sm", onclick = "EditProduct('" + Model[i].ProductCode + "','" + Model[i].ModelNo + "')" }, SECURABLE.MASTER_ACTION_EDITPRODUCT)
+                                        @Html.Button("<i class='fa fa-trash-o'></i>&nbsp;dELETE", new { @class = "btn btn-danger btn-sm", onclick = "DeleteProduct('" + Model[i].ProductCode + "','" + Model[i].ModelNo + "')" }, SECURABLE.MASTER_ACTION_DELETEPRODUCT)
                                         
                                     </td>
                                 </tr>
@@ -81,13 +81,13 @@
         </div>
     </div>    
 </section>
-@using (Html.BeginForm("Product", "Master", FormMethod.Post, new { id = "frmProduct", name = "frmProduct" }))
+@using (Html.RmaBeginForm(Url.Content("~/Master/Product"), FormMethod.Post, new { id = "frmProduct", name = "frmProduct" },SECURABLE.MASTER_ACTION_SAVEPRODUCT))
 {
     <div id="ProductModal" class="modal fade" role="dialog">
     </div>
 }
 
-@using (Html.BeginForm("DeleteProduct", "Master", FormMethod.Post, new { id = "frmDeleteProduct",  name = "frmDeleteProduct" }))
+@using (Html.RmaBeginForm(Url.Content("~/Master/DeleteProduct"), FormMethod.Post, new { id = "frmDeleteProduct",  name = "frmDeleteProduct" },SECURABLE.MASTER_ACTION_DELETEPRODUCT))
 {
     @Html.Hidden("ProductCategoryDescription")
     @Html.Hidden("ProductCode")
@@ -99,6 +99,7 @@
     <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
     <script type="text/javascript">
         function AddProduct() {
+            debugger;
             $.ajax({
                 url: '@Url.Content("~/Master/Product")',
                 method: 'get',
@@ -123,7 +124,7 @@
                 //ProductCode: {
                 //    required: true
                 //},
-                 ProductCategoryDescription: {
+                ProductCategoryDescription: {
                     required: true
                 },
                 ModelNo: {
@@ -142,6 +143,7 @@
         };
 
         function EditProduct(productCode, modelNo) {
+            debugger;
             $.ajax({
                 url: '@Url.Content("~/Master/Product?productCode=")' + productCode + '&modelNo=' + modelNo,
                 method: 'get',
@@ -184,7 +186,7 @@
             }
             ],
             "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
-                var sortColArr = ['ProductCategoryDescription','ProductCode', 'ModelNo', 'Description', 'Status', 'Action'];
+                var sortColArr = ['ProductCategoryDescription', 'ProductCode', 'ModelNo', 'Description', 'Status', 'Action'];
                 var paramData = {};
                 var sExt = "?";
                 var sAnd = "";
@@ -238,20 +240,23 @@
                                 objinner.push('<span class="badge bg-red">Inactive</span>');
 
                             var htmlAction = '';
-                            @if(CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_PRODUCTEDIT))
+                            @if(CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_EDITPRODUCT))
                             {
                                 <text>
                                 htmlAction += '<button class="btn btn-primary btn-sm" onclick="EditProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>&nbsp;';
                                 </text>
                             }
-                            
+
+
                             if (result['products'][key]['Status'])
                             {
-                                @if(CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_PRODUCTDELETE))
+                                @if(CustomHelpers.checkHasRight(SECURABLE.MASTER_ACTION_DELETEPRODUCT))
                                 {
                                     <text>htmlAction += '<button class="btn btn-danger btn-sm" onclick="DeleteProduct(\'' + result['products'][key]['ProductCode'] + '\',\'' + result['products'][key]['ModelNo'] + '\')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>'</text>;
-                                }                                
+                                }
                             }
+
+
                             objinner.push(htmlAction);
                             dataSet.push(objinner);
                         }
