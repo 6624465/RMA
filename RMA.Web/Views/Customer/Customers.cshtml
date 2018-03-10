@@ -20,12 +20,9 @@
                 </section>
             </div>
             <div class="box-tools">
-                @if (UTILITY.HasRight("CustomerAdd"))
-                {
-                    @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Contact",
-                    "Customer", "Customer",
-                    new { customerCode = "" }, new { @class = "btn btn-default btn-sm" });
-                }
+                @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Contact",
+                 "Customer", "Customer",
+                 new { customerCode = "" }, new { @class = "btn btn-default btn-sm" }, SECURABLE.MASTER_ACTION_CUSTOMERADD);
             </div>
         </div>
         <div class="box-body">
@@ -58,17 +55,15 @@
                                             <span class="badge bg-red">Inactive</span>
                                         }
                                     </td>
-                                    <td>
-                                        @if (UTILITY.HasRight("CustomerSave"))
-                                        {
-                                            @Html.EncodedActionLink("<i class='fa fa-pencil-square-o' aria-hidden='true'></i>&nbsp;Edit",
-                                            "Customer", "Customer",
-                                            new { customerCode = Model[i].CustomerCode }, new { @class = "btn btn-primary btn-sm" })
-                                        }
-                                        @if (UTILITY.HasRight("CustomerDelete"))
-                                        {
-                                            <button id="btnDel" class="btn btn-danger btn-sm" type="button" onclick="DeleteCustomer('@Model[i].CustomerName', '@Model[i].CustomerCode')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
-                                        }
+                                    <td>                                        
+
+                                        @Html.EncodedActionLink("<i class='fa fa-pencil-square-o' aria-hidden='true'></i>&nbsp;Edit",
+                                          "Customer", "Customer",
+                                          new { customerCode = Model[i].CustomerCode }, new { @class = "btn btn-primary btn-sm" }, SECURABLE.MASTER_ACTION_CUSTOMERSAVE)
+
+                                        @Html.Button("<i class='fa fa-trash-o'></i>&nbsp;Delete", new {
+                                           @class = "btn btn-danger btn-sm", id = "btnDel", onclick = "DeleteCustomer('" + Model[i].CustomerName + "', '" + Model[i].CustomerCode + "')"
+                                       }, SECURABLE.MASTER_ACTION_CUSTOMERDELETE)
 
                                     </td>
                                 </tr>

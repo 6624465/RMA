@@ -12,68 +12,68 @@ namespace RMA.Web
 {
     public static class UrlEncryptionHelper
     {
-        public static MvcHtmlString EncodedActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
-        {
-            string queryString = string.Empty;
-            string htmlAttributesString = string.Empty;
-            if (routeValues != null)
-            {
-                RouteValueDictionary d = new RouteValueDictionary(routeValues);
-                for (int i = 0; i < d.Keys.Count; i++)
-                {
-                    if (i > 0)
-                    {
-                        queryString += "?";
-                    }
-                    queryString += d.Keys.ElementAt(i) + "=" + d.Values.ElementAt(i);
-                }
-            }
+        //public static MvcHtmlString EncodedActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
+        //{
+        //    string queryString = string.Empty;
+        //    string htmlAttributesString = string.Empty;
+        //    if (routeValues != null)
+        //    {
+        //        RouteValueDictionary d = new RouteValueDictionary(routeValues);
+        //        for (int i = 0; i < d.Keys.Count; i++)
+        //        {
+        //            if (i > 0)
+        //            {
+        //                queryString += "?";
+        //            }
+        //            queryString += d.Keys.ElementAt(i) + "=" + d.Values.ElementAt(i);
+        //        }
+        //    }
 
-            if (htmlAttributes != null)
-            {
-                RouteValueDictionary d = new RouteValueDictionary(htmlAttributes);
-                for (int i = 0; i < d.Keys.Count; i++)
-                {
-                    htmlAttributesString += " " + d.Keys.ElementAt(i) + "='" + d.Values.ElementAt(i) + "'";
-                }
-            }
+        //    if (htmlAttributes != null)
+        //    {
+        //        RouteValueDictionary d = new RouteValueDictionary(htmlAttributes);
+        //        for (int i = 0; i < d.Keys.Count; i++)
+        //        {
+        //            htmlAttributesString += " " + d.Keys.ElementAt(i) + "='" + d.Values.ElementAt(i) + "'";
+        //        }
+        //    }
 
-            //What is Entity Framework??
-            StringBuilder ancor = new StringBuilder();
-            ancor.Append("<a ");
-            if (htmlAttributesString != string.Empty)
-            {
-                ancor.Append(htmlAttributesString);
-            }
-            ancor.Append(" href='");
+        //    //What is Entity Framework??
+        //    StringBuilder ancor = new StringBuilder();
+        //    ancor.Append("<a ");
+        //    if (htmlAttributesString != string.Empty)
+        //    {
+        //        ancor.Append(htmlAttributesString);
+        //    }
+        //    ancor.Append(" href='");
 
-            var strHref = string.Empty;
-            if (controllerName != string.Empty)
-            {
-                //ancor.Append("/" + controllerName);
-                strHref = "~/" + controllerName;
-            }
+        //    var strHref = string.Empty;
+        //    if (controllerName != string.Empty)
+        //    {
+        //        //ancor.Append("/" + controllerName);
+        //        strHref = "~/" + controllerName;
+        //    }
 
-            if (actionName != "Index")
-            {
-                //ancor.Append("/" + actionName);
-                strHref = strHref + "/" + actionName;
-            }
-            if (queryString != string.Empty)
-            {
-                //ancor.Append("?q=" + Encrypt(queryString));
-                strHref = strHref + "/" + "?q=" + Encrypt(queryString);
-            }
+        //    if (actionName != "Index")
+        //    {
+        //        //ancor.Append("/" + actionName);
+        //        strHref = strHref + "/" + actionName;
+        //    }
+        //    if (queryString != string.Empty)
+        //    {
+        //        //ancor.Append("?q=" + Encrypt(queryString));
+        //        strHref = strHref + "/" + "?q=" + Encrypt(queryString);
+        //    }
 
-            var context = new HttpContextWrapper(HttpContext.Current);
-            string hrefUrl = UrlHelper.GenerateContentUrl(strHref, context);
-            ancor.Append(hrefUrl);
-            ancor.Append("'");
-            ancor.Append(">");
-            ancor.Append(linkText);
-            ancor.Append("</a>");
-            return new MvcHtmlString(ancor.ToString());
-        }
+        //    var context = new HttpContextWrapper(HttpContext.Current);
+        //    string hrefUrl = UrlHelper.GenerateContentUrl(strHref, context);
+        //    ancor.Append(hrefUrl);
+        //    ancor.Append("'");
+        //    ancor.Append(">");
+        //    ancor.Append(linkText);
+        //    ancor.Append("</a>");
+        //    return new MvcHtmlString(ancor.ToString());
+        //}
 
         public static string Encrypt(string plainText)
         {
