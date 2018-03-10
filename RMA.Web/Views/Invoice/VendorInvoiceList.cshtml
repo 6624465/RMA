@@ -30,7 +30,7 @@
                 }*@
                 @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Invoice",
                                           "VendorInvoice", "Invoice",
-                                          new { invoiceNo ="", documentNo="" }, new { @class = "btn btn-primary btn-sm" }, SECURABLE.TRANSACTIONS_ACTION_VENDORINVOICEADD)
+                                          new { invoiceNo ="", documentNo="" }, new { @class = "btn btn-primary btn-sm" }, SECURABLE.TRANSACTION_ACTION_ADDMI)
             </div>
         </div>
         <div class="box-body">
@@ -65,8 +65,19 @@
                                     <td>@Model[i].Quantity</td>
                                     <td>@Model[i].UnitPrice</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i>&nbsp;Edit</button>
-                                        <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>&nbsp;Delete</button>
+                                        @*<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i>&nbsp;Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>&nbsp;Delete</button>*@
+
+                                        @Html.Button("<i class='fa fa-floppy-o'></i>&nbsp;Edit", new
+                                     {
+                                         @class = "btn btn-primary btn-sm",
+                                     }, SECURABLE.TRANSACTION_ACTION_EDITMI)
+
+
+                                        @Html.Button("<i class='fa fa-trash'></i>&nbsp;Delete", new
+                                   {
+                                       @class = "btn btn-danger btn-sm",
+                                   }, SECURABLE.TRANSACTION_ACTION_DELETEMI)
                                     </td>
                                 </tr>
                             }
@@ -168,17 +179,20 @@
                                 objinner.push(result['vendorInvoiceList'][key]['Quantity']);
                                 objinner.push(result['vendorInvoiceList'][key]['UnitPrice']);
                                 var htmlAction = '';
-                                @if(UTILITY.HasRight("VendorInvoiceEdit", "Action"))
+                                @if (CustomHelpers.checkHasRight(SECURABLE.TRANSACTION_ACTION_EDITMI))
                                 {
                                     <text>htmlAction += '<a class="btn btn-primary btn-sm" href="' + '@Url.Content("~/Invoice/VendorInvoice")' + '?q=' + result['vendorInvoiceList'][key]['EncryptStr'] + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>&nbsp;';</text>
-                                    <text>htmlAction += '<button class="btn btn-danger btn-sm" onclick="DeleteInvoice(\'' + result['vendorInvoiceList'][key]['InvoiceNo'] + '\', \'' + result['vendorInvoiceList'][key]['EncryptStr'] + '\')"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Delete</button>&nbsp;';</text>
                                 }
-                                else
+                                @if (CustomHelpers.checkHasRight(SECURABLE.TRANSACTION_ACTION_DELETEMI))
+                                   {
+                                        <text>htmlAction += '<button class="btn btn-danger btn-sm" onclick="DeleteInvoice(\'' + result['vendorInvoiceList'][key]['InvoiceNo'] + '\', \'' + result['vendorInvoiceList'][key]['EncryptStr'] + '\')"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Delete</button>&nbsp;';</text>
+                                   }
+                                @*else
                                 {
                                     <text>htmlAction += '<button class="btn btn-primary btn-sm" disabled="disabled"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</button>&nbsp;';</text>
                                     <text>htmlAction += '<button class="btn btn-danger btn-sm" disabled="disabled"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Delete</button>&nbsp;';</text>
 
-                                }
+                                }*@
 
 
                                 objinner.push(htmlAction);
@@ -194,7 +208,7 @@
                     });
                 }
             });
-          
+
             var success = '@TempData["VendorSaved"]';
             if (success) {
                 swal("Created!", "Your Vendor Invoice is Saved Successfully!", "success")

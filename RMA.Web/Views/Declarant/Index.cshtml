@@ -26,7 +26,16 @@
 				</section>
 			</div>
 			<div class="box-tools pull-right">
-				<button class="btn btn-box-tool" type="button" onclick="AddDeclarent()"><i class="fa fa-plus"></i>&nbsp;Add New Declarant</button>
+				@*<button class="btn btn-box-tool" type="button" onclick="AddDeclarent()"><i class="fa fa-plus"></i>&nbsp;Add New Declarant</button>*@
+
+                @Html.Button("<i class='fa fa-plus'></i>&nbsp;Add New Declarant", new
+            {
+                @class = "btn btn-box-tool",
+                onclick = "AddDeclarent()"
+            }, SECURABLE.TRANSACTION_ACTION_ADDCOO)
+
+
+
 
 			</div>
 		</div>
@@ -60,9 +69,16 @@
 										}
 									</td>
 									<td>
-										<button class="btn btn-primary btn-sm" onclick="EditDeclarant('@Model[i].DeclarantName')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
-										<button class="btn btn-danger btn-sm" onclick="DeleteDeclarant('@Model[i].DeclarantName')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
-									</td>
+										@*<button class="btn btn-primary btn-sm" onclick="EditDeclarant('@Model[i].DeclarantName')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>*@
+										
+									
+                                        @Html.Button("<i class='fa fa-pencil-square-o'></i>&nbsp;Edit", new
+                                   {
+                                       @class = "btn btn-primary btn-sm",
+                                       onclick = "EditDeclarant('" + Model[i].DeclarantName + "')"
+                                   }, SECURABLE.TRANSACTION_ACTION_EDITCOO)
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteDeclarant('@Model[i].DeclarantName')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                                    </td>
 								</tr>
 							}
 						</tbody>
@@ -81,7 +97,7 @@
 		</div>
 	</div>
 </section>
-@using (Html.BeginForm("SaveDeclarant", "Declarant", FormMethod.Post, new { id = "frmDeclarant", name = "frmDeclarant" }))
+@using (Html.RmaBeginForm(Url.Content("~/Declarant/SaveDeclarant"), FormMethod.Post, new { id = "frmDeclarant", name = "frmDeclarant" },SECURABLE.TRANSACTION_ACTION_SAVECOO))
 {
 	<div id="DeclarantModal" class="modal fade" role="dialog">
 

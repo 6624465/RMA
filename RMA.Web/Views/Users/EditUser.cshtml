@@ -108,7 +108,18 @@
                     @Html.EncodedActionLink("<i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Clear",
                      "EditUser", "Users",
                      new { userID = "NEW" }, new { @class = "btn btn-default btn-sm" })
-                    <button class="btn btn-danger btn-sm" type="button" onclick="DeleteUser('@Model.UserName','@Model.UserID')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
+                    @*<button class="btn btn-danger btn-sm" type="button" onclick="DeleteUser('@Model.UserName','@Model.UserID')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>*@
+
+                    @Html.Button("<i class='fa fa-trash-o'></i>&nbsp;Delete", new
+               {
+                   @class = "btn btn-danger btn-sm",
+                   onclick = "DeleteUser('" + @Model.UserName + "','" + @Model.UserID + "')"
+               }, SECURABLE.ADMINISTRATION_ACTION_DELETEUSER)
+
+
+
+
+
                     <a href="@Url.Content("~/Users/Index")" class="btn btn-info pull-right btn-sm">
                         <i class="fa fa-backward"></i>
                         Back
@@ -119,7 +130,7 @@
 
     </div>
     }
-    @using (Html.BeginForm("DeleteUser", "Users", FormMethod.Post, new { id = "frmDeleteUser", name = "frmDeleteUser" }))
+    @using (Html.RmaBeginForm(Url.Content("~/Users/DeleteUser"), FormMethod.Post, new { id = "frmDeleteUser", name = "frmDeleteUser" },SECURABLE.ADMINISTRATION_ACTION_DELETEUSER))
     {
         @Html.Hidden("UserID")
     }

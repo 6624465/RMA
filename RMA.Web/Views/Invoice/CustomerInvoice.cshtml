@@ -10,7 +10,7 @@
 }
 
 
-@using (Html.BeginForm("CustomerInvoice", "Invoice", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
+@using (Html.RmaBeginForm(Url.Content("~/Invoice/CustomerInvoice"), FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" },SECURABLE.TRANSACTION_ACTION_SAVEMO))
 {
 
     <section class="content">
@@ -267,27 +267,46 @@
                 </div>
             </div>
             <div class="box-footer">
-                @if (UTILITY.HasRight("CustomerInvoiceSave", "Action"))
+            @if (CustomHelpers.checkHasRight(SECURABLE.TRANSACTION_ACTION_SAVEMO))
                 {
                     if (Model.InvoiceDetailItems == null)
                     {
-                        <button type="button" onclick="ProcessCustomerInvoice();" class="btn btn-danger btn-sm btn-frmt green">
+                        @*<button type="button" onclick="ProcessCustomerInvoice();" class="btn btn-danger btn-sm btn-frmt green">
                             <i class="fa fa-check-square-o"></i>&nbsp;Upload & Process
-                        </button>
-                    }
-                    else if (Model.DocumentNo == null)
+                        </button>*@
+
+                        @Html.Button("<i class='fa fa-check-square-o'></i>&nbsp;Upload & Process", new
                     {
-                        <button type="button" id="btnsave" onclick="SaveCustomerInvoice()" class="btn btn-danger btn-sm btn-frmt green">
-                            <i class="fa fa-pencil-square"></i>&nbsp;Save Customer Invoice
-                        </button>
-                    }
-                    else
-                    {
-                        <button type="button" onclick="ProcessCustomerInvoices();" class="btn btn-danger btn-sm btn-frmt green">
-                            <i class="fa fa-check-square-o"></i>&nbsp;Upload & Process
-                        </button>
-                    }
+                        @class = "btn btn-danger btn-sm btn-frmt green",
+                        onclick = "ProcessCustomerInvoice()"
+                    }, SECURABLE.TRANSACTION_ACTION_SAVEMO)
+
                 }
+                else if (Model.DocumentNo == null)
+                {
+                        @*<button type="button" id="btnsave" onclick="SaveCustomerInvoice()" class="btn btn-danger btn-sm btn-frmt green">
+                            <i class="fa fa-pencil-square"></i>&nbsp;Save Customer Invoice
+                        </button>*@
+
+                        @Html.Button("<i class='fa fa-pencil-square'></i>&nbsp;Save Customer Invoice", new
+                   {
+                       @class = "btn btn-danger btn-sm btn-frmt green",
+                       onclick = "SaveCustomerInvoice()"
+                   }, SECURABLE.TRANSACTION_ACTION_SAVEMO)
+                }
+                else
+                {
+                        @*<button type="button" onclick="ProcessCustomerInvoices();" class="btn btn-danger btn-sm btn-frmt green">
+                            <i class="fa fa-check-square-o"></i>&nbsp;Upload & Process
+                        </button>*@
+
+                        @Html.Button("<i class='fa fa-check-square-o'></i>&nbsp;Upload & Process", new
+                   {
+                       @class = "btn btn-danger btn-sm btn-frmt green",
+                       onclick = "ProcessCustomerInvoices()"
+                   }, SECURABLE.TRANSACTION_ACTION_SAVEMO)
+                }
+            }
                 <button type="button" onclick="location.href = '@Url.Content("~/Invoice/CustomerInvoiceList")'" class="btn btn-default btn-sm btn-frmt ">
                     <i class="fa fa-times"></i>&nbsp;Cancel
                 </button>

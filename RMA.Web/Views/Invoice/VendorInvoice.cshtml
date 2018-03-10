@@ -13,7 +13,7 @@
         }
     </style>
 }
-@using (Html.BeginForm("VendorInvoice", "Invoice", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
+@using (Html.RmaBeginForm(Url.Content("~/Invoice/VendorInvoice"), FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" },SECURABLE.TRANSACTION_ACTION_SAVEMI))
 {
     <section class="content">
         @Html.HiddenFor(x => x.DocumentNo)
@@ -288,7 +288,8 @@
                 </div>
             </div>
             <div class="box-footer">
-                @if (UTILITY.HasRight("VendorInvoiceSave", "Action"))
+           
+               
                 {
                     @*if (Model.InvoiceDetailItems == null)
                         {
@@ -296,17 +297,31 @@
                                 <i class="fa fa-check-square-o"></i>&nbsp;Upload & Process
                             </button>
                         }*@
-                if (Model.DocumentNo == null)
+                @if (Model.DocumentNo == null)
                 {
-                    <button type="button" id="BtnSave" onclick="SaveVendorInvoice()" class="btn btn-success">
+                    @*<button type="button" id="BtnSave" onclick="SaveVendorInvoice()" class="btn btn-success">
                         <i class="fa fa-floppy-o"></i>&nbsp;Save
-                    </button>
+                    </button>*@
+
+                @Html.Button("<i class='fa fa-floppy-o'></i>&nbsp;Save", new
+             {
+                 @class = "btn btn-success",
+                 onclick = "SaveVendorInvoice()"
+             }, SECURABLE.TRANSACTION_ACTION_SAVEMI)
+
+
                 }
                 else
                 {
-                    <button type="button" id="BtnSave" onclick="SaveVendorInvoice()" class="btn btn-success">
+                    @*<button type="button" id="BtnSave" onclick="SaveVendorInvoice()" class="btn btn-success">
                         <i class="fa fa-floppy-o"></i>&nbsp;Update
-                    </button>
+                    </button>*@
+
+                @Html.Button("<i class='fa fa-floppy-o'></i>&nbsp;Update", new
+            {
+                @class = "btn btn-success",
+                onclick = "SaveVendorInvoice()"
+            }, SECURABLE.TRANSACTION_ACTION_SAVEMI)
                 }
                 @*else
                     {
@@ -315,7 +330,7 @@
                             <i class="fa fa-check-square-o"></i>&nbsp;Upload & Process
                         </button>
                     }*@
-                }
+                
                 <button type="button" onclick="location.href = '@Url.Content("~/Invoice/VendorInvoiceList")'" class="btn btn-default btn-sm btn-frmt ">
                     <i class="fa fa-times"></i>&nbsp;Cancel
                 </button>

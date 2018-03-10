@@ -27,7 +27,16 @@
                 </section>
             </div>
             <div class="box-tools pull-right">
-                <button class="btn btn-box-tool" type="button" onclick="AddCOOHeader();"><i class="fa fa-plus"></i>&nbsp;Add New COO</button>
+                @*<button class="btn btn-box-tool" type="button" onclick="AddCOOHeader();"><i class="fa fa-plus"></i>&nbsp;Add New COO</button>*@
+
+                @Html.Button("<i class='fa fa-plus'></i>&nbsp;Add New COO", new
+            {
+                @class = "btn btn-box-tool",
+                onclick = "AddCOOHeader()"
+            }, SECURABLE.TRANSACTION_ACTION_ADDCOO)
+
+
+
 
             </div>
         </div>
@@ -97,7 +106,17 @@
                                     <td>@Model[i].DestinationPort</td>
                                     <td>@Model[i].DeclarantName</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" onclick="EditCOOHeader('@Model[i].DocumentNo')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>
+                                        @*<button class="btn btn-primary btn-sm" onclick="EditCOOHeader('@Model[i].DocumentNo')"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</button>*@
+
+                                        @Html.Button("<i class='fa fa-pencil-square-o'></i>&nbsp;Edit", new
+                                    {
+                                        @class = "btn btn-primary btn-sm",
+                                        onclick = "EditCOOHeader('" + @Model[i].DocumentNo + "')"
+                                    }, SECURABLE.TRANSACTION_ACTION_EDITCOO)
+
+
+
+
                                         <button class="btn btn-danger btn-sm" onclick="DeleteCOOHeader('@Model[i].DocumentNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
                                     </td>
                                 </tr>
@@ -119,7 +138,7 @@
     </div>
 </section>
 
-@using (Html.BeginForm("SAVECOO", "COO", FormMethod.Post, new { id = "frmCOO", name = "frmCOO" }))
+@using (Html.RmaBeginForm(Url.Content("~/COO/SAVECOO"), FormMethod.Post, new { id = "frmCOO", name = "frmCOO" },SECURABLE.TRANSACTION_ACTION_SAVECOO))
 {
     <div id="COOModal" class="modal fade" role="dialog">
 

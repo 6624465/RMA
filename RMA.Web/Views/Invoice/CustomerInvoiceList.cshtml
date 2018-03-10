@@ -20,12 +20,17 @@
                 </section>
             </div>
             <div class="box-tools">
-                @if(UTILITY.HasRight("CustomerInvoiceAdd", "Action"))
+                @*@if(UTILITY.HasRight("CustomerInvoiceAdd", "Action"))
                 {
                     @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Invoice",
                     "CustomerInvoice", "Invoice",
                     new { invoiceNo = "", documentNo = "" }, new { @class = "btn btn-default btn-sm" })
-                }
+                }*@
+                @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New Invoice",
+                                          "CustomerInvoice", "Invoice",
+                                          new { invoiceNo = "", documentNo = "" }, new { @class = "btn btn-primary btn-sm" }, SECURABLE.TRANSACTION_ACTION_ADDMO)
+
+
             </div>
         </div>
         <div class="box-body">
@@ -58,7 +63,16 @@
                                     <td>@Model[i].Quantity</td>
                                     <td>@Model[i].UnitPrice</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i>&nbsp;Edit</button>
+                                        @*<button type="button" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i>&nbsp;Edit</button>*@
+                                    
+                                        @Html.Button("<i class='fa fa-floppy-o'></i>&nbsp;Edit", new
+                                {
+                                    @class = "btn btn-primary btn-sm",
+                                }, SECURABLE.TRANSACTION_ACTION_EDITMO)
+
+
+
+
                                     </td>
                                 </tr>
                             }
@@ -156,14 +170,14 @@
                                 objinner.push(result['customerInvoiceList'][key]['UnitPrice']);
 
                                 var htmlAction = '';
-                                @if (UTILITY.HasRight("CustomerInvoiceEdit", "Action"))
+                                   @if (CustomHelpers.checkHasRight(SECURABLE.TRANSACTION_ACTION_EDITMO))
                                 {
                                     <text>htmlAction += '<a class="btn btn-primary btn-sm" href="' + '@Url.Content("~/Invoice/CustomerInvoice")' + '?q=' + result['customerInvoiceList'][key]['EncryptStr'] + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</a>&nbsp;';</text>
                                 }
-                                else
+                                @*else
                                 {
                                     <text>htmlAction += '<button class="btn btn-primary btn-sm" disabled="disabled"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Edit</button>&nbsp;';</text>
-                                }
+                                }*@
 
                                 objinner.push(htmlAction);
                                 dataSet.push(objinner);

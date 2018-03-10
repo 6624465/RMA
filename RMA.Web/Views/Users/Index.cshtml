@@ -22,7 +22,7 @@
             <div class="box-tools">
                 @Html.EncodedActionLink("<i class='fa fa-plus' aria-hidden='true'></i>&nbsp;New User",
                     "EditUser", "Users",
-                    new { userID = "" }, new { @class = "btn btn-default btn-sm" })
+                    new { userID = "" }, new { @class = "btn btn-default btn-sm" }, SECURABLE.ADMINISTRATION_ACTION_ADDUSER)
             </div>
         </div>
         <div class="box-body">

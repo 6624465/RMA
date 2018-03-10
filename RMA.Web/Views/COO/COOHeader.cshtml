@@ -37,7 +37,7 @@
             </div>
 
         </div>
-        @using (Html.BeginForm("COOHeader", "COO", FormMethod.Post, new { id = "frmCOOHeader", name = "frmCOOHeader", enctype = "multipart/form-data" }))
+        @using (Html.RmaBeginForm(Url.Content("~/COO/COOHeader"), FormMethod.Post, new { id = "frmCOOHeader", name = "frmCOOHeader", enctype = "multipart/form-data" }, SECURABLE.TRANSACTION_ACTION_SAVECOO))
         {
             <div class="box-body ">
                 <fieldset class="form-horizontal cooCss">
@@ -272,10 +272,17 @@
             <div class="box-footer">
                 <div class="row  no-print">
                     <div class="col-xs-12">
-                        <button type="button" onclick="SaveHeader();" id="btnSave" class="btn btn-success btn-sm">
+                        @*<button type="button" onclick="SaveHeader();" id="btnSave" class="btn btn-success btn-sm">
                             <i class="fa fa-save"></i>
                             Save
-                        </button>
+                        </button>*@
+
+                        @Html.Button("<i class='fa fa-save'></i>&nbsp;Save", new
+                {
+                  @class = "btn btn-success btn-sm",
+                 onclick = "SaveHeader()"
+                }, SECURABLE.TRANSACTION_ACTION_SAVECOO)
+
                         <button class="btn btn-danger btn-sm" type="button" onclick="DeleteCOOHeader('@Model.DocumentNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
                         <button class="btn btn-default btn-sm" id="c" type="button" onclick="GenerateCOOHeaderReportPDF('@Model.DocumentNo')"><i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Print</button>
                         <a href="@Url.Content("~/COO/COOHeaderList")" class="btn btn-info pull-right btn-sm">

@@ -4,7 +4,7 @@
 }
 
 <section class="content">
-    @using (Html.BeginForm("SaveRMAOutWard", "RMA", FormMethod.Post, new { id = "frm", name = "frm" }))
+    @using (Html.RmaBeginForm(Url.Content("~/RMA/SaveRMAOutWard"), FormMethod.Post, new { id = "frm", name = "frm" },SECURABLE.TRANSACTION_ACTION_SAVERT))
     {
     <div class="box box-default">
         <div class="box-header with-border">
@@ -72,7 +72,17 @@
             </div>
             <div class="row css10">
                 <div class="col-md-12">
-                    <button class="btn btn-primary btn-sm" type="button" onclick="btnSave()"><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+                    @*<button class="btn btn-primary btn-sm" type="button" onclick="btnSave()"><i class="fa fa-floppy-o"></i>&nbsp;Save</button>*@
+
+                    @Html.Button("<i class='fa fa-floppy-o'></i>&nbsp;Save", new
+                {
+                    @class = "btn btn-primary btn-sm",
+                    onclick = "btnSave()"
+                }, SECURABLE.TRANSACTION_ACTION_SAVERT)
+
+
+
+
                     <button class="btn btn-default btn-sm" type="button" onclick="location.href = '@Url.Content("~/RMA/OutwardList")'"><i class="fa fa-backward"></i>&nbsp;Cancel</button>
                 </div>                
             </div>

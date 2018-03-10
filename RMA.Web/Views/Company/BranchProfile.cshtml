@@ -9,7 +9,7 @@
             @{ Html.RenderAction("GetCompanies", "Company"); }
         </div>
         <div class="col-md-9">
-            @using (Html.BeginForm("SaveBranchProfile", "Company", FormMethod.Post, new { id = "frmCompanyProfile", name = "frmCompanyProfile" }))
+            @using (Html.RmaBeginForm(Url.Content("~/Company/SaveBranchProfile"), FormMethod.Post, new { id = "frmCompanyProfile", name = "frmCompanyProfile" },SECURABLE.ADMINISTRATION_ACTION_COMPANYPROFILESAVE))
             {
                 <div class="box box-default">
                     <div class="box-header with-border">
@@ -140,7 +140,13 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="pull-right">
-                                    <button class="btn btn-primary btn-sm" type="button" onclick="SaveBranch()"><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+                                    @*<button class="btn btn-primary btn-sm" type="button" onclick="SaveBranch()"><i class="fa fa-floppy-o"></i>&nbsp;Save</button>*@
+
+                                    @Html.Button("<i class='fa fa-floppy-o'></i>&nbsp;Save", new
+                                {
+                                    @class = "btn btn-primary btn-sm",
+                                    onclick = "SaveBranch()"
+                                }, SECURABLE.ADMINISTRATION_ACTION_COMPANYPROFILESAVE)
                                     @*<button class="btn btn-default btn-sm" type="button" onclick="Clear()"><i class="fa fa-eraser"></i>&nbsp;Clear</button>*@
                                     @Html.EncodedActionLink("<i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Clear",
                                             "BranchProfile", "Company",

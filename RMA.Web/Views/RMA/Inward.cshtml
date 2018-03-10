@@ -60,7 +60,7 @@
 }
 
 
-@using (Html.BeginForm("ProcessRMAInward", "RMA", FormMethod.Post, new { id = "frmRMAInward", name = "frmRMAInward" }))
+@using (Html.RmaBeginForm(Url.Content("~/RMA/ProcessRMAInward"), FormMethod.Post, new { id = "frmRMAInward", name = "frmRMAInward" },SECURABLE.TRANSACTION_ACTION_SAVERMAVALIDATION))
 {
 
     <section class="content">

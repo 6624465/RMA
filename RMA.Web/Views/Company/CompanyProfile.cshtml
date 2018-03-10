@@ -8,7 +8,7 @@
             @{ Html.RenderAction("GetCompanies", "Company"); }
         </div>
         <div class="col-md-9">
-            @using (Html.BeginForm("SaveCompanyProfile", "Company", FormMethod.Post, new { id = "frmCompanyProfile", name = "frmCompanyProfile" }))
+            @using (Html.RmaBeginForm(Url.Content("~/Company/SaveCompanyProfile"), FormMethod.Post, new { id = "frmCompanyProfile", name = "frmCompanyProfile" },SECURABLE.ADMINISTRATION_ACTION_COMPANYPROFILESAVE))
             {
                 <div class="box box-default">
                     <div class="box-header with-border">
@@ -117,7 +117,13 @@
                                     @if (!string.IsNullOrWhiteSpace(Model.CompanyCode))
                                     {
                                         <text>
-                                            <button class="btn btn-primary btn-sm"><i class="fa fa-floppy-o" onclick="btnSaveClick()"></i>&nbsp;Update</button>
+                                            @*<button class="btn btn-primary btn-sm"><i class="fa fa-floppy-o" onclick="btnSaveClick()"></i>&nbsp;Update</button>*@
+
+                                    @Html.Button("<i class='fa fa-floppy-o'></i>&nbsp;Update", new
+                                {
+                                    @class = "btn btn-primary btn-sm",
+                                    onclick = "btnSaveClick()"
+                                }, SECURABLE.ADMINISTRATION_ACTION_COMPANYPROFILESAVE)
                                         </text>
                                     }
                                     <button class="btn btn-default btn-sm" type="button" onclick="btnClear()"><i class="fa fa-eraser"></i>&nbsp;Clear</button>
