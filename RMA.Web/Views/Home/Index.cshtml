@@ -1,4 +1,4 @@
-﻿
+﻿@model RMA.Web.Controllers.HomeVm
 @{
     ViewBag.Title = "Index";
 }
@@ -8,88 +8,75 @@
     <div class="bs-example-home list-items">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                @*<div class="row">
-                    <section class="content-header">
-                        <h1>
-                            &nbsp;
-                            @*<small>Control panel</small>*@
-                        </h1>
-                        @*<ol class="breadcrumb">
-                            <li><a href='@Url.Content("~/Home/Index")'>
-                                <i class="fa fa-dashboard"></i> Home</a></li>*@
-                            @*<li class="active">Modules</li>*@
-                        @*</ol>
-                    </section>
-                </div>*@
                 <div class="row">
-                    <div class="col-md-3">
-
-                        <div class="main-section grey ">
-                            <a href='@Url.Content("~/Home/Masters")'>
-
-                                <div class="menu_section  grey">
-
-                                    <span><i class="fa fa-share fa-5x" aria-hidden="true"></i> </span>
-
-                                </div>
-                                <div class="content-section grey-btm">
-                                    <b> Masters Data                             </b>
-                                    <p>View the Masters list</p>
-                                    <div class="btn btn-lg btn-danger"></div>
-                                </div>
-                            </a>
+                    @if (Model.IsMaster)
+                    {
+                        <div class="col-md-3">
+                            <div class="main-section grey ">
+                                <a href='@Url.Content("~/Home/Masters")'>
+                                    <div class="menu_section  grey">
+                                        <span><i class="fa fa-share fa-5x" aria-hidden="true"></i> </span>
+                                    </div>
+                                    <div class="content-section grey-btm">
+                                        <b> Masters Data                             </b>
+                                        <p>View the Masters list</p>
+                                        <div class="btn btn-lg btn-danger"></div>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-
-                    </div>
-                    <div class="col-md-3">
-                        <div class="main-section blue">
-                            <a href='@Url.Content("~/Home/Transactions")'>
-                                <div class="menu_section blue">
-
-                                    <span> <i class="fa fa-retweet  fa-5x" aria-hidden="true"></i></span>
-
-                                </div>
-                                <div class="content-section blue-btm">
-                                    <b> Transactions</b>
-                                    <p>View the Transactions list</p>
-                                    <div class="btn btn-lg btn-danger"></div>
-                                </div>
-                            </a>
+                    }
+                    @if (Model.IsTransactions)
+                    {
+                        <div class="col-md-3">
+                            <div class="main-section blue">
+                                <a href='@Url.Content("~/Home/Transactions")'>
+                                    <div class="menu_section blue">
+                                        <span> <i class="fa fa-retweet  fa-5x" aria-hidden="true"></i></span>
+                                    </div>
+                                    <div class="content-section blue-btm">
+                                        <b> Transactions</b>
+                                        <p>View the Transactions list</p>
+                                        <div class="btn btn-lg btn-danger"></div>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="main-section green">
-                            <a href='@Url.Content("~/Home/Administration")'>
-                                <div class="menu_section green">
-
-                                    <span> <i class="fa fa-laptop fa-5x" aria-hidden="true"></i>  </span>
-
-                                </div>
-                                <div class="content-section green-btm">
-                                    <b> Administration</b>
-                                    <p>View the Administration list </p>
-                                    <div class="btn btn-lg btn-danger"></div>
-                                </div>
-                            </a>
+                    }
+                    @if (Model.IsAdministration)
+                    {
+                        <div class="col-md-3">
+                            <div class="main-section green">
+                                <a href='@Url.Content("~/Home/Administration")'>
+                                    <div class="menu_section green">
+                                        <span> <i class="fa fa-laptop fa-5x" aria-hidden="true"></i>  </span>
+                                    </div>
+                                    <div class="content-section green-btm">
+                                        <b> Administration</b>
+                                        <p>View the Administration list </p>
+                                        <div class="btn btn-lg btn-danger"></div>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="main-section org">
-                            <a href='@Url.Content("~/Home/Reports")'>
-                                <div class="menu_section org">
-
-                                    <span> <i class="fa fa-table fa-5x" aria-hidden="true"></i></span>
-
-
-                                </div>
-                                <div class="content-section org-btm">
-                                    <b> Reports</b>
-                                    <p>View the Reports list</p>
-                                    <div class="btn btn-lg btn-danger"></div>
-                                </div>
-                            </a>
+                    }
+                    @if (Model.IsReports)
+                    {
+                        <div class="col-md-3">
+                            <div class="main-section org">
+                                <a href='@Url.Content("~/Home/Reports")'>
+                                    <div class="menu_section org">
+                                        <span> <i class="fa fa-table fa-5x" aria-hidden="true"></i></span>
+                                    </div>
+                                    <div class="content-section org-btm">
+                                        <b> Reports</b>
+                                        <p>View the Reports list</p>
+                                        <div class="btn btn-lg btn-danger"></div>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
