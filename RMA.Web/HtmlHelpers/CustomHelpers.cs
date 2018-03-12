@@ -33,24 +33,27 @@ namespace RMA.Web.HtmlHelpers
             object htmlAttributes,
             string roleRightKey)
         {
-            var tt = checkHasRight(roleRightKey);
-            string htmlAttributesString = string.Empty;
-            if (htmlAttributes != null)
-            {
-                RouteValueDictionary d = new RouteValueDictionary(htmlAttributes);
-                for (int i = 0; i < d.Keys.Count; i++)
-                {
-                    htmlAttributesString += " " + d.Keys.ElementAt(i) + "=\"" + d.Values.ElementAt(i) + "\"";
-                }
-            }
-
+            var hasRight = checkHasRight(roleRightKey);
             StringBuilder submitBtn = new StringBuilder();
-            submitBtn.Append("<button type=\"submit\" ");
-            if (htmlAttributesString != string.Empty)
+            if (hasRight)
             {
-                submitBtn.Append(htmlAttributesString);
+                string htmlAttributesString = string.Empty;
+                if (htmlAttributes != null)
+                {
+                    RouteValueDictionary d = new RouteValueDictionary(htmlAttributes);
+                    for (int i = 0; i < d.Keys.Count; i++)
+                    {
+                        htmlAttributesString += " " + d.Keys.ElementAt(i) + "=\"" + d.Values.ElementAt(i) + "\"";
+                    }
+                }
+                
+                submitBtn.Append("<button type=\"submit\" ");
+                if (htmlAttributesString != string.Empty)
+                {
+                    submitBtn.Append(htmlAttributesString);
+                }
+                submitBtn.AppendFormat(">{0}</button>", buttonText);
             }
-            submitBtn.AppendFormat(">{0}</button>", buttonText);
 
             return new HtmlString(submitBtn.ToString());
         }
@@ -123,68 +126,71 @@ namespace RMA.Web.HtmlHelpers
 
         public static MvcHtmlString EncodedActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes, string roleRightKey = "")
         {
-            var hasRight = true;
-            if(!string.IsNullOrWhiteSpace(roleRightKey))
-                hasRight = checkHasRight(roleRightKey);
-            
-            string queryString = string.Empty;
-            string htmlAttributesString = string.Empty;
-            if (routeValues != null)
-            {
-                RouteValueDictionary d = new RouteValueDictionary(routeValues);
-                for (int i = 0; i < d.Keys.Count; i++)
-                {
-                    if (i > 0)
-                    {
-                        queryString += "?";
-                    }
-                    queryString += d.Keys.ElementAt(i) + "=" + d.Values.ElementAt(i);
-                }
-            }
-
-            if (htmlAttributes != null)
-            {
-                RouteValueDictionary d = new RouteValueDictionary(htmlAttributes);
-                for (int i = 0; i < d.Keys.Count; i++)
-                {
-                    htmlAttributesString += " " + d.Keys.ElementAt(i) + "='" + d.Values.ElementAt(i) + "'";
-                }
-            }
-
-            //What is Entity Framework??
+            var hasRight = checkHasRight(roleRightKey);
             StringBuilder ancor = new StringBuilder();
-            ancor.Append("<a ");
-            if (htmlAttributesString != string.Empty)
+            if (hasRight)
             {
-                ancor.Append(htmlAttributesString);
-            }
-            ancor.Append(" href='");
+                string queryString = string.Empty;
+                string htmlAttributesString = string.Empty;
+                if (routeValues != null)
+                {
+                    RouteValueDictionary d = new RouteValueDictionary(routeValues);
+                    for (int i = 0; i < d.Keys.Count; i++)
+                    {
+                        if (i > 0)
+                        {
+                            queryString += "?";
+                        }
+                        queryString += d.Keys.ElementAt(i) + "=" + d.Values.ElementAt(i);
+                    }
+                }
 
-            var strHref = string.Empty;
-            if (controllerName != string.Empty)
-            {
-                //ancor.Append("/" + controllerName);
-                strHref = "~/" + controllerName;
-            }
+                if (htmlAttributes != null)
+                {
+                    RouteValueDictionary d = new RouteValueDictionary(htmlAttributes);
+                    for (int i = 0; i < d.Keys.Count; i++)
+                    {
+                        htmlAttributesString += " " + d.Keys.ElementAt(i) + "='" + d.Values.ElementAt(i) + "'";
+                    }
+                }
 
-            if (actionName != "Index")
-            {
-                //ancor.Append("/" + actionName);
-                strHref = strHref + "/" + actionName;
-            }
-            if (queryString != string.Empty)
-            {
-                //ancor.Append("?q=" + Encrypt(queryString));
-                strHref = strHref + "/" + "?q=" + UrlEncryptionHelper.Encrypt(queryString);
-            }
+                //What is Entity Framework??
+                
+                ancor.Append("<a ");
+                if (htmlAttributesString != string.Empty)
+                {
+                    ancor.Append(htmlAttributesString);
+                }
+                ancor.Append(" href='");
 
-            var context = new HttpContextWrapper(HttpContext.Current);
-            string hrefUrl = UrlHelper.GenerateContentUrl(strHref, context);
-            ancor.Append(hrefUrl);
-            ancor.Append("'");
-            ancor.Append(">");
-            ancor.Append(linkText);
-            ancor.Append("</a>");
+                var strHref = string.Empty;
+                if (controllerName != string.Empty)
+                {
+                    //ancor.Append("/" + controllerName);
+                    strHref = "~/" + controllerName;
+                }
+
+                if (actionName != "Index")
+                {
+                    //ancor.Append("/" + actionName);
+                    strHref = strHref + "/" + actionName;
+                }
+                if (queryString != string.Empty)
+                {
+                    //ancor.Append("?q=" + Encrypt(queryString));
+                    strHref = strHref + "/" + "?q=" + UrlEncryptionHelper.Encrypt(queryString);
+                }
+
+                var context = new HttpContextWrapper(HttpContext.Current);
+                string hrefUrl = UrlHelper.GenerateContentUrl(strHref, context);
+                ancor.Append(hrefUrl);
+                ancor.Append("'");
+                ancor.Append(">");
+                ancor.Append(linkText);
+                ancor.Append("</a>");
+            }
+            
+            
             return new MvcHtmlString(ancor.ToString());
         }        
 
@@ -196,9 +202,7 @@ namespace RMA.Web.HtmlHelpers
             string roleRightKey)
         {
 
-            var hasRight = true;
-            if (!string.IsNullOrWhiteSpace(roleRightKey))
-                hasRight = checkHasRight(roleRightKey);
+            var hasRight = checkHasRight(roleRightKey);            
 
             if (hasRight)
             {
