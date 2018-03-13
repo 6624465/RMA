@@ -448,7 +448,7 @@ namespace RMA.Web.Controllers
                 pdfFormFields.SetField("VesselName", cooHeader.VesselName);
                 pdfFormFields.SetField("PortOfDischarge", cooHeader.DestinationPort);
                 pdfFormFields.SetField("CountryOfFinalDestination", cooHeader.DestinationCountry);
-                pdfFormFields.SetField("CountryOfOriginOfGoods", cooHeader.DestinationPort);
+                pdfFormFields.SetField("CountryOfOriginOfGoods", " As Below ");
                 pdfFormFields.SetField("Name", cooHeader.DeclarantName);
                 pdfFormFields.SetField("Designation", cooHeader.Designation);
                 pdfFormFields.SetField("Date", cooHeader.CreatedOn.ToShortDateString());
