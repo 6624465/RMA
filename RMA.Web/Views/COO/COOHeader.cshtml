@@ -219,7 +219,9 @@
                         <div class="col-md-2">
                         </div>
                         <div class="col-md-3">
-                            @Html.RadioButtonFor(x => x.IsInvoiceConfirm, new { @class = "rbtCss" })&nbsp;&nbsp; &nbsp;&nbsp;
+                            @*@Html.RadioButtonFor(x => x.IsInvoiceConfirm, "", new { @class = "rbtCss" })&nbsp;&nbsp; &nbsp;&nbsp;*@
+                            <input type="radio" id="chkIsInvoiceConfirm" name="rdo" class="rdoCls" />&nbsp;&nbsp; &nbsp;&nbsp;
+                            @Html.HiddenFor(x => x.IsInvoiceConfirm)
                             <label class="control-label">THIS C/O IS APPLIED TO INVOICE NO.</label>
                         </div>
                         <div class="col-md-1">
@@ -234,11 +236,14 @@
                         <div class="col-md-2">
                         </div>
                     </div>
+                    
                     <div class="row" style="margin-bottom:10px;">
                         <div class="col-md-2">
                         </div>
                         <div class="col-md-6">
-                            @Html.RadioButtonFor(x => x.IsCertified, new { @class = "rbtCss" })&nbsp;&nbsp;&nbsp;&nbsp;
+                            @*@Html.RadioButtonFor(x => x.IsCertified, "", new { @class = "rbtCss" })&nbsp;&nbsp;&nbsp;&nbsp;*@
+                            <input type="radio" id="chkIsCertified" name="rdo" class="rdoCls" />&nbsp;&nbsp; &nbsp;&nbsp;
+                            @Html.HiddenFor(x => x.IsCertified)
                             <label class="control-label">WE HEREBY CERTIFY THAT THE ABOVE MENTIONED GOODS ARE ORIGIN OF</label>
                         </div>
                         <div class="col-md-4">
@@ -248,7 +253,7 @@
                         <div class="col-md-2">
                         </div>
                         <div class="col-md-1">
-                            @Html.TextBoxFor(x => x.Country1, new { @class = "form-control input-sm" })
+                            @Html.TextBoxFor(x => x.Country1, new { @class = "form-control input-sm", onclick = "rdoSelect()" })
                         </div>
                         <div class="col-md-1">
                             @Html.TextBoxFor(x => x.Country2, new { @class = "form-control input-sm" })
@@ -325,30 +330,71 @@
                 swal("Cancelled", "Please Upload valid format Excel File.", "error");
             }
 
-            if ('@Model.IsInvoiceConfirm' == 'True') {
-
+            if ('@Model.IsInvoiceConfirm' == '@Boolean.TrueString') {
+                $('#chkIsInvoiceConfirm').prop('checked', true);
                 IsInvoiceCheck();
-            }
-
-            if ('@Model.IsCertified' == 'True') {
-
+            } else {
+                $('#chkIsCertified').prop('checked', true);
                 IsCertifeidCheck();
             }
 
-            $('#IsCertified').on('change', function () {
+            @*if ('@Model.IsCertified' == '@Boolean.TrueString') {
 
                 IsCertifeidCheck();
-                $("#IsInvoiceConfirm").val("False");
-                $('#IsCertified').val("True");
+            }*@
+
+            $('#chkIsCertified').on('change', function () {
+                IsCertifeidCheck();
+                @*var isInvoiceConfirm = $('#IsInvoiceConfirm').is(':checked');
+                var isCertified = $('#IsCertified').is(':checked');
+                debugger;
+
+                $("#IsInvoiceConfirm").val('@Boolean.FalseString');
+                $('#IsCertified').val('@Boolean.TrueString');*@
             });
 
-            $('#IsInvoiceConfirm').on('change', function () {
-
+            $('#chkIsInvoiceConfirm').on('change', function () {
                 IsInvoiceCheck();
-                $("#IsInvoiceConfirm").val("True");
-                $('#IsCertified').val("False");
+                @*var isInvoiceConfirm = $('#IsInvoiceConfirm').is(':checked');
+                var isCertified = $('#IsCertified').is(':checked');
+                debugger;
+
+                $("#IsInvoiceConfirm").val('@Boolean.TrueString');
+                $('#IsCertified').val('@Boolean.FalseString');*@
 
             });
+
+            function IsInvoiceCheck() {
+                $("#IsCertified").val('@Boolean.FalseString');
+                $("#IsInvoiceConfirm").val('@Boolean.TrueString');
+
+
+                $("#InvoiceNo").attr('readonly', false);
+                $("#InvoiceDate").attr('readonly', false);
+
+                $("#Country1").attr('readonly', true);
+                $("#Country2").attr('readonly', true);
+                $("#Country3").attr('readonly', true);
+                $("#Country4").attr('readonly', true);
+                $("#Country5").attr('readonly', true);
+                $("#Country6").attr('readonly', true);
+            // $("#InvoiceNo").val('');
+        }
+
+        function IsCertifeidCheck() {
+            $("#IsCertified").val('@Boolean.TrueString');
+            $("#IsInvoiceConfirm").val('@Boolean.FalseString');
+
+            $("#InvoiceNo").attr('readonly', true);
+            $("#InvoiceDate").attr('readonly', true);
+
+            $("#Country1").attr('readonly', false);
+            $("#Country2").attr('readonly', false);
+            $("#Country3").attr('readonly', false);
+            $("#Country4").attr('readonly', false);
+            $("#Country5").attr('readonly', false);
+            $("#Country6").attr('readonly', false);
+        }
 
             $("#DeclarantName").autocomplete({
                 source: function (request, response) {
@@ -525,6 +571,10 @@
 
         });
 
+        function rdoSelect(el) {
+            debugger;
+        }
+
         function AddCOODetails() {
 
             $.ajax({
@@ -541,6 +591,8 @@
                 }
             });
         }
+
+
 
 
 
@@ -640,55 +692,7 @@
             }
         }
 
-        function IsInvoiceCheck() {
 
-            //$("#IsCertified").val(false);
-            $("#IsCertified").prop('checked', false);
-            $("#IsInvoiceConfirm").prop('checked', true);
-
-            $("#IsInvoiceConfirm").val("True");
-            $('#IsCertified').val("False");
-
-            $("#InvoiceNo").attr('readonly', false);
-            $("#InvoiceDate").attr('readonly', false);
-
-            $("#Country1").attr('readonly', true);
-            $("#Country2").attr('readonly', true);
-            $("#Country3").attr('readonly', true);
-            $("#Country4").attr('readonly', true);
-            $("#Country5").attr('readonly', true);
-            $("#Country6").attr('readonly', true);
-
-            // $("#InvoiceNo").val('');
-
-        }
-
-        function IsCertifeidCheck() {
-
-            //$("#IsInvoiceConfirm").val(false);
-            $("#IsInvoiceConfirm").val("False");
-            $('#IsCertified').val("True");
-
-            $("#IsInvoiceConfirm").prop('checked', false);
-            $("#IsCertified").prop('checked', true);
-
-            $("#InvoiceNo").attr('readonly', true);
-            $("#InvoiceDate").attr('readonly', true);
-
-            $("#Country1").attr('readonly', false);
-            $("#Country2").attr('readonly', false);
-            $("#Country3").attr('readonly', false);
-            $("#Country4").attr('readonly', false);
-            $("#Country5").attr('readonly', false);
-            $("#Country6").attr('readonly', false);
-
-            //$("#Country1").val('');
-            //$("#Country2").val('');
-            //$("#Country3").val('');
-            //$("#Country4").val('');
-            //$("#Country5").val('');
-            //$("#Country6").val('');
-        }
 
 
     </script>

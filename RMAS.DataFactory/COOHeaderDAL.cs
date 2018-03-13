@@ -77,7 +77,7 @@ namespace EZY.RMAS.DataFactory
                 db.AddInParameter(savecommand, "InvoiceNo", System.Data.DbType.String, cooheader.InvoiceNo);
                 db.AddInParameter(savecommand, "InvoiceDate", System.Data.DbType.Date, cooheader.InvoiceDate);
                 db.AddInParameter(savecommand, "IsInvoiceConfirm", System.Data.DbType.Boolean, cooheader.IsInvoiceConfirm);
-                db.AddInParameter(savecommand, "IsCertified", System.Data.DbType.Boolean, cooheader.IsInvoiceConfirm);
+                db.AddInParameter(savecommand, "IsCertified", System.Data.DbType.Boolean, cooheader.IsCertified);
                 db.AddOutParameter(savecommand, "NewDocumentNo", System.Data.DbType.String, 50);
                 db.AddInParameter(savecommand, "Country1", System.Data.DbType.String, cooheader.Country1);
                 db.AddInParameter(savecommand, "Country2", System.Data.DbType.String, cooheader.Country2);
