@@ -61,6 +61,7 @@ namespace RMA.Web.Controllers
                 cooHeader.IsCertified = false;
                 cooHeader.DeclarantName = "";
                 cooHeader.Designation = "";
+                cooHeader.DeclarationDate = DateTime.Now;
 
                 if (defaultDeclarant != null)
                 {
@@ -152,7 +153,12 @@ namespace RMA.Web.Controllers
             catch (Exception ex)
             {
                 if (ex.Message == "Invalid file content")
-                    return RedirectToRoute(new { controller = "Error", action = "FileContent" });
+                {
+                    TempData["IsUploadFileErr"] = true;
+                    //return RedirectToRoute(new { controller = "Error", action = "FileContent" });
+                    return View("CooHeader", cooHeader);
+                }
+                    
             }
 
             return View();

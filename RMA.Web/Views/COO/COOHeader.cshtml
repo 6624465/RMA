@@ -337,6 +337,12 @@
                 swal("Cancelled", "Please Upload valid format Excel File.", "error");
             }
 
+            @if(TempData["IsUploadFileErr"] != null)
+            {
+                <text>swal("Cancelled", "Invalid file format, please check.", "error");</text>
+            }
+
+
             if ('@Model.IsInvoiceConfirm' == '@Boolean.TrueString') {
                 $('#chkIsInvoiceConfirm').prop('checked', true);
                 IsInvoiceCheck();
