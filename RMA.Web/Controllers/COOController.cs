@@ -539,10 +539,22 @@ namespace RMA.Web.Controllers
                 {
                     if (count < cooHeader.COODetails.Count)
                     {
-                        pdfFormFields.SetField("model" + i + "", cooHeader.COODetails[count].ModelNo.ToString());
-                        pdfFormFields.SetField("desc" + i + "", cooHeader.COODetails[count].Description.ToString());
+                        if(!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].ModelNo))
+                            pdfFormFields.SetField("model" + i + "", cooHeader.COODetails[count].ModelNo.ToString());
+                        else
+                            pdfFormFields.SetField("model" + i + "", "");
+
+                        if(!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].Description))
+                            pdfFormFields.SetField("desc" + i + "", cooHeader.COODetails[count].Description.ToString());
+                        else
+                            pdfFormFields.SetField("desc" + i + "", "");
+
                         pdfFormFields.SetField("qty" + i + "", cooHeader.COODetails[count].Qty.ToString());
-                        pdfFormFields.SetField("org" + i + "", cooHeader.COODetails[count].Origin.ToString());
+
+                        if(!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].Origin))
+                            pdfFormFields.SetField("org" + i + "", cooHeader.COODetails[count].Origin.ToString());
+                        else
+                            pdfFormFields.SetField("org" + i + "", "");
                     }
                     count++;
                 }
