@@ -86,66 +86,77 @@ namespace RMA.Web.Controllers
         [HttpPost]
         public ActionResult COOHeader(COOHeader cooHeader)
         {
-            var appSettingsPath = ConfigurationManager.AppSettings["CooFileSharePath"];
-            var folderPath = Server.MapPath(appSettingsPath);
-            CreateDirectory(folderPath);
-            var fileName = "";
-            var Message = "";
-            if (Request.Files.Count > 0 && Request.Files[0] != null
-                && ValidateFile(Request.Files[0], ref Message))
+            try
             {
-                var file = Request.Files[0];
-                if (file != null && file.ContentLength > 0)
+                var appSettingsPath = ConfigurationManager.AppSettings["CooFileSharePath"];
+                var folderPath = Server.MapPath(appSettingsPath);
+                CreateDirectory(folderPath);
+                var fileName = "";
+                var Message = "";
+                if (Request.Files.Count > 0 && Request.Files[0] != null
+                    && ValidateFile(Request.Files[0], ref Message))
                 {
-                    fileName = Path.GetFileName(file.FileName);
-                    var path = Path.Combine(Server.MapPath(appSettingsPath), fileName);
-                    file.SaveAs(path);
-                    var lstcoo = ProcessFile(path);
-
-                    List<string> lstSerialNos = new List<string>();
-                    List<string> returnItems = new List<string>();
-                    foreach (var NewModelNo in lstcoo)
+                    var file = Request.Files[0];
+                    if (file != null && file.ContentLength > 0)
                     {
-                        lstSerialNos.Add(NewModelNo.ModelNo);
-                    }
+                        fileName = Path.GetFileName(file.FileName);
+                        var path = Path.Combine(Server.MapPath(appSettingsPath), fileName);
+                        file.SaveAs(path);
+                        var lstcoo = ProcessFile(path);
 
-
-                    if (cooHeader.COODetails != null)
-                    {
-                        foreach (var item in cooHeader.COODetails)
+                        List<string> lstSerialNos = new List<string>();
+                        List<string> returnItems = new List<string>();
+                        foreach (var NewModelNo in lstcoo)
                         {
-                            lstcoo.Add(item);
+                            lstSerialNos.Add(NewModelNo.ModelNo);
                         }
-                    }
 
-                    List<string> DuplicateSNos = new List<string>();
 
-                    var cooList = lstcoo;
-                    cooHeader.COODetails = new List<COODetail>();
-                    for (var i = 0; i < cooList.Count; i++)
-                    {
-                        var tempObj = cooHeader.COODetails
-                                        .Where(x => x.ModelNo == cooList[i].ModelNo && x.Description == cooList[i].Description && x.Origin == cooList[i].Origin && x.Qty == cooList[i].Qty)
-                                        .FirstOrDefault();
-
-                        if (tempObj == null)
+                        if (cooHeader.COODetails != null)
                         {
-                            cooHeader.COODetails.Add(cooList[i]);
+                            foreach (var item in cooHeader.COODetails)
+                            {
+                                lstcoo.Add(item);
+                            }
                         }
-                        else
-                        {
-                            DuplicateSNos.Add(tempObj.ModelNo);
-                        }
-                    }
-                    if (DuplicateSNos.Count != 0)
-                    {
-                        ViewData["DuplicateSNo"] = DuplicateSNos;
-                    }
 
+                        List<string> DuplicateSNos = new List<string>();
+
+                        var cooList = lstcoo;
+                        cooHeader.COODetails = new List<COODetail>();
+                        for (var i = 0; i < cooList.Count; i++)
+                        {
+                            var tempObj = cooHeader.COODetails
+                                            .Where(x => x.ModelNo == cooList[i].ModelNo && x.Description == cooList[i].Description && x.Origin == cooList[i].Origin && x.Qty == cooList[i].Qty)
+                                            .FirstOrDefault();
+
+                            if (tempObj == null)
+                            {
+                                cooHeader.COODetails.Add(cooList[i]);
+                            }
+                            else
+                            {
+                                DuplicateSNos.Add(tempObj.ModelNo);
+                            }
+                        }
+                        if (DuplicateSNos.Count != 0)
+                        {
+                            ViewData["DuplicateSNo"] = DuplicateSNos;
+                        }
+
+                    }
                 }
+
+                return View("CooHeader", cooHeader);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Invalid file content")
+                    return RedirectToRoute(new { controller = "Error", action = "FileContent" });
             }
 
-            return View("CooHeader", cooHeader);
+            return View();
+            
         }
 
 
@@ -242,12 +253,21 @@ namespace RMA.Web.Controllers
 
                                 if (row[0].ToString() != "")
                                 {
-                                    currentItem.ModelNo = row[0].ToString().Trim();
-                                    currentItem.Description = row[1].ToString().Trim();
-                                    currentItem.Qty = Convert.ToInt16(row[2].ToString().Trim());
-                                    currentItem.Origin = row[3].ToString().Trim();
+                                    try
+                                    {
+                                        currentItem.ModelNo = row[0].ToString().Trim();
+                                        currentItem.Description = row[1].ToString().Trim();
+                                        currentItem.Qty = Convert.ToInt16(row[2].ToString().Trim());
+                                        currentItem.Origin = row[3].ToString().Trim();
 
-                                    lstInvoice.Add(currentItem);
+                                        lstInvoice.Add(currentItem);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        var myEx = new Exception("Invalid file content");
+                                        throw myEx;
+                                    }
+                                    
                                 }
                             }
                             ViewBag.FileName = _fileName;

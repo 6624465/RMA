@@ -357,6 +357,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DeclarantController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
@@ -484,6 +485,7 @@
     <Content Include="Views\COO\COOHeaderList.cshtml" />
     <Content Include="Views\COO\GetCOODetails.cshtml" />
     <Content Include="Views\Home\COO.cshtml" />
+    <Content Include="Views\Error\FileContent.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

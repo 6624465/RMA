@@ -59,10 +59,10 @@
                         <div class="col-md-2">
                         </div>
                         <div class="col-md-4">
-                            @Html.TextBoxFor(x => x.ExporterName, new { @class = "form-control input-sm", @placeholder = "Exporter Name", @readonly = "readonly" })
+                            @Html.TextBoxFor(x => x.ExporterName, new { @class = "form-control input-sm reqCss", @placeholder = "Exporter Name", @readonly = "readonly" })
                         </div>
                         <div class="col-md-4">
-                            @Html.TextBoxFor(x => x.ConsigneeName, new { @class = "form-control input-sm", @placeholder = "Consignee Name" })
+                            @Html.TextBoxFor(x => x.ConsigneeName, new { @class = "form-control input-sm reqCss", @placeholder = "Consignee Name" })
                         </div>
                         <div class="col-md-2">
                         </div>
@@ -71,10 +71,10 @@
                         <div class="col-md-2">
                         </div>
                         <div class="col-md-4">
-                            @Html.TextAreaFor(x => x.ExporterAddress, new { @class = "form-control input-sm", @placeholder = "Exporter Address", @rows = 5, @readonly = "readonly" })
+                            @Html.TextAreaFor(x => x.ExporterAddress, new { @class = "form-control input-sm reqCss", @placeholder = "Exporter Address", @rows = 5 })
                         </div>
                         <div class="col-md-4">
-                            @Html.TextAreaFor(x => x.ConsigneeAddress, new { @class = "form-control input-sm", @placeholder = "Consignee Address", @rows = 5 })
+                            @Html.TextAreaFor(x => x.ConsigneeAddress, new { @class = "form-control input-sm reqCss", @placeholder = "Consignee Address", @rows = 5 })
                         </div>
                         <div class="col-md-2">
                         </div>
@@ -86,7 +86,7 @@
                             <label class="control-label"> Departure Date</label>
                         </div>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.DepartureDate, new { @class = "form-control input-sm datepick" })
+                            @Html.TextBoxFor(m => m.DepartureDate, new { @class = "form-control input-sm datepick reqCss" })
                         </div>
                         <div class="col-md-4">
                             <label class="control-label"> DECLARATION BY THE EXPORTER</label>
@@ -101,13 +101,13 @@
                             <label class="control-label">Port of Discharge</label>
                         </div>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.DestinationPort, new { @class = "form-control input-sm ", @placeholder = "Port of Discharge" })
+                            @Html.TextBoxFor(m => m.DestinationPort, new { @class = "form-control input-sm reqCss", @placeholder = "Port of Discharge" })
                         </div>
                         <div class="col-md-2">
                             <label class="control-label">Name</label>
                         </div>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(x => x.DeclarantName, new { @class = "form-control input-sm ", @placeholder = "Declarant Name" })
+                            @Html.TextBoxFor(x => x.DeclarantName, new { @class = "form-control input-sm reqCss", @placeholder = "Declarant Name" })
                         </div>
                         <div class="col-md-2">
                         </div>
@@ -119,7 +119,7 @@
                             <label class="control-label">Country of Final Destination</label>
                         </div>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.DestinationCountry, new { @class = "form-control input-sm ", @placeholder = "Counttry of Final Destination" })
+                            @Html.TextBoxFor(m => m.DestinationCountry, new { @class = "form-control input-sm reqCss", @placeholder = "Counttry of Final Destination" })
                         </div>
                         <div class="col-md-2">
                             <label class="control-label">Designation</label>
@@ -137,7 +137,7 @@
                             <label class="control-label">Vessel Name</label>
                         </div>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.VesselName, new { @class = "form-control input-sm ", @placeholder = "Vessel Name" })
+                            @Html.TextBoxFor(m => m.VesselName, new { @class = "form-control input-sm reqCss", @placeholder = "Vessel Name" })
                         </div>
                         <div class="col-md-2">
                             <label class="control-label">Date</label>
@@ -536,40 +536,48 @@
             });
 
 
-            $('#frmCOOHeader').validate({
-                rules: {
-                    ExporterName: {
-                        required: true
-                    },
-                    ExporterAddress: {
-                        required: true
-                    },
-                    ConsigneeName: {
-                        required: true
-                    },
-                    ConsigneeAddress: {
-                        required: true
-                    },
-                    DepartureDate: {
-                        required: true
-                    },
-                    DestinationPort: {
-                        required: true
-                    },
-                    VesselName: {
-                        required: true
-                    },
-                    DestinationCountry: {
-                        required: true
-                    },
-                    DeclarantName: {
-                        required: true
-                    }
-                }
-            });
+            //$('#frmCOOHeader').validate({
+            //    rules: {
+            //        ExporterName: {
+            //            required: true
+            //        },
+            //        ExporterAddress: {
+            //            required: true
+            //        },
+            //        ConsigneeName: {
+            //            required: true
+            //        },
+            //        ConsigneeAddress: {
+            //            required: true
+            //        },
+            //        DepartureDate: {
+            //            required: true
+            //        },
+            //        DestinationPort: {
+            //            required: true
+            //        },
+            //        VesselName: {
+            //            required: true
+            //        },
+            //        DestinationCountry: {
+            //            required: true
+            //        },
+            //        DeclarantName: {
+            //            required: true
+            //        }
+            //    }
+            //});
 
 
         });
+
+        jQuery.validator.addMethod('reqCss', function (value, element) {
+            if (value != null && value != '') {
+                return true;  // FAIL validation when REGEX matches
+            } else {
+                return false;   // PASS validation otherwise
+            };
+        }, 'This is required field');
 
         function rdoSelect(el) {
             debugger;
@@ -685,11 +693,13 @@
         }
 
         function ProcessCOODetails() {
-            if ($('#frmCOOHeader').valid()) {
-                $('#frmCOOHeader').submit();
-            } else {
-                $('#fileupload').val('');
-            }
+            //if ($('#frmCOOHeader').valid()) {
+            //    $('#frmCOOHeader').submit();
+            //} else {
+            //    $('#fileupload').val('');
+            //}
+            $('.reqCss').removeClass('reqCss');
+            $('#frmCOOHeader').submit();
         }
 
 
