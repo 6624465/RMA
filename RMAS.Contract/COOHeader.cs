@@ -35,6 +35,8 @@ namespace EZY.RMAS.Contract
 
         public string DeclarantName { get; set; }
         public string Designation { get; set; }
+        public DateTime DeclarationDate { get; set; }
+
 
         public string InvoiceNo { get; set; }
 

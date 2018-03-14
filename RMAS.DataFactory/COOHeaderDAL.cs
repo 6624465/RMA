@@ -85,7 +85,8 @@ namespace EZY.RMAS.DataFactory
                 db.AddInParameter(savecommand, "Country4", System.Data.DbType.String, cooheader.Country4);
                 db.AddInParameter(savecommand, "Country5", System.Data.DbType.String, cooheader.Country5);
                 db.AddInParameter(savecommand, "Country6", System.Data.DbType.String, cooheader.Country6);
-                db.AddInParameter(savecommand, "CreatedBy", System.Data.DbType.String, cooheader.CreatedBy);             
+                db.AddInParameter(savecommand, "CreatedBy", System.Data.DbType.String, cooheader.CreatedBy);
+                db.AddInParameter(savecommand, "DeclarationDate", System.Data.DbType.DateTime, cooheader.DeclarationDate);             
 
 
 

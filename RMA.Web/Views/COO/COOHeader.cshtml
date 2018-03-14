@@ -20,6 +20,15 @@
     .hideCntrl {
         display: none;
     }
+    .input-box input[type='text']{
+        width: 35%;
+        display:inline;
+    }
+    .input-date{
+    width:50%;
+    margin-left:3px;
+    display:inline;
+    }
 </style>
 
 
@@ -143,7 +152,7 @@
                             <label class="control-label">Date</label>
                         </div>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.CreatedOn, new { @class = "form-control input-sm datepick" })
+                            @Html.TextBoxFor(m => m.DeclarationDate, new { @class = "form-control input-sm datepick" })
                         </div>
                         <div class="col-md-2">
                         </div>
@@ -218,21 +227,19 @@
                     <div class="row" style="margin-bottom:10px;">
                         <div class="col-md-2">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4 input-box">
                             @*@Html.RadioButtonFor(x => x.IsInvoiceConfirm, "", new { @class = "rbtCss" })&nbsp;&nbsp; &nbsp;&nbsp;*@
                             <input type="radio" id="chkIsInvoiceConfirm" name="rdo" class="rdoCls" />&nbsp;&nbsp; &nbsp;&nbsp;
                             @Html.HiddenFor(x => x.IsInvoiceConfirm)
                             <label class="control-label">THIS C/O IS APPLIED TO INVOICE NO.</label>
-                        </div>
-                        <div class="col-md-1">
                             @Html.TextBoxFor(x => x.InvoiceNo, new { @class = "form-control input-sm ", @placeholder = "Invice No" })
                         </div>
-                        <div class="col-md-1">
+                        
+                        <div class="col-md-2">
                             <label class="control-label">DATE</label>
+                            @Html.TextBoxFor(x => x.InvoiceDate, new { @class = "form-control input-sm input-date datepick" })
                         </div>
-                        <div class="col-md-1">
-                            @Html.TextBoxFor(x => x.InvoiceDate, new { @class = "form-control input-sm datepick" })
-                        </div>
+                        
                         <div class="col-md-2">
                         </div>
                     </div>
