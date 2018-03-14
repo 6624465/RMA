@@ -263,7 +263,7 @@ namespace RMA.Web.Controllers
                                     {
                                         currentItem.ModelNo = row[0].ToString().Trim();
                                         currentItem.Description = row[1].ToString().Trim();
-                                        currentItem.Qty = Convert.ToInt16(row[2].ToString().Trim());
+                                        currentItem.Qty = row[2].ToString().Trim().Length>0? Convert.ToInt16(row[2].ToString().Trim()): Convert.ToInt16(0);
                                         currentItem.Origin = row[3].ToString().Trim();
 
                                         lstInvoice.Add(currentItem);
