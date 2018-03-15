@@ -477,7 +477,7 @@ namespace RMA.Web.Controllers
                 pdfFormFields.SetField("CountryOfOriginOfGoods", " As Below ");
                 pdfFormFields.SetField("Name", cooHeader.DeclarantName);
                 pdfFormFields.SetField("Designation", cooHeader.Designation);
-                pdfFormFields.SetField("Date", cooHeader.CreatedOn.ToShortDateString());
+                pdfFormFields.SetField("Date", cooHeader.DeclarationDate.ToShortDateString());
                 //pdfFormFields.SetField("InvoiceNo", cooHeader.InvoiceNo != null ? cooHeader.InvoiceNo.ToString() : "");
                 //pdfFormFields.SetField("InvoiceDate", (cooHeader.IsCertified != true && cooHeader.InvoiceDate != null) ? cooHeader.InvoiceDate.ToShortDateString() : "");
                 pdfFormFields.SetField("MODEL", "MODEL");
