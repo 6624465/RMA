@@ -482,7 +482,7 @@ namespace RMA.Web.Controllers
                 //pdfFormFields.SetField("InvoiceDate", (cooHeader.IsCertified != true && cooHeader.InvoiceDate != null) ? cooHeader.InvoiceDate.ToShortDateString() : "");
                 pdfFormFields.SetField("MODEL", "MODEL");
                 pdfFormFields.SetField("DESCRIPTION", "DESCRIPTION");
-                pdfFormFields.SetField("QUANTITY", "QUANTITY(Pieces)");
+                pdfFormFields.SetField("QUANTITY", "QTY(Pcs)");
                 pdfFormFields.SetField("ORIGIN", "ORIGIN");
                 pdfFormFields.SetField("PageNo", PageNo.ToString());
 
@@ -549,7 +549,7 @@ namespace RMA.Web.Controllers
                         else
                             pdfFormFields.SetField("desc" + i + "", "");
 
-                        pdfFormFields.SetField("qty" + i + "", cooHeader.COODetails[count].Qty.ToString());
+                        pdfFormFields.SetField("qty" + i + "", cooHeader.COODetails[count].Qty>0? cooHeader.COODetails[count].Qty.ToString() : "");
 
                         if(!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].Origin))
                             pdfFormFields.SetField("org" + i + "", cooHeader.COODetails[count].Origin.ToString());
