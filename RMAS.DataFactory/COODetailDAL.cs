@@ -74,6 +74,7 @@ namespace EZY.RMAS.DataFactory
 
                 db.AddInParameter(savecommand, "BranchID", System.Data.DbType.Int16, coodetail.BranchID);
                 db.AddInParameter(savecommand, "DocumentNo", System.Data.DbType.String, coodetail.DocumentNo);
+                db.AddInParameter(savecommand, "ItemNo", System.Data.DbType.Int16, coodetail.ItemNo);
                 db.AddInParameter(savecommand, "ModelNo", System.Data.DbType.String, coodetail.ModelNo);
                 db.AddInParameter(savecommand, "Description", System.Data.DbType.String, coodetail.Description);
                 db.AddInParameter(savecommand, "Qty", System.Data.DbType.Int16, coodetail.Qty);
@@ -113,7 +114,6 @@ namespace EZY.RMAS.DataFactory
 
                 db.AddInParameter(deleteCommand, "BranchID", System.Data.DbType.Int16, coodetail.BranchID);
                 db.AddInParameter(deleteCommand, "DocumentNo", System.Data.DbType.String, coodetail.DocumentNo);
-                db.AddInParameter(deleteCommand, "ModelNo", System.Data.DbType.String, coodetail.ModelNo);
 
                 result = Convert.ToBoolean(db.ExecuteNonQuery(deleteCommand, transaction));
 

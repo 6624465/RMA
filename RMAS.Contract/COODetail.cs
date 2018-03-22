@@ -17,6 +17,9 @@ namespace EZY.RMAS.Contract
 
         public string DocumentNo { get; set; }
 
+        public short ItemNo { get; set; }
+
+
         public string ModelNo { get; set; }
 
         public string Description { get; set; }

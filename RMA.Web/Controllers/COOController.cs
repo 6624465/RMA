@@ -105,45 +105,46 @@ namespace RMA.Web.Controllers
                         file.SaveAs(path);
                         var lstcoo = ProcessFile(path);
 
-                        List<string> lstSerialNos = new List<string>();
-                        List<string> returnItems = new List<string>();
-                        foreach (var NewModelNo in lstcoo)
-                        {
-                            lstSerialNos.Add(NewModelNo.ModelNo);
-                        }
+                        //List<string> lstSerialNos = new List<string>();
+                        //List<string> returnItems = new List<string>();
+                        //foreach (var NewModelNo in lstcoo)
+                        //{
+                        //    lstSerialNos.Add(NewModelNo.ModelNo);
+                        //}
 
 
-                        if (cooHeader.COODetails != null)
-                        {
-                            foreach (var item in cooHeader.COODetails)
-                            {
-                                lstcoo.Add(item);
-                            }
-                        }
+                        //if (cooHeader.COODetails != null)
+                        //{
+                        //    foreach (var item in cooHeader.COODetails)
+                        //    {
+                        //        lstcoo.Add(item);
+                        //    }
+                        //}
 
-                        List<string> DuplicateSNos = new List<string>();
+                        //List<string> DuplicateSNos = new List<string>();
 
-                        var cooList = lstcoo;
+                        //var cooList = lstcoo;
                         cooHeader.COODetails = new List<COODetail>();
-                        for (var i = 0; i < cooList.Count; i++)
-                        {
-                            var tempObj = cooHeader.COODetails
-                                            .Where(x => x.ModelNo == cooList[i].ModelNo && x.Description == cooList[i].Description && x.Origin == cooList[i].Origin && x.Qty == cooList[i].Qty)
-                                            .FirstOrDefault();
+                        cooHeader.COODetails = lstcoo;
+                        //for (var i = 0; i < cooList.Count; i++)
+                        //{
+                        //    var tempObj = cooHeader.COODetails
+                        //                    .Where(x => x.ModelNo == cooList[i].ModelNo && x.Description == cooList[i].Description && x.Origin == cooList[i].Origin && x.Qty == cooList[i].Qty)
+                        //                    .FirstOrDefault();
 
-                            if (tempObj == null)
-                            {
-                                cooHeader.COODetails.Add(cooList[i]);
-                            }
-                            else
-                            {
-                                DuplicateSNos.Add(tempObj.ModelNo);
-                            }
-                        }
-                        if (DuplicateSNos.Count != 0)
-                        {
-                            ViewData["DuplicateSNo"] = DuplicateSNos;
-                        }
+                        //    if (tempObj == null)
+                        //    {
+                        //        cooHeader.COODetails.Add(cooList[i]);
+                        //    }
+                        //    else
+                        //    {
+                        //        DuplicateSNos.Add(tempObj.ModelNo);
+                        //    }
+                        //}
+                        //if (DuplicateSNos.Count != 0)
+                        //{
+                        //    ViewData["DuplicateSNo"] = DuplicateSNos;
+                        //}
 
                     }
                 }
@@ -256,17 +257,21 @@ namespace RMA.Web.Controllers
                             foreach (DataRow row in DS.Tables[0].Rows)
                             {
                                 var currentItem = new COODetail();
+                                short itemNo = 1;
 
                                 if (row[0].ToString() != "")
                                 {
                                     try
                                     {
+                                        currentItem.ItemNo = itemNo;
                                         currentItem.ModelNo = row[0].ToString().Trim();
                                         currentItem.Description = row[1].ToString().Trim();
                                         currentItem.Qty = row[2].ToString().Trim().Length>0? Convert.ToInt16(row[2].ToString().Trim()): Convert.ToInt16(0);
                                         currentItem.Origin = row[3].ToString().Trim();
 
                                         lstInvoice.Add(currentItem);
+                                        itemNo++;
+
                                     }
                                     catch (Exception)
                                     {
