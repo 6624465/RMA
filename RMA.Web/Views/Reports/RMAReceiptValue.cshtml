@@ -1,0 +1,114 @@
+﻿
+@model EZY.RMAS.Contract.ProductCategoryMonthWiseRMAReceiptandValueDTO
+@{
+	ViewBag.Title = "RMAReceiptValue";
+}
+<link href="@Url.Content("~/Css/bootstrap-timepicker.css") " rel="stylesheet" />
+<section class="content">
+	<div class="box box-dnex">
+		<div class="box-header with-border">
+			<div class="row">
+				<section class="content-header">
+					<ol class="breadcrumb">
+						<li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+						<li><a href='@Url.Content("~/Home/Reports")'> Reports</a></li>
+						<li><a href='@Url.Content("~/Reports/RMAReceiptValue")'>Operational Reports</a></li>
+						<li class="active">Report</li>
+					</ol>
+				</section>
+			</div>
+		</div>
+		<div class="box-body">
+			@using (Html.BeginForm("ViewRMAReceiptValue", "Reports", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
+			{
+				<div class="row">
+					<div class="col-sm-12">
+						@{ Html.RenderPartial("ReportPagesLinks");}
+						<br />
+						<div class="row">
+							@if (ViewBag.Login == 10)
+							{
+								<div class="col-md-1">
+									@Html.DropDownListFor(x => x.Branch, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
+								</div>
+							}
+							<div class="col-md-1">
+								@Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
+							</div>
+							<div class="col-md-1">
+								@Html.DropDownListFor(x => x.FromMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+							</div>
+							<div class="col-md-1">
+								@Html.DropDownListFor(x => x.ToMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+							</div>
+							<div class="col-md-1">
+								@Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
+							</div>
+							<div class="col-md-1">
+								<a id="btnViewReport" data-modal="test" onclick="btnPrint();" class="btn btn-sm btn-primary">Print</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+		<div class="box-footer">
+			<div class="row">
+				<div class="col-md-12">
+					<button class="btn btn-info btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Reports")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<script src="@Url.Content("~/Scripts/moment.js")"></script>
+	<script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
+	<script type="text/javascript">
+            $(function () {
+                $('#Year').val('@Model.Year');
+
+				$('#RMAReceiptValue').parent().addClass('active');
+
+                $('.datepicker').datetimepicker({
+                    useCurrent: false,
+                    format: 'DD/MM/YYYY',
+                    inline: false
+                });
+                $('#frm').validate({
+                    rules:
+                        {
+                            BranchID: {
+                                required: true
+                            },
+                            DateFrom: {
+                                required: true
+                            },
+                            DateTo: {
+                                required: true
+                            },
+                            Year: {
+                                required: true
+                            },
+                            ProductCode:{
+                                required:true
+                            }
+                        }
+                })
+            });
+            function btnPrint() {
+                debugger;
+                $('#frm').valid();
+                var FromMonth = $("#FromMonth").val();
+				var ToMonth = $("#ToMonth").val();
+                var year = $('#Year').val();
+                var productCode=$('#ProductCode').val();
+				var ReportURL = ("/RMAReports/RMAReceipt.Month.Value");
+                var branchID = $('#Branch').val();
+
+                var rooturl = '@Url.Action("ViewRMAReceiptValue", "Reports")';
+				var url = rooturl + "?BranchID=" + branchID + "&FromMonth=" + FromMonth + "&ToMonth=" + ToMonth + "&Year=" + year + "&ProductCode=" + productCode + "&URL=" + ReportURL;
+                $("#btnViewReport").attr("href", url);
+            }
+	</script>
+</section>
+

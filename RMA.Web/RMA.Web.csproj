@@ -486,6 +486,17 @@
     <Content Include="Views\COO\GetCOODetails.cshtml" />
     <Content Include="Views\Home\COO.cshtml" />
     <Content Include="Views\Error\FileContent.cshtml" />
+    <Content Include="Views\Reports\CreditNoteProductCategory.cshtml" />
+    <Content Include="Views\Reports\CreditNoteValue.cshtml" />
+    <Content Include="Views\Reports\MaterialOutwardProductCostMonthWise.cshtml" />
+    <Content Include="Views\Reports\MaterialOutwardProductQtyMonthWise.cshtml" />
+    <Content Include="Views\Reports\MaterialOutwardTotalInvoicesProductMonthWise.cshtml" />
+    <Content Include="Views\Reports\ProductsCategoryRMAReceiptQty.cshtml" />
+    <Content Include="Views\Reports\ProductsCategoryRMAReceiptValue.cshtml" />
+    <Content Include="Views\Reports\RMAReceiptQty.cshtml" />
+    <Content Include="Views\Reports\RMAReceiptValue.cshtml" />
+    <Content Include="Views\Reports\RMATransactionReceived.cshtml" />
+    <Content Include="Views\Reports\RMATransactionReturn.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
