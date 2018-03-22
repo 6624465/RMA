@@ -252,12 +252,13 @@ namespace RMA.Web.Controllers
                     var tableHeaderValue = DS.Tables[0].Columns[0].ColumnName;
                     if (Convert.ToInt32(DS.Tables[0].Columns.Count) == 4)
                     {
+                        short itemNo = 1;
                         if (DS.Tables[0].Columns[0].ColumnName.ToString().ToLower() == "model")//&& DS.Tables[0].Columns[1].ColumnName.ToString().ToLower() == "description" && DS.Tables[0].Columns[2].ColumnName.ToString().ToLower() == "quantity (in pcs)" && DS.Tables[0].Columns[3].ColumnName.ToString().ToLower() == "origin")
                         {
                             foreach (DataRow row in DS.Tables[0].Rows)
                             {
                                 var currentItem = new COODetail();
-                                short itemNo = 1;
+                                
 
                                 if (row[0].ToString() != "")
                                 {
