@@ -336,7 +336,7 @@ namespace RMA.Web.Controllers
                 var list = new COOHeaderBO().GetList(BRANCH_ID).OrderByDescending(x => x.DocumentNo).Select(x => x.DocumentNo).ToList().Take(1);
                 latestDocumentNo = cooHeader.DocumentNo != null ? cooHeader.DocumentNo : list.ToList()[0];
             }
-            return RedirectToAction("EditCOOHeader", "COO", new { DocumentNumber = latestDocumentNo });
+            return RedirectToAction("EditCOOHeader", "COO", new { DocumentNumber = cooHeader.DocumentNo });
         }
 
         [HttpPost]
