@@ -445,7 +445,7 @@ namespace RMA.Web.Controllers
 
                 value = (cooDetailsCount - i) % 15;
 
-                if (value > 0)
+                if (value >= 0)
                 {
                     using (var ms = new MemoryStream())
                     {
