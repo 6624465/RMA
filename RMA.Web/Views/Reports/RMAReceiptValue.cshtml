@@ -22,33 +22,34 @@
 			@using (Html.BeginForm("ViewRMAReceiptValue", "Reports", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
 			{
 				<div class="row">
-					<div class="col-sm-12">
-						@{ Html.RenderPartial("ReportPagesLinks");}
-						<br />
-						<div class="row">
-							@if (ViewBag.Login == 10)
-							{
-								<div class="col-md-1">
-									@Html.DropDownListFor(x => x.Branch, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
-								</div>
-							}
-							<div class="col-md-1">
-								@Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
-							</div>
-							<div class="col-md-1">
-								@Html.DropDownListFor(x => x.FromMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
-							</div>
-							<div class="col-md-1">
-								@Html.DropDownListFor(x => x.ToMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
-							</div>
-							<div class="col-md-1">
-								@Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
-							</div>
-							<div class="col-md-1">
-								<a id="btnViewReport" data-modal="test" onclick="btnPrint();" class="btn btn-sm btn-primary">Print</a>
-							</div>
-						</div>
-					</div>
+                    <div class="col-sm-4">
+                        @{ Html.RenderPartial("ReportPagesLinks");}
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            @if (ViewBag.Login == 10)
+                            {
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.Branch, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
+                                </div>
+                            }
+                            <div class="col-md-2">
+                                @Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.DropDownListFor(x => x.FromMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.DropDownListFor(x => x.ToMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                <a id="btnViewReport" data-modal="test" onclick="btnPrint();" class="btn btn-sm btn-primary">Print</a>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 			}
 		</div>

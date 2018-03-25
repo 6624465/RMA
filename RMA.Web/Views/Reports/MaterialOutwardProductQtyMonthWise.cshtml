@@ -2,7 +2,21 @@
 @{
 	ViewBag.Title = "MaterialInwardProductQty";
 }
-<link href="@Url.Content("~/Css/bootstrap-timepicker.css") " rel="stylesheet" />
+<link href="@Url.Content("~/Css/datepicker3.css")" rel="stylesheet" />
+@*<link href="@Url.Content("~/Css/bootstrap-timepicker.css") " rel="stylesheet" />*@
+<link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
+
+<div class="modal fade in" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+
 <section class="content">
 	<div class="box box-dnex">
 		<div class="box-header with-border">
@@ -19,38 +33,40 @@
 		</div>
 		<div class="box-body">
 			@using (Html.BeginForm("ViewMaterialOutwardProductQtyMonthWise", "Reports", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
-			{
-				<div class="row">
-					<div class="col-sm-12">
-						@{ Html.RenderPartial("ReportPagesLinks");}
-						<br />
-						<div class="row">
-							@if (ViewBag.Login == 10)
-							{
-								<div class="col-md-1">
-									@Html.DropDownListFor(x => x.BranchID, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
-								</div>
-							}
-							<div class="col-md-1">
-								@Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
-							</div>
-							<div class="col-md-1 DtFrmTo">
-								@Html.TextBoxFor(x => x.DateFrom, new { @Value = Model.DateFrom.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
-							</div>
-							<div class="col-md-1 DtFrmTo">
-								@Html.TextBoxFor(x => x.DateTo, new { @Value = Model.DateTo.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
-							</div>
-							<div class="col-md-1">
-								@Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
-							</div>
-							<div class="col-md-1">
-								<a id="btnViewReport" data-modal="test" onclick="btnPrint();" class="btn btn-sm btn-primary">Print</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-		</div>
+            {
+                <div class="row">
+                    <div class="col-sm-4">
+                        @{ Html.RenderPartial("ReportPagesLinks");}
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                @if (ViewBag.Login == 10)
+                                {
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(x => x.BranchID, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
+                                    </div>
+                                }
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
+                                </div>
+                                <div class="col-md-2 DtFrmTo">
+                                    @Html.TextBoxFor(x => x.DateFrom, new { @Value = Model.DateFrom.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
+                                </div>
+                                <div class="col-md-2 DtFrmTo">
+                                    @Html.TextBoxFor(x => x.DateTo, new { @Value = Model.DateTo.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.ActionLink("Print", "ViewMaterialOutwardProductQtyMonthWise", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
+                                    @*<a id="btnViewReport" data-modal="test" onclick="btnPrint();" class="btn btn-sm btn-primary">Print</a>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
 		<div class="box-footer">
 			<div class="row">
 				<div class="col-md-12">
@@ -60,8 +76,13 @@
 			</div>
 		</div>
 	</div>
-	<script src="@Url.Content("~/Scripts/moment.js")"></script>
-	<script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
+    <script src="@Url.Content("~/Scripts/modalform.js")"></script>
+    <script src="@Url.Content("~/Scripts/moment.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
+    <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/moment.js")"></script>
 	<script type="text/javascript">
             $(function () {
                 $('#Year').val('@Model.Year');

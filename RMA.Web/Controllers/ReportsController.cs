@@ -1,6 +1,7 @@
 ﻿using EZY.RMAS.BusinessFactory;
 using EZY.RMAS.Contract;
 using RMA.Web;
+using RMA.Web.ViewModels.Report;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,27 +17,36 @@ namespace RMA.Web.Reports.Controllers
     [WebSsnFilter]
     public class ReportsController : BaseController
     {
-            //string url = "MaterialInwardSSRSReport";
-            //NetworkCredential nwc = new NetworkCredential("ragsarma-001", "n0ki@3310", "ifc");
-            //WebClient client = new WebClient();
-            //client.Credentials = nwc;
-            //string reportURL = string.Format("{0}?{1}{2}&rs:Command=Render&rs:Format=PDF&rc:Toolbar=false&rc:Parameters=false&BranchID={3}&DateFrom={4}&DateTo={5}", "http://sql5002.smarterasp.net/ReportServer",
-            //    "/ragsarma-001/RMAReports/", url, branchID, dateFrom, dateTo);
-            //var cd = new System.Net.Mime.ContentDisposition
-            //{
-            //    FileName = "Report.pdf",
-            //    Inline = false,
-            //};
-            //Response.AppendHeader("Content-Disposition", cd.ToString());
-            //return File(client.DownloadData(reportURL), "application/pdf");
+        //string url = "MaterialInwardSSRSReport";
+        //NetworkCredential nwc = new NetworkCredential("ragsarma-001", "n0ki@3310", "ifc");
+        //WebClient client = new WebClient();
+        //client.Credentials = nwc;
+        //string reportURL = string.Format("{0}?{1}{2}&rs:Command=Render&rs:Format=PDF&rc:Toolbar=false&rc:Parameters=false&BranchID={3}&DateFrom={4}&DateTo={5}", "http://sql5002.smarterasp.net/ReportServer",
+        //    "/ragsarma-001/RMAReports/", url, branchID, dateFrom, dateTo);
+        //var cd = new System.Net.Mime.ContentDisposition
+        //{
+        //    FileName = "Report.pdf",
+        //    Inline = false,
+        //};
+        //Response.AppendHeader("Content-Disposition", cd.ToString());
+        //return File(client.DownloadData(reportURL), "application/pdf");
         public ActionResult MaterialInwardProductQtyMonthWise(ReportParams reportParams)
         {
+
+            ViewBag.ReportMenuList = GetReportMenu();
             reportParams.BranchID = BRANCH_ID;
-            reportParams.DateFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month,1).AddMonths(-1);
+            reportParams.DateFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
             reportParams.DateTo = DateTime.Now.Date;
             reportParams.Year = Convert.ToInt16(DateTime.Now.Year);
             reportParams.ProductCode = 0;
-            ViewBag.Year = new DashBoardBO().GetYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             var ProductCategory = new LookupBO()
                                        .GetList()
@@ -56,7 +66,30 @@ namespace RMA.Web.Reports.Controllers
             ViewBag.Login = BRANCH_ID;
             return View("MaterialInwardProductQty", reportParams);
         }
-        public ActionResult ViewMaterialInwardProductQtyMonthWise(int? BranchID, string dateFrom , string dateTo,int? Year,int? ProductCode,string URL)
+
+        private List<ReportMenu> GetReportMenu()
+        {
+            List<ReportMenu> all = new List<ReportMenu>();
+            all.Add(new ReportMenu { MenuID = 1, MenuName = "Material Inward Product Qty", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 2, MenuName = "Material Inward Product Cost", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 3, MenuName = "Material Inward Total Invoice", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 4, MenuName = "Material Outward Product Qty", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 5, MenuName = "Material Outward Product Cost", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 6, MenuName = "Material Outward Total Invoice", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 7, MenuName = "RMA Transaction Received", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 8, MenuName = "RMA Transaction Return", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 9, MenuName = "Products Category RMA Receipt Qty", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 10, MenuName = "Products Category RMA Receipt Value", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 11, MenuName = "RMA Receipt Quantity", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 12, MenuName = "RMA Receipt Value", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 13, MenuName = "RMA CreditNote ProductCategory", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 14, MenuName = "RMA CreditNote Value", NavURL = "" });
+            //all.Add(new ReportMenu { MenuID = 6, MenuName = "", NavURL = "" });
+            //all.Add(new ReportMenu { MenuID = 6, MenuName = "", NavURL = "" });
+            return all;
+        }
+
+        public ActionResult ViewMaterialInwardProductQtyMonthWise(int? BranchID, string dateFrom, string dateTo, int? Year, int? ProductCode, string URL)
         {
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
@@ -70,12 +103,20 @@ namespace RMA.Web.Reports.Controllers
         }
         public ActionResult MaterialInwardProductCostMonthWise(ReportParams reportParams)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             reportParams.BranchID = BRANCH_ID;
             reportParams.DateFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
             reportParams.DateTo = DateTime.Now.Date;
             reportParams.Year = Convert.ToInt16(DateTime.Now.Year);
             reportParams.ProductCode = 0;
-            ViewBag.Year = new DashBoardBO().GetYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             var ProductCategory = new LookupBO()
                                        .GetList()
@@ -109,12 +150,20 @@ namespace RMA.Web.Reports.Controllers
         }
         public ActionResult MaterialInwardTotalInvoicesProductMonthWise(ReportParams reportParams)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             reportParams.BranchID = BRANCH_ID;
             reportParams.DateFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
             reportParams.DateTo = DateTime.Now.Date;
             reportParams.Year = Convert.ToInt16(DateTime.Now.Year);
             reportParams.ProductCode = 0;
-            ViewBag.Year = new DashBoardBO().GetYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             var ProductCategory = new LookupBO()
                                        .GetList()
@@ -136,6 +185,7 @@ namespace RMA.Web.Reports.Controllers
         }
         public ActionResult ViewMaterialInwardTotalInvoicesProductWise(int? BranchID, string dateFrom, string dateTo, int? Year, int? ProductCode, string URL)
         {
+
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.DateFrom = dateFrom;
@@ -151,12 +201,20 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult MaterialOutwardProductQtyMonthWise(ReportParams reportParams)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             reportParams.BranchID = BRANCH_ID;
             reportParams.DateFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
             reportParams.DateTo = DateTime.Now.Date;
             reportParams.Year = Convert.ToInt16(DateTime.Now.Year);
             reportParams.ProductCode = 0;
-            ViewBag.Year = new DashBoardBO().GetYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             var ProductCategory = new LookupBO()
                                        .GetList()
@@ -185,7 +243,7 @@ namespace RMA.Web.Reports.Controllers
             ViewBag.FromDate = dateFrom;
             ViewBag.ToDate = dateTo;
             ViewBag.ProductCode = ProductCode;
-            ViewBag.ReportSource = "MaterialOutwardProductQty";
+            ViewBag.ReportSource = "MaterialOutwardProductQtyMonthWise";
             ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
             var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
             return PartialView(path);
@@ -194,12 +252,20 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult MaterialOutwardProductCostMonthWise(ReportParams reportParams)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             reportParams.BranchID = BRANCH_ID;
             reportParams.DateFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
             reportParams.DateTo = DateTime.Now.Date;
             reportParams.Year = Convert.ToInt16(DateTime.Now.Year);
             reportParams.ProductCode = 0;
-            ViewBag.Year = new DashBoardBO().GetYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             var ProductCategory = new LookupBO()
                                        .GetList()
@@ -228,7 +294,7 @@ namespace RMA.Web.Reports.Controllers
             ViewBag.FromDate = dateFrom;
             ViewBag.ToDate = dateTo;
             ViewBag.ProductCode = ProductCode;
-            ViewBag.ReportSource = "MaterialOutwardProductCost";
+            ViewBag.ReportSource = "MaterialOutwardProductCostMonthWise";
             ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
             var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
             return PartialView(path);
@@ -236,12 +302,20 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult MaterialOutwardTotalInvoicesProductMonthWise(ReportParams reportParams)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             reportParams.BranchID = BRANCH_ID;
             reportParams.DateFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
             reportParams.DateTo = DateTime.Now.Date;
-              reportParams.Year = Convert.ToInt16(DateTime.Now.Year);
+            reportParams.Year = Convert.ToInt16(DateTime.Now.Year);
             reportParams.ProductCode = 0;
-            ViewBag.Year = new DashBoardBO().GetYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             var ProductCategory = new LookupBO()
                                        .GetList()
@@ -279,12 +353,20 @@ namespace RMA.Web.Reports.Controllers
         // RMA Transactions
         public ActionResult RMATransactionReceived(RMAGenerationReceiveDTO rmaCreditNoteDTO)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             rmaCreditNoteDTO.Branch = BRANCH_ID;
             rmaCreditNoteDTO.FromMonth = Convert.ToInt16(1);
             rmaCreditNoteDTO.ToMonth = Convert.ToInt16(DateTime.Now.Month);
             rmaCreditNoteDTO.Year = Convert.ToInt16(DateTime.Now.Year);
             rmaCreditNoteDTO.ProductCode = 0;
-            ViewBag.Year = new DashBoardBO().GetYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Months = new SelectList(Enumerable.Range(1, 12).Select(x => new SelectListItem() { Text = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[x - 1], Value = x.ToString() }), "Value", "Text");
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             var ProductCategory = new LookupBO()
@@ -322,12 +404,20 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult RMATransactionReturn(RMAGenerationReceiveDTO rmaCreditNoteDTO)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             rmaCreditNoteDTO.Branch = BRANCH_ID;
             rmaCreditNoteDTO.FromMonth = Convert.ToInt16(1);
             rmaCreditNoteDTO.ToMonth = Convert.ToInt16(DateTime.Now.Month);
             rmaCreditNoteDTO.Year = Convert.ToInt16(DateTime.Now.Year);
             rmaCreditNoteDTO.ProductCode = 0;
-            ViewBag.Year = new DashBoardBO().GetYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Months = new SelectList(Enumerable.Range(1, 12).Select(x => new SelectListItem() { Text = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[x - 1], Value = x.ToString() }), "Value", "Text");
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             var ProductCategory = new LookupBO()
@@ -366,6 +456,7 @@ namespace RMA.Web.Reports.Controllers
         // ProductsCategoryRMAReceiptQuantity and Value
         public ActionResult ProductsCategoryRMAReceiptQty(ProductCategoryRMAReceiptandValueDTO productCategoryRMAPriceandValueDTO)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             productCategoryRMAPriceandValueDTO.Branch = BRANCH_ID;
             productCategoryRMAPriceandValueDTO.FromMonth = Convert.ToInt16(1);
             productCategoryRMAPriceandValueDTO.ToMonth = Convert.ToInt16(DateTime.Now.Month);
@@ -374,7 +465,14 @@ namespace RMA.Web.Reports.Controllers
             productCategoryRMAPriceandValueDTO.ProductCategoryRMAReceipt = new DashBoardBO().GetProductCategoryRMAReceipt(productCategoryRMAPriceandValueDTO);
             productCategoryRMAPriceandValueDTO.ProductCategoryRMAValue = new DashBoardBO().GetProductCategoryRMAValue(productCategoryRMAPriceandValueDTO);
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
-            ViewBag.Year = new DashBoardBO().GetRMAYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Months = new SelectList(Enumerable.Range(1, 12).Select(x => new SelectListItem() { Text = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[x - 1], Value = x.ToString() }), "Value", "Text");
             var ProductCategory = new LookupBO()
                                         .GetList()
@@ -392,12 +490,13 @@ namespace RMA.Web.Reports.Controllers
             });
             ViewBag.productCategory = ProductCategory;
             ViewBag.Login = BRANCH_ID;
-            return View(productCategoryRMAPriceandValueDTO);
+            return View("ProductsCategoryRMAReceiptQty", productCategoryRMAPriceandValueDTO);
         }
 
 
         public ActionResult ViewProductsCategoryRMAReceiptQty(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
         {
+
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.FromMonth = FromMonth;
@@ -412,6 +511,7 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ProductsCategoryRMAReceiptValue(ProductCategoryRMAReceiptandValueDTO productCategoryRMAPriceandValueDTO)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             productCategoryRMAPriceandValueDTO.Branch = BRANCH_ID;
             productCategoryRMAPriceandValueDTO.FromMonth = Convert.ToInt16(1);
             productCategoryRMAPriceandValueDTO.ToMonth = Convert.ToInt16(DateTime.Now.Month);
@@ -420,7 +520,14 @@ namespace RMA.Web.Reports.Controllers
             productCategoryRMAPriceandValueDTO.ProductCategoryRMAReceipt = new DashBoardBO().GetProductCategoryRMAReceipt(productCategoryRMAPriceandValueDTO);
             productCategoryRMAPriceandValueDTO.ProductCategoryRMAValue = new DashBoardBO().GetProductCategoryRMAValue(productCategoryRMAPriceandValueDTO);
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
-            ViewBag.Year = new DashBoardBO().GetYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Months = new SelectList(Enumerable.Range(1, 12).Select(x => new SelectListItem() { Text = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[x - 1], Value = x.ToString() }), "Value", "Text");
             var ProductCategory = new LookupBO()
                                         .GetList()
@@ -438,7 +545,7 @@ namespace RMA.Web.Reports.Controllers
             });
             ViewBag.productCategory = ProductCategory;
             ViewBag.Login = BRANCH_ID;
-            return View(productCategoryRMAPriceandValueDTO);
+            return View("ProductsCategoryRMAReceiptValue", productCategoryRMAPriceandValueDTO);
         }
 
 
@@ -458,6 +565,7 @@ namespace RMA.Web.Reports.Controllers
         //RMAReceiptQty and Value Month Wise
         public ActionResult RMAReceiptQty(ProductCategoryMonthWiseRMAReceiptandValueDTO productCategoryMonthWiseRMAPriceandValueDTO)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             productCategoryMonthWiseRMAPriceandValueDTO.Branch = BRANCH_ID;
             productCategoryMonthWiseRMAPriceandValueDTO.FromMonth = Convert.ToInt16(1);
             productCategoryMonthWiseRMAPriceandValueDTO.ToMonth = Convert.ToInt16(DateTime.Now.Month);
@@ -466,7 +574,14 @@ namespace RMA.Web.Reports.Controllers
             productCategoryMonthWiseRMAPriceandValueDTO.RMAReceiptQty = new DashBoardBO().GetMonthWiseProductCategoryRMAReceipt(productCategoryMonthWiseRMAPriceandValueDTO);
             productCategoryMonthWiseRMAPriceandValueDTO.RMAReceiptValue = new DashBoardBO().GetMonthWiseProductCategoryRMAValue(productCategoryMonthWiseRMAPriceandValueDTO);
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
-            ViewBag.Year = new DashBoardBO().GetRMAYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Months = new SelectList(Enumerable.Range(1, 12).Select(x => new SelectListItem() { Text = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[x - 1], Value = x.ToString() }), "Value", "Text");
             var ProductCategory = new LookupBO()
                                         .GetList()
@@ -484,7 +599,7 @@ namespace RMA.Web.Reports.Controllers
             });
             ViewBag.productCategory = ProductCategory;
             ViewBag.Login = BRANCH_ID;
-            return View(productCategoryMonthWiseRMAPriceandValueDTO);
+            return View("RMAReceiptQty", productCategoryMonthWiseRMAPriceandValueDTO);
         }
 
         public ActionResult ViewRMAReceiptQty(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
@@ -494,7 +609,7 @@ namespace RMA.Web.Reports.Controllers
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
-            ViewBag.ReportSource = "ViewRMAReceiptQty";
+            ViewBag.ReportSource = "RMAReceiptQty";
             ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
             var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
             return PartialView(path);
@@ -503,6 +618,7 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult RMAReceiptValue(ProductCategoryMonthWiseRMAReceiptandValueDTO productCategoryMonthWiseRMAPriceandValueDTO)
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             productCategoryMonthWiseRMAPriceandValueDTO.Branch = BRANCH_ID;
             productCategoryMonthWiseRMAPriceandValueDTO.FromMonth = Convert.ToInt16(1);
             productCategoryMonthWiseRMAPriceandValueDTO.ToMonth = Convert.ToInt16(DateTime.Now.Month);
@@ -511,7 +627,14 @@ namespace RMA.Web.Reports.Controllers
             productCategoryMonthWiseRMAPriceandValueDTO.RMAReceiptQty = new DashBoardBO().GetMonthWiseProductCategoryRMAReceipt(productCategoryMonthWiseRMAPriceandValueDTO);
             productCategoryMonthWiseRMAPriceandValueDTO.RMAReceiptValue = new DashBoardBO().GetMonthWiseProductCategoryRMAValue(productCategoryMonthWiseRMAPriceandValueDTO);
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
-            ViewBag.Year = new DashBoardBO().GetRMAYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             ViewBag.Months = new SelectList(Enumerable.Range(1, 12).Select(x => new SelectListItem() { Text = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[x - 1], Value = x.ToString() }), "Value", "Text");
             var ProductCategory = new LookupBO()
                                         .GetList()
@@ -529,7 +652,7 @@ namespace RMA.Web.Reports.Controllers
             });
             ViewBag.productCategory = ProductCategory;
             ViewBag.Login = BRANCH_ID;
-            return View(productCategoryMonthWiseRMAPriceandValueDTO);
+            return View("RMAReceiptValue", productCategoryMonthWiseRMAPriceandValueDTO);
         }
 
         public ActionResult ViewRMAReceiptValue(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
@@ -539,7 +662,7 @@ namespace RMA.Web.Reports.Controllers
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
-            ViewBag.ReportSource = "ViewRMAReceiptValue";
+            ViewBag.ReportSource = "RMAReceiptValue";
             ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
             var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
             return PartialView(path);
@@ -549,6 +672,7 @@ namespace RMA.Web.Reports.Controllers
         public ActionResult CreditNoteProductCategory(RMACreditNoteDTO rmaCreditNoteDTO)
 
         {
+            ViewBag.ReportMenuList = GetReportMenu();
             rmaCreditNoteDTO.Branch = BRANCH_ID;
             rmaCreditNoteDTO.FromMonth = Convert.ToInt16(1);
             rmaCreditNoteDTO.ToMonth = Convert.ToInt16(DateTime.Now.Month);
@@ -557,7 +681,14 @@ namespace RMA.Web.Reports.Controllers
             rmaCreditNoteDTO.RMACreditNoteValue = new DashBoardBO().GetRMACreditNoteValue(rmaCreditNoteDTO);
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             ViewBag.Months = new SelectList(Enumerable.Range(1, 12).Select(x => new SelectListItem() { Text = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[x - 1], Value = x.ToString() }), "Value", "Text");
-            ViewBag.Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new { Value = x.Year, Text = x.Year });
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
             var ProductCategory = new LookupBO()
                                         .GetList()
                                         .Where(x => x.LookupCategory == "CategoryGroup" && x.Status == true)
@@ -574,7 +705,7 @@ namespace RMA.Web.Reports.Controllers
             });
             ViewBag.productCategory = ProductCategory;
             ViewBag.Login = BRANCH_ID;
-            return View(rmaCreditNoteDTO);
+            return View("CreditNoteProductCategory", rmaCreditNoteDTO);
         }
 
         public ActionResult ViewCreditNoteProductCategory(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
@@ -584,7 +715,7 @@ namespace RMA.Web.Reports.Controllers
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
-            ViewBag.ReportSource = "ViewCreditNoteProductCategory";
+            ViewBag.ReportSource = "CreditNoteProductCategory";
             ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
             var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
             return PartialView(path);
@@ -594,6 +725,8 @@ namespace RMA.Web.Reports.Controllers
         public ActionResult CreditNoteValue(RMACreditNoteDTO rmaCreditNoteDTO)
 
         {
+           
+            ViewBag.ReportMenuList = GetReportMenu();
             rmaCreditNoteDTO.Branch = BRANCH_ID;
             rmaCreditNoteDTO.FromMonth = Convert.ToInt16(1);
             rmaCreditNoteDTO.ToMonth = Convert.ToInt16(DateTime.Now.Month);
@@ -602,7 +735,16 @@ namespace RMA.Web.Reports.Controllers
             rmaCreditNoteDTO.RMACreditNoteValue = new DashBoardBO().GetRMACreditNoteValue(rmaCreditNoteDTO);
             ViewBag.Branches = new BranchBO().GetList().Select(x => new { Value = x.BranchID, Text = x.BranchName });
             ViewBag.Months = new SelectList(Enumerable.Range(1, 12).Select(x => new SelectListItem() { Text = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[x - 1], Value = x.ToString() }), "Value", "Text");
-            ViewBag.Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new { Value = x.Year, Text = x.Year });
+
+            var YearList = new List<Year>();
+            var Year = new DashBoardBO().GetRMAOutwardYear().Select(x => new Year() { Value = x.Year, Text = x.Year }).FirstOrDefault();
+            YearList.Add(Year);
+            if (new DashBoardBO().GetRMAOutwardYear().Any(x => x.Year != Convert.ToInt16(DateTime.Now.Year)))
+            {
+                YearList.Add(new Year { Value = Convert.ToInt16(DateTime.Now.Year), Text = Convert.ToInt16(DateTime.Now.Year) });
+            }
+            ViewBag.Year = YearList;
+
             var ProductCategory = new LookupBO()
                                         .GetList()
                                         .Where(x => x.LookupCategory == "CategoryGroup" && x.Status == true)
@@ -619,7 +761,7 @@ namespace RMA.Web.Reports.Controllers
             });
             ViewBag.productCategory = ProductCategory;
             ViewBag.Login = BRANCH_ID;
-            return View(rmaCreditNoteDTO);
+            return View("CreditNoteValue", rmaCreditNoteDTO);
         }
 
         public ActionResult ViewCreditNoteValue(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
@@ -629,10 +771,16 @@ namespace RMA.Web.Reports.Controllers
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
-            ViewBag.ReportSource = "ViewCreditNoteValue";
+            ViewBag.ReportSource = "CreditNoteValue";
             ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
             var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
             return PartialView(path);
         }
     }
+
+    public class Year{
+        public int Value { get; set; }
+        public int Text { get; set; }
+    }
+
 }

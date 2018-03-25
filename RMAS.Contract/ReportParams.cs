@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace EZY.RMAS.Contract
 {
    public class ReportParams:IContract
@@ -20,7 +21,6 @@ namespace EZY.RMAS.Contract
         public DateTime DateTo { get; set; }
         public int Year { get; set; }     
         public int ProductCode { get; set; }
-
-
+     
     }
 }
