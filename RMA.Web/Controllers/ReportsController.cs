@@ -726,6 +726,7 @@ namespace RMA.Web.Reports.Controllers
 
         {
            
+
             ViewBag.ReportMenuList = GetReportMenu();
             rmaCreditNoteDTO.Branch = BRANCH_ID;
             rmaCreditNoteDTO.FromMonth = Convert.ToInt16(1);
