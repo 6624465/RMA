@@ -58,7 +58,7 @@
         @Html.MvcReportViewer(
                                        url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromDate = df.ToString("dd/MM/yyyy"), ToDate = dt.ToString("dd/MM/yyyy") },
                                        new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
-      
+
     }
     else if (reportsource == "MaterialOutwardProductQty")
     {
@@ -141,7 +141,7 @@
 
     }
 }
-}
+
 @*else if (reportsource == "ProductStockHistory")
             {
                 @Html.MvcReportViewer(
