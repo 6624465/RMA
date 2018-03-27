@@ -243,7 +243,7 @@ namespace RMA.Web.Reports.Controllers
             ViewBag.FromDate = dateFrom;
             ViewBag.ToDate = dateTo;
             ViewBag.ProductCode = ProductCode;
-            ViewBag.ReportSource = "MaterialOutwardProductQtyMonthWise";
+            ViewBag.ReportSource = "MaterialOutwardProductQty";
             ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
             var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
             return PartialView(path);
@@ -294,7 +294,7 @@ namespace RMA.Web.Reports.Controllers
             ViewBag.FromDate = dateFrom;
             ViewBag.ToDate = dateTo;
             ViewBag.ProductCode = ProductCode;
-            ViewBag.ReportSource = "MaterialOutwardProductCostMonthWise";
+            ViewBag.ReportSource = "MaterialOutwardProductCost";
             ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
             var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
             return PartialView(path);

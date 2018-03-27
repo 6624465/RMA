@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "MaterialInwardProductQty";
 }
-<link href="@Url.Content("~/Css/datepicker3.css")" rel="stylesheet" />
-@*<link href="@Url.Content("~/Css/bootstrap-timepicker.css") " rel="stylesheet" />*@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+
 <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
@@ -40,7 +40,56 @@
                         @{ Html.RenderPartial("ReportPagesLinks");}
                     </div>
                     <div class="col-sm-8">
-                        <div class="row">
+                        @if (ViewBag.Login == 10)
+                        {
+                            <div class="row" style="padding-bottom:10px;">
+                                <div class="col-md-2">
+                                    <label id="lblRegion" class="control-label">Region</label>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.BranchID, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                        }
+                        <div class="row" style="padding-bottom:10px;">
+                            <div class="col-md-2">
+                                <label id="lblRegion" class="control-label">Product Code</label>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-bottom:10px;">
+                            <div class="col-md-2">
+                                <label id="lblRegion" class="control-label">From Date</label>
+                            </div>
+                            <div class="col-md-2 DtFrmTo">
+                                @Html.TextBoxFor(x => x.DateFrom, new { @Value = Model.DateFrom.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-bottom:10px;">
+                            <div class="col-md-2">
+                                <label id="lblRegion" class="control-label">To Date</label>
+                            </div>
+                            <div class="col-md-2 DtFrmTo">
+                                @Html.TextBoxFor(x => x.DateTo, new { @Value = Model.DateTo.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-bottom:10px;">
+                            <div class="col-md-2">
+                                <label id="lblRegion" class="control-label">Year</label>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-1">
+                                @Html.ActionLink("Print", "ViewMaterialInwardProductQtyMonthWise", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
+                            </div>
+                        </div>
+
+
+
+                        @*<div class="row">
                             @if (ViewBag.Login == 10)
                             {
                                 <div class="col-md-2">
@@ -61,10 +110,9 @@
                             </div>
                             <div class="col-md-1">
                                 @Html.ActionLink("Print", "ViewMaterialInwardProductQtyMonthWise", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
-
-                                @*<a id="btnViewReport" data-modal="test" onclick="btnPrint();" class="btn btn-sm btn-primary">Print</a>*@
+                                                             
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
                             }

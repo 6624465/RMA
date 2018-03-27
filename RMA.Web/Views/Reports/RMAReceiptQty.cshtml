@@ -41,27 +41,52 @@
                         <div class="row">
                             @if (ViewBag.Login == 10)
                             {
-                                <div class="col-md-2">
-                                    @Html.DropDownListFor(x => x.Branch, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col-md-2">
+                                        <label id="lblRegion" class="control-label">Region</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(x => x.Branch, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
+                                    </div>
                                 </div>
                             }
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
+                            <div class="row" style="padding-bottom:10px;">
+                                <div class="col-md-2">
+                                    <label id="lblRegion" class="control-label">Product Code</label>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(x => x.FromMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                            <div class="row" style="padding-bottom:10px;">
+                                <div class="col-md-2">
+                                    <label id="lblRegion" class="control-label">From Month</label>
+                                </div>
+                                <div class="col-md-2 DtFrmTo">
+                                    @Html.DropDownListFor(x => x.FromMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(x => x.ToMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                            <div class="row" style="padding-bottom:10px;">
+                                <div class="col-md-2">
+                                    <label id="lblRegion" class="control-label">To Month</label>
+                                </div>
+                                <div class="col-md-2 DtFrmTo">
+                                    @Html.DropDownListFor(x => x.ToMonth, new SelectList(ViewBag.Months, "Value", "Text"), "Select Month", new { @class = "form-control input-sm" })
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
-                            </div>
-                            <div class="col-md-1">
-                                @Html.ActionLink("Print", "ViewRMAReceiptQty", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
-                               
+                            <div class="row" style="padding-bottom:10px;">
+                                <div class="col-md-2">
+                                    <label id="lblRegion" class="control-label">Year</label>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.ActionLink("Print", "ViewRMAReceiptQty", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
+                                </div>
                             </div>
                         </div>
+                        
                     </div>
 				</div>
 			}
