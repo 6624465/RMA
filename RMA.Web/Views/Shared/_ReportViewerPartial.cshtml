@@ -63,81 +63,81 @@
     else if (reportsource == "MaterialOutwardProductQty")
     {
         @Html.MvcReportViewer(
-                                                                            url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromDate = df.ToString("dd/MM/yyyy"), ToDate = dt.ToString("dd/MM/yyyy") },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                       url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromDate = df.ToString("dd/MM/yyyy"), ToDate = dt.ToString("dd/MM/yyyy") },
+                                       new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
     }
     else if (reportsource == "MaterialOutwardProductCost")
     {
         @Html.MvcReportViewer(
-                                                                            url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromDate = df.ToString("dd/MM/yyyy"), ToDate = dt.ToString("dd/MM/yyyy") },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                       url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromDate = df.ToString("dd/MM/yyyy"), ToDate = dt.ToString("dd/MM/yyyy") },
+                                       new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
     else if (reportsource == "MaterialOutwardTotalInvoicesProductMonthWise")
     {
         @Html.MvcReportViewer(
-                                                                               url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromDate = df.ToString("dd/MM/yyyy"), ToDate = dt.ToString("dd/MM/yyyy") },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                       url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromDate = df.ToString("dd/MM/yyyy"), ToDate = dt.ToString("dd/MM/yyyy") },
+                                       new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
 
     else if (reportsource == "RMATransactionReceived")
     {
         @Html.MvcReportViewer(
-                                                                               url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                      url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
+                                      new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
     else if (reportsource == "RMATransactionReturn")
     {
         @Html.MvcReportViewer(
-                                                                               url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                      url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
+                                      new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
 
     else if (reportsource == "ProductsCategoryRMAReceiptQty")
     {
         @Html.MvcReportViewer(
-                                                                               url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                       url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
+                                       new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
     else if (reportsource == "ProductsCategoryRMAReceiptValue")
     {
         @Html.MvcReportViewer(
-                                                                               url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                     url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
+                                     new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
 
     else if (reportsource == "RMAReceiptQty")
     {
         @Html.MvcReportViewer(
-                                                                               url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                     url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
+                                     new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
     else if (reportsource == "RMAReceiptValue")
     {
         @Html.MvcReportViewer(
-                                                                               url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                     url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
+                                     new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
 
     else if (reportsource == "CreditNoteProductCategory")
     {
         @Html.MvcReportViewer(
-                                                                               url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                     url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
+                                     new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
     else if (reportsource == "CreditNoteValue")
     {
         @Html.MvcReportViewer(
-                                                                               url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
-                                                                                new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
+                                    url, new { BranchID = BranchID, ProductCode = productCode, Year = year, FromMonth = FromMonth, ToMonth = ToMonth },
+                                    new { Height = 600, Width = "100%", style = "border: none" }).ControlSettings(settings)
 
     }
 }

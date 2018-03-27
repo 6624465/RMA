@@ -503,3 +503,13 @@ background: #ffffff; border-top: 3px solid #d2d6de; margin-bottom: 20px; width: 
     padding: 10px;
     background-color: #ffffff;
 }
+
+.rptTitle {
+        background-color: #d83131;
+        width: 98%;
+        margin-bottom: 10px;
+        padding: 1px 0px 0px 10px;
+        height: 60px;
+        color: white;
+    }
+  
