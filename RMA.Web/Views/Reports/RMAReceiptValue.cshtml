@@ -15,6 +15,7 @@
         </div>
     </div>
 </div>
+<div id="loader"></div>
 <section class="content">
 	<div class="box box-dnex">
 		<div class="box-header with-border">
@@ -111,7 +112,7 @@
 	<script type="text/javascript">
             $(function () {
                 $('#Year').val('@Model.Year');
-
+                $('#loader').hide();
 				$('#RMAReceiptValue').parent().addClass('active');
 
                 $('.datepicker').datetimepicker({

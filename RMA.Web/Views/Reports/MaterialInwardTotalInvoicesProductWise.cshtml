@@ -17,6 +17,8 @@
     </div>
 </div>
 
+<div id="loader"></div>
+
 <section class="content">
     <div class="box box-dnex">
         <div class="box-header with-border">
@@ -108,7 +110,10 @@
     <script src="@Url.Content("~/Scripts/moment.js")"></script>
     <script type="text/javascript">
         $(function () {
+
             $('#Year').val('@Model.Year');
+            $('#loader').hide();
+            //setInterval(function () { $('#loader').hide(); }, 1000);
 
             $('#MaterialInwardTotalInvoices').parent().addClass('active');
 

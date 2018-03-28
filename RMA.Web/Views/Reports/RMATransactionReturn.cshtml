@@ -17,6 +17,7 @@
     </div>
 </div>
 
+<div id="loader"></div>
 
 <section class="content">
 	<div class="box box-dnex">
@@ -113,6 +114,7 @@
 	<script type="text/javascript">
             $(function () {
                 $('#Year').val('@Model.Year');
+                $('#loader').hide();
 
 				$('#RMATransactionReturn').parent().addClass('active');
 
@@ -143,7 +145,7 @@
                 })
             });
             function btnPrint() {
-                debugger;
+              
                 $('#frm').valid();
                 var FromMonth = $("#FromMonth").val();
 				var ToMonth = $("#ToMonth").val();

@@ -7,9 +7,12 @@
 <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
-<style>
+
+<style type="text/css">
+
  
-    </style>
+
+</style>
 <div class="modal fade in" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -18,6 +21,7 @@
     </div>
 </div>
 
+<div id="loader"></div>
 
 <section class="content">
     <div class="box box-dnex">
@@ -89,32 +93,6 @@
                             </div>
                         </div>
 
-
-
-                        @*<div class="row">
-                            @if (ViewBag.Login == 10)
-                            {
-                                <div class="col-md-2">
-                                    @Html.DropDownListFor(x => x.BranchID, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
-                                </div>
-                            }
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
-                            </div>
-                            <div class="col-md-2 DtFrmTo">
-                                @Html.TextBoxFor(x => x.DateFrom, new { @Value = Model.DateFrom.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
-                            </div>
-                            <div class="col-md-2 DtFrmTo">
-                                @Html.TextBoxFor(x => x.DateTo, new { @Value = Model.DateTo.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
-                            </div>
-                            <div class="col-md-1">
-                                @Html.ActionLink("Print", "ViewMaterialInwardProductQtyMonthWise", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
-                                                             
-                            </div>
-                        </div>*@
                     </div>
                 </div>
                             }
@@ -137,7 +115,9 @@
     <script src="@Url.Content("~/Scripts/moment.js")"></script>
     <script type="text/javascript">
         $(function () {
-
+            
+           // setInterval(function () { $('#loader').hide(); }, 1000);
+            $('#loader').hide();
 
             $('#Year').val('@Model.Year');
 
@@ -171,7 +151,9 @@
         });
 
         function btnPrint() {
+
             $('#frm').valid();
+          
             var dateFrom = $("#DateFrom").val();
             var dateTo = $("#DateTo").val();
             var year = $('#Year').val();
@@ -198,6 +180,6 @@
                 $("#btnViewReport").attr("href", url);
             }*@
 
-       
+
     </script>
 </section>
