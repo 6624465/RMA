@@ -36,6 +36,7 @@
                             @if (ViewBag.Login == 10)
                             {
                                 <div class="row" style="padding-bottom:10px;">
+                                    <div class="rptTitle"> <h2>RMAReceipt Value</h2><br /></div>
                                     <div class="col-md-2">
                                         <label id="lblRegion" class="control-label">Region</label>
                                     </div>
@@ -101,7 +102,7 @@
     <script type="text/javascript">
             $(function () {
                 $('#Year').val('@Model.Year');
-
+                $('#loader').hide();
 				$('#RMAReceiptValue').parent().addClass('active');
 
                 $('.datepicker').datetimepicker({

@@ -1,11 +1,12 @@
 ﻿@model EZY.RMAS.Contract.ReportParams
 @{
-    ViewBag.Title = "MaterialInwardProductQty";
+    ViewBag.Title = "MaterialOutwardProductQty";
 }
 <link href="@Url.Content("~/Css/datepicker3.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
 <div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
 </div>
+<div id="loader"></div>
 <section class="content">
     <div class="box box-dnex">
         <div class="box-header with-border">
@@ -32,6 +33,7 @@
                             @if (ViewBag.Login == 10)
                             {
                                 <div class="row" style="padding-bottom:10px;">
+                                    <div class="rptTitle"> <h2>Material Outward Product Quantity</h2><br /></div>
                                     <div class="col-md-2">
                                         <label id="lblRegion" class="control-label">Region</label>
                                     </div>
@@ -99,7 +101,7 @@
     <script type="text/javascript">
         $(function () {
             $('#Year').val('@Model.Year');
-
+            $('#loader').hide();
             $('#MaterialOutwardProductQty').parent().addClass('active');
 
             $('.datepicker').datetimepicker({

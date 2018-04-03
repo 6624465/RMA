@@ -1,31 +1,31 @@
 ﻿
 <style>
     .tree, .tree-toggler {
-    font-size:16px;
+        font-size: 16px;
     }
+
 </style>
-<div class="container">   
+<div class="container">
     <div class="col-md-4">
         <div class="well well-lg">
             <ul class="nav nav-list">
                 <li>
                     <label class="tree-toggler nav-header">Reports</label>
                     <ul class="nav nav-list tree">
-
-                        <li><a href="@Url.Content("~/Reports/MaterialInwardProductQtyMonthWise")">Material Inward Product Qty</a></li>
-                        <li><a href="@Url.Content("~/Reports/MaterialInwardProductCostMonthWise")">Material Inward Product Cost</a></li>
-                        <li><a href="@Url.Content("~/Reports/MaterialInwardTotalInvoicesProductMonthWise")"> Material Inward Total Invoices</a></li>
-                        <li><a href="@Url.Content("~/Reports/MaterialOutwardProductQtyMonthWise")"> Material Outward Product Qty</a></li>
-                        <li><a href="@Url.Content("~/Reports/MaterialOutwardProductCostMonthWise")">Material Outward Product Cost</a></li>
-                        <li><a href="@Url.Content("~/Reports/MaterialOutwardTotalInvoicesProductMonthWise")">Material Outward Total Invoices</a></li>
-                        <li><a href="@Url.Content("~/Reports/RMATransactionReceived")">RMA Transaction Received</a></li>
-                        <li><a href="@Url.Content("~/Reports/RMATransactionReturn")">RMA Transaction Return</a></li>
-                        <li><a href="@Url.Content("~/Reports/ProductsCategoryRMAReceiptQty")"> Products Category RMA Receipt Qty</a></li>
-                        <li><a href="@Url.Content("~/Reports/ProductsCategoryRMAReceiptValue")"> Products Category RMA Receipt Value</a></li>
-                        <li><a href="@Url.Content("~/Reports/RMAReceiptQty")">RMA Receipt Quantity</a></li>
-                        <li><a href="@Url.Content("~/Reports/RMAReceiptValue")">RMA Receipt Value</a></li>
-                        <li><a href="@Url.Content("~/Reports/CreditNoteProductCategory")"> RMA CreditNote ProductCategory</a></li>
-                        <li><a href="@Url.Content("~/Reports/CreditNoteValue")">RMA CreditNote Value</a></li>
+                        <li><a href="@Url.Content("~/Reports/MaterialInwardProductQtyMonthWise")" class="rptLink">Material Inward Product Qty</a></li>
+                        <li><a href="@Url.Content("~/Reports/MaterialInwardProductCostMonthWise")" class="rptLink">Material Inward Product Cost</a></li>
+                        <li><a href="@Url.Content("~/Reports/MaterialInwardTotalInvoicesProductMonthWise")" class="rptLink"> Material Inward Total Invoices</a></li>
+                        <li><a href="@Url.Content("~/Reports/MaterialOutwardProductQtyMonthWise")" class="rptLink"> Material Outward Product Qty</a></li>
+                        <li><a href="@Url.Content("~/Reports/MaterialOutwardProductCostMonthWise")" class="rptLink">Material Outward Product Cost</a></li>
+                        <li><a href="@Url.Content("~/Reports/MaterialOutwardTotalInvoicesProductMonthWise")" class="rptLink">Material Outward Total Invoices</a></li>
+                        <li><a href="@Url.Content("~/Reports/RMATransactionReceived")" class="rptLink">RMA Transaction Received</a></li>
+                        <li><a href="@Url.Content("~/Reports/RMATransactionReturn")" class="rptLink">RMA Transaction Return</a></li>
+                        <li><a href="@Url.Content("~/Reports/ProductsCategoryRMAReceiptQty")" class="rptLink"> Products Category RMA Receipt Qty</a></li>
+                        <li><a href="@Url.Content("~/Reports/ProductsCategoryRMAReceiptValue")" class="rptLink"> Products Category RMA Receipt Value</a></li>
+                        <li><a href="@Url.Content("~/Reports/RMAReceiptQty")" class="rptLink">RMA Receipt Quantity</a></li>
+                        <li><a href="@Url.Content("~/Reports/RMAReceiptValue")" class="rptLink">RMA Receipt Value</a></li>
+                        <li><a href="@Url.Content("~/Reports/CreditNoteProductCategory")" class="rptLink"> RMA CreditNote ProductCategory</a></li>
+                        <li><a href="@Url.Content("~/Reports/CreditNoteValue")" class="rptLink">RMA CreditNote Value</a></li>
                     </ul>
                 </li>
             </ul>
@@ -34,3 +34,18 @@
 </div>
 
 
+
+<script>
+    $(function () {
+        $('nav ul li a').on('click', function () {
+            $(this).closest('nav ul').find('a.active').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+
+    $('.rptLink').on('click', function () {       
+        $('#loader').show();
+        //setInterval(function () { $('#loader').hide(); }, 2000);
+    });
+
+</script>
