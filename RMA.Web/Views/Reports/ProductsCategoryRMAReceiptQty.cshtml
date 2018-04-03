@@ -3,17 +3,9 @@
     ViewBag.Title = "ProductsCategoryRMAReceiptQty";
 }
 <link href="@Url.Content("~/Css/datepicker3.css")" rel="stylesheet" />
-@*<link href="@Url.Content("~/Css/bootstrap-timepicker.css") " rel="stylesheet" />*@
 <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
 
-<div class="modal fade in" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id='myModalContent'></div>
-        </div>
-    </div>
+<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
 </div>
 
 <section class="content">
@@ -82,7 +74,8 @@
                                     @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
                                 </div>
                                 <div class="col-md-1">
-                                    @Html.ActionLink("Print", "ViewProductsCategoryRMAReceiptQty", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" onclick="btnPrint()"><i class="fa fa-print"></i>Print</button>
+                                    @*@Html.ActionLink("Print", "ViewProductsCategoryRMAReceiptQty", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })*@
                                 </div>
                             </div>
                         </div>
@@ -99,13 +92,9 @@
             </div>
         </div>
     </div>
-    <script src="@Url.Content("~/Scripts/modalform.js")"></script>
     <script src="@Url.Content("~/Scripts/moment.js")"></script>
     <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
-    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
-    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
     <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/moment.js")"></script>
     <script type="text/javascript">
         $(function () {
             $('#Year').val('@Model.Year');
@@ -120,13 +109,13 @@
             $('#frm').validate({
                 rules:
                     {
-                        BranchID: {
+                        Branch: {
                             required: true
                         },
-                        DateFrom: {
+                        FromMonth: {
                             required: true
                         },
-                        DateTo: {
+                        ToMonth: {
                             required: true
                         },
                         Year: {
@@ -139,18 +128,30 @@
             })
         });
         function btnPrint() {
+            if ($('#frm').valid()) {
+                var FromMonth = $("#FromMonth").val();
+                var ToMonth = $("#ToMonth").val();
+                var year = $('#Year').val();
+                var productCode = $('#ProductCode').val();
+                var ReportURL = ("RMAReceipt.Product.Quantity");
+                var branchID = $('#Branch').val();
 
-            $('#frm').valid();
-            var FromMonth = $("#FromMonth").val();
-            var ToMonth = $("#ToMonth").val();
-            var year = $('#Year').val();
-            var productCode = $('#ProductCode').val();
-            var ReportURL = ("/RMAReports/RMAReceipt.Product.Quantity");
-            var branchID = $('#Branch').val();
-
-            var rooturl = '@Url.Action("ViewProductsCategoryRMAReceiptQty", "Reports")';
+            @*var rooturl = '@Url.Action("ViewProductsCategoryRMAReceiptQty", "Reports")';
             var url = rooturl + "?BranchID=" + branchID + "&FromMonth=" + FromMonth + "&ToMonth=" + ToMonth + "&Year=" + year + "&ProductCode=" + productCode + "&URL=" + ReportURL;
-            $("#btnViewReport").attr("href", url);
+            $("#btnViewReport").attr("href", url);*@
+
+                $.ajax({
+                    url: '@Url.Content("~/Reports/ViewProductsCategoryRMAReceiptQty?BranchID=")' + branchID + "&FromMonth=" + FromMonth + "&ToMonth=" + ToMonth + "&Year=" + year + "&ProductCode=" + productCode + "&URL=" + ReportURL,
+                    method: 'get',
+                    contentType: 'text/html',
+                    success: function (html) {
+                        $('#myModal').html(html);
+                        $('#myModal').modal('show');
+                    },
+                    error: function (err) {
+                    }
+                });
+            }
         }
     </script>
 </section>

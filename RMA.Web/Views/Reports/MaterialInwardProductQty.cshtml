@@ -2,22 +2,11 @@
 @{
     ViewBag.Title = "MaterialInwardProductQty";
 }
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
-
+<link href="@Url.Content("~/Css/datepicker3.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
 
-
-<div class="modal fade in" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id='myModalContent'></div>
-        </div>
-    </div>
+<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
 </div>
-
-
 <section class="content">
     <div class="box box-dnex">
         <div class="box-header with-border">
@@ -83,39 +72,13 @@
                                 @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
                             </div>
                             <div class="col-md-1">
-                                @Html.ActionLink("Print", "ViewMaterialInwardProductQtyMonthWise", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
+                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" onclick="btnPrint()"><i class="fa fa-print"></i>Print</button>
+                                @*@Html.ActionLink("Print", "ViewMaterialInwardProductQtyMonthWise", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })*@
                             </div>
                         </div>
-
-
-
-                        @*<div class="row">
-                            @if (ViewBag.Login == 10)
-                            {
-                                <div class="col-md-2">
-                                    @Html.DropDownListFor(x => x.BranchID, new SelectList(ViewBag.Branches, "Value", "Text"), "Select Branch", new { @class = "form-control input-sm" })
-                                </div>
-                            }
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(x => x.ProductCode, new SelectList(ViewBag.productCategory, "Value", "Text"), null, new { @class = "form-control input-sm" })
-                            </div>
-                            <div class="col-md-2 DtFrmTo">
-                                @Html.TextBoxFor(x => x.DateFrom, new { @Value = Model.DateFrom.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
-                            </div>
-                            <div class="col-md-2 DtFrmTo">
-                                @Html.TextBoxFor(x => x.DateTo, new { @Value = Model.DateTo.ToString("dd/MM/yyyy"), @class = "form-control input-sm datepicker" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
-                            </div>
-                            <div class="col-md-1">
-                                @Html.ActionLink("Print", "ViewMaterialInwardProductQtyMonthWise", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
-                                                             
-                            </div>
-                        </div>*@
                     </div>
                 </div>
-                            }
+            }
         </div>
         <div class="box-footer">
             <div class="row">
@@ -126,13 +89,9 @@
             </div>
         </div>
     </div>
-    <script src="@Url.Content("~/Scripts/modalform.js")"></script>
     <script src="@Url.Content("~/Scripts/moment.js")"></script>
     <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
-    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
-    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
     <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/moment.js")"></script>
     <script type="text/javascript">
         $(function () {
 
@@ -169,17 +128,30 @@
         });
 
         function btnPrint() {
-            $('#frm').valid();
-            var dateFrom = $("#DateFrom").val();
-            var dateTo = $("#DateTo").val();
-            var year = $('#Year').val();
-            var productCode = $('#ProductCode').val();
-            var ReportURL = ("/RMAReports/MaterialInward.Quantity");
-            var branchID = $('#BranchID').val();
+            if ($('#frm').valid()) {
+                var dateFrom = $("#DateFrom").val();
+                var dateTo = $("#DateTo").val();
+                var year = $('#Year').val();
+                var productCode = $('#ProductCode').val();
+                var ReportURL = ("MaterialInward.Quantity");
+                var branchID = $('#BranchID').val();
 
-            var rooturl = '@Url.Action("ViewMaterialInwardProductQtyMonthWise", "Reports")';
+            @*var rooturl = '@Url.Action("ViewMaterialInwardProductQtyMonthWise", "Reports")';
             var url = rooturl + "?BranchID=" + branchID + "&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&Year=" + year + "&ProductCode=" + productCode + "&URL=" + ReportURL;
-            $("#btnViewReport").attr("href", url);
+            $("#btnViewReport").attr("href", url);*@
+
+                $.ajax({
+                    url: '@Url.Content("~/Reports/ViewMaterialInwardProductQtyMonthWise?BranchID=")' + branchID + "&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&Year=" + year + "&ProductCode=" + productCode + "&URL=" + ReportURL,
+                    method: 'get',
+                    contentType: 'text/html',
+                    success: function (html) {
+                        $('#myModal').html(html);
+                        $('#myModal').modal('show');
+                    },
+                    error: function (err) {
+                    }
+                });
+            }
         }
         @*function btnPrint() {
                 debugger;
@@ -196,6 +168,6 @@
                 $("#btnViewReport").attr("href", url);
             }*@
 
-       
+
     </script>
 </section>

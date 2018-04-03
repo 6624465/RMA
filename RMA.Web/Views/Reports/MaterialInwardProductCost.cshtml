@@ -2,19 +2,10 @@
 @{
     ViewBag.Title = "MaterialInwardProductCost";
 }
-
-@*<link href="@Url.Content("~/Css/bootstrap-timepicker.css") " rel="stylesheet" />*@
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link href="@Url.Content("~/Css/datepicker3.css")" rel="stylesheet" />
 <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
 
-<div class="modal fade in" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id='myModalContent'></div>
-        </div>
-    </div>
+<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
 </div>
 
 <section class="content">
@@ -83,17 +74,13 @@
                                 @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
                             </div>
                             <div class="col-md-1">
-                                @Html.ActionLink("Print", "ViewMaterialInwardProductCostMonthWise", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
-                                @*<a id="btnViewReport" data-modal="test" onclick="btnPrint();" class="btn btn-sm btn-primary">Print</a>*@
+                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" onclick="btnPrint()"><i class="fa fa-print"></i>Print</button>
+                                @*@Html.ActionLink("Print", "ViewMaterialInwardProductCostMonthWise", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })*@
                             </div>
                         </div>
-
                     </div>
                 </div>
-
-
-
-                            }
+            }
         </div>
         <div class="box-footer">
             <div class="row">
@@ -104,13 +91,9 @@
         </div>
     </div>
 
-    <script src="@Url.Content("~/Scripts/modalform.js")"></script>
     <script src="@Url.Content("~/Scripts/moment.js")"></script>
     <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
-    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
-    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
     <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/moment.js")"></script>
     <script type="text/javascript">
         $(function () {
             $('#Year').val('@Model.Year');
@@ -145,19 +128,30 @@
         });
         function btnPrint() {
 
+            debugger;
+            if ($('#frm').valid()) {
+                var dateFrom = $("#DateFrom").val();
+                var dateTo = $("#DateTo").val();
+                var year = $('#Year').val();
+                var productCode = $('#ProductCode').val();
+                var ReportURL = ("MaterialInward.Cost");
+                var branchID = $('#BranchID').val();
 
-            $('#frm').valid();
-            var dateFrom = $("#DateFrom").val();
-            var dateTo = $("#DateTo").val();
-            var year = $('#Year').val();
-            var productCode = $('#ProductCode').val();
-            var ReportURL = ("/RMAReports/MaterialInward.Cost");
-            var branchID = $('#BranchID').val();
-
-            var rooturl = '@Url.Action("ViewMaterialInwardProductCostMonthWise", "Reports")';
+            @*var rooturl = '@Url.Action("ViewMaterialInwardProductCostMonthWise", "Reports")';
             var url = rooturl + "?BranchID=" + branchID + "&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&Year=" + year + "&ProductCode=" + productCode + "&URL=" + ReportURL;
-            $("#btnViewReport").attr("href", url);
-
+            $("#btnViewReport").attr("href", url);*@
+                $.ajax({
+                    url: '@Url.Content("~/Reports/ViewMaterialInwardProductCostMonthWise?BranchID=")' + branchID + "&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&Year=" + year + "&ProductCode=" + productCode + "&URL=" + ReportURL,
+                    method: 'get',
+                    contentType: 'text/html',
+                    success: function (html) {
+                        $('#myModal').html(html);
+                        $('#myModal').modal('show');
+                    },
+                    error: function (err) {
+                    }
+                });
+            }
         }
     </script>
 </section>

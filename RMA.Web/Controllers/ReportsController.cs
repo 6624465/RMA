@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 
@@ -17,6 +18,8 @@ namespace RMA.Web.Reports.Controllers
     [WebSsnFilter]
     public class ReportsController : BaseController
     {
+        public static string REPORTSUBFOLDER = WebConfigurationManager.AppSettings["ReportPath"].ToString();
+
         //string url = "MaterialInwardSSRSReport";
         //NetworkCredential nwc = new NetworkCredential("ragsarma-001", "n0ki@3310", "ifc");
         //WebClient client = new WebClient();
@@ -70,36 +73,34 @@ namespace RMA.Web.Reports.Controllers
         private List<ReportMenu> GetReportMenu()
         {
             List<ReportMenu> all = new List<ReportMenu>();
-            all.Add(new ReportMenu { MenuID = 1, MenuName = "Material Inward Product Qty", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 2, MenuName = "Material Inward Product Cost", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 3, MenuName = "Material Inward Total Invoice", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 4, MenuName = "Material Outward Product Qty", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 5, MenuName = "Material Outward Product Cost", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 6, MenuName = "Material Outward Total Invoice", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 7, MenuName = "RMA Transaction Received", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 8, MenuName = "RMA Transaction Return", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 9, MenuName = "Products Category RMA Receipt Qty", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 10, MenuName = "Products Category RMA Receipt Value", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 11, MenuName = "RMA Receipt Quantity", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 12, MenuName = "RMA Receipt Value", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 13, MenuName = "RMA CreditNote ProductCategory", NavURL = "" });
-            all.Add(new ReportMenu { MenuID = 14, MenuName = "RMA CreditNote Value", NavURL = "" });
-            //all.Add(new ReportMenu { MenuID = 6, MenuName = "", NavURL = "" });
-            //all.Add(new ReportMenu { MenuID = 6, MenuName = "", NavURL = "" });
+            all.Add(new ReportMenu { MenuID = 1, MenuName = "Material Inward Product Qty", NavURL = "MaterialInwardProductQty" });
+            all.Add(new ReportMenu { MenuID = 2, MenuName = "Material Inward Product Cost", NavURL = "MaterialInwardProductCost" });
+            all.Add(new ReportMenu { MenuID = 3, MenuName = "Material Inward Total Invoice", NavURL = "MaterialInwardTotalInvoice" });
+            all.Add(new ReportMenu { MenuID = 4, MenuName = "Material Outward Product Qty", NavURL = "MaterialOutwardProductQty" });
+            all.Add(new ReportMenu { MenuID = 5, MenuName = "Material Outward Product Cost", NavURL = "MaterialOutwardProductCost" });
+            all.Add(new ReportMenu { MenuID = 6, MenuName = "Material Outward Total Invoice", NavURL = "MaterialOutwardTotalInvoice" });
+            all.Add(new ReportMenu { MenuID = 7, MenuName = "RMA Transaction Received", NavURL = "RMATransactionReceived" });
+            all.Add(new ReportMenu { MenuID = 8, MenuName = "RMA Transaction Return", NavURL = "RMATransactionReturn" });
+            all.Add(new ReportMenu { MenuID = 9, MenuName = "Products Category RMA Receipt Qty", NavURL = "ProductsCategoryRMAReceiptQty" });
+            all.Add(new ReportMenu { MenuID = 10, MenuName = "Products Category RMA Receipt Value", NavURL = "ProductsCategoryRMAReceiptValue" });
+            all.Add(new ReportMenu { MenuID = 11, MenuName = "RMA Receipt Quantity", NavURL = "RMAReceiptQuantity" });
+            all.Add(new ReportMenu { MenuID = 12, MenuName = "RMA Receipt Value", NavURL = "RMAReceiptValue" });
+            all.Add(new ReportMenu { MenuID = 13, MenuName = "RMA CreditNote ProductCategory", NavURL = "RMACreditNoteProductCategory" });
+            all.Add(new ReportMenu { MenuID = 14, MenuName = "RMA CreditNote Value", NavURL = "RMACreditNoteValue" });
             return all;
         }
 
-        public ActionResult ViewMaterialInwardProductQtyMonthWise(int? BranchID, string dateFrom, string dateTo, int? Year, int? ProductCode, string URL)
+        public PartialViewResult ViewMaterialInwardProductQtyMonthWise(int? BranchID, string dateFrom, string dateTo, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "Material Inward Product Qty";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.DateFrom = dateFrom;
             ViewBag.DateTo = dateTo;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "MaterialInwardProductQty";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            return PartialView("ViewReport");
         }
         public ActionResult MaterialInwardProductCostMonthWise(ReportParams reportParams)
         {
@@ -138,15 +139,16 @@ namespace RMA.Web.Reports.Controllers
         }
         public ActionResult ViewMaterialInwardProductCostMonthWise(int? BranchID, string dateFrom, string dateTo, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "Material Inward Product Cost Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.DateFrom = dateFrom;
             ViewBag.DateTo = dateTo;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "MaterialInwardProductCost";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
         public ActionResult MaterialInwardTotalInvoicesProductMonthWise(ReportParams reportParams)
         {
@@ -185,16 +187,16 @@ namespace RMA.Web.Reports.Controllers
         }
         public ActionResult ViewMaterialInwardTotalInvoicesProductWise(int? BranchID, string dateFrom, string dateTo, int? Year, int? ProductCode, string URL)
         {
-
+            ViewBag.Title = "Material Inward Total Invoices Product Wise Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.DateFrom = dateFrom;
             ViewBag.DateTo = dateTo;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "MaterialInwardTotalInvoicesProductWise";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
         //Outward Reports
@@ -238,15 +240,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewMaterialOutwardProductQtyMonthWise(int? BranchID, string dateFrom, string dateTo, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "Material Outward Product Qty";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
-            ViewBag.FromDate = dateFrom;
-            ViewBag.ToDate = dateTo;
+            ViewBag.DateFrom = dateFrom;
+            ViewBag.DateTo = dateTo;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "MaterialOutwardProductQty";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
 
@@ -289,15 +292,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewMaterialOutwardProductCostMonthWise(int? BranchID, string dateFrom, string dateTo, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "Material Outward Product Cost Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
-            ViewBag.FromDate = dateFrom;
-            ViewBag.ToDate = dateTo;
+            ViewBag.DateFrom = dateFrom;
+            ViewBag.DateTo = dateTo;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "MaterialOutwardProductCost";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
         public ActionResult MaterialOutwardTotalInvoicesProductMonthWise(ReportParams reportParams)
@@ -339,15 +343,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewMaterialOutwardTotalInvoicesProductMonthWise(int? BranchID, string dateFrom, string dateTo, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "Material Outward Total Invoices Product Month Wise Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
-            ViewBag.FromDate = dateFrom;
-            ViewBag.ToDate = dateTo;
+            ViewBag.DateFrom = dateFrom;
+            ViewBag.DateTo = dateTo;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "MaterialOutwardTotalInvoicesProductMonthWise";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
         // RMA Transactions
@@ -391,15 +396,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewRMATransactionReceived(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "RMA Transaction Received Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "RMATransactionReceived";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
         public ActionResult RMATransactionReturn(RMAGenerationReceiveDTO rmaCreditNoteDTO)
@@ -442,15 +448,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewRMATransactionReturn(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "RMA Transaction Return Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "RMATransactionReturn";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
         // ProductsCategoryRMAReceiptQuantity and Value
@@ -496,16 +503,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewProductsCategoryRMAReceiptQty(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
         {
-
+            ViewBag.Title = "Products Category RMA Receipt Qty Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "ProductsCategoryRMAReceiptQty";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
 
@@ -551,15 +558,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewProductsCategoryRMAReceiptValue(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "Products Category RMA Receipt Value Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "ProductsCategoryRMAReceiptValue";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
         //RMAReceiptQty and Value Month Wise
@@ -604,15 +612,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewRMAReceiptQty(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "RMA Receipt Qty Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "RMAReceiptQty";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
 
@@ -657,15 +666,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewRMAReceiptValue(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "RMA Receipt Value Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "RMAReceiptValue";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
         //RMA CreditNote Category
@@ -710,15 +720,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewCreditNoteProductCategory(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "Credit Note Product Category Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "CreditNoteProductCategory";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
 
 
@@ -767,15 +778,16 @@ namespace RMA.Web.Reports.Controllers
 
         public ActionResult ViewCreditNoteValue(int? BranchID, int? FromMonth, int? ToMonth, int? Year, int? ProductCode, string URL)
         {
+            ViewBag.Title = "Credit Note Value Report";
             ViewBag.BranchID = BranchID;
             ViewBag.Year = Year;
             ViewBag.FromMonth = FromMonth;
             ViewBag.ToMonth = ToMonth;
             ViewBag.ProductCode = ProductCode;
             ViewBag.ReportSource = "CreditNoteValue";
-            ViewBag.Url = string.Format("{0}{1}", UTILITY.REPORTSUBFOLDER, URL);
-            var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
-            return PartialView(path);
+            ViewBag.Url = string.Format("{0}{1}", REPORTSUBFOLDER, URL);
+            //var path = "~/Views/Shared/_ReportViewerPartial.cshtml";
+            return PartialView("ViewReport");
         }
     }
 

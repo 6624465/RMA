@@ -1,38 +1,32 @@
 ﻿
 @model EZY.RMAS.Contract.ProductCategoryMonthWiseRMAReceiptandValueDTO
 @{
-	ViewBag.Title = "RMAReceiptValue";
+    ViewBag.Title = "RMAReceiptValue";
 }
 <link href="@Url.Content("~/Css/datepicker3.css")" rel="stylesheet" />
-@*<link href="@Url.Content("~/Css/bootstrap-timepicker.css") " rel="stylesheet" />*@
 <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Css/dataTables.bootstrap.css")" rel="stylesheet" />
-<link href="@Url.Content("~/Css/dataTables.responsive.css")" rel="stylesheet" />
-<div class="modal fade in" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id='myModalContent'></div>
-        </div>
-    </div>
+
+<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
 </div>
+
 <section class="content">
-	<div class="box box-dnex">
-		<div class="box-header with-border">
-			<div class="row">
-				<section class="content-header">
-					<ol class="breadcrumb">
-						<li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
-						<li><a href='@Url.Content("~/Home/Reports")'> Reports</a></li>
-						<li><a href='@Url.Content("~/Reports/RMAReceiptValue")'>Operational Reports</a></li>
-						<li class="active">Report</li>
-					</ol>
-				</section>
-			</div>
-		</div>
-		<div class="box-body">
-			@using (Html.BeginForm("ViewRMAReceiptValue", "Reports", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
-			{
-				<div class="row">
+    <div class="box box-dnex">
+        <div class="box-header with-border">
+            <div class="row">
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li><a href='@Url.Content("~/Home/Reports")'> Reports</a></li>
+                        <li><a href='@Url.Content("~/Reports/RMAReceiptValue")'>Operational Reports</a></li>
+                        <li class="active">Report</li>
+                    </ol>
+                </section>
+            </div>
+        </div>
+        <div class="box-body">
+            @using (Html.BeginForm("ViewRMAReceiptValue", "Reports", FormMethod.Post, new { id = "frm", name = "frm", enctype = "multipart/form-data" }))
+            {
+                <div class="row">
                     <div class="col-sm-4">
                         @{ Html.RenderPartial("ReportPagesLinks");}
                     </div>
@@ -82,32 +76,29 @@
                                     @Html.DropDownListFor(x => x.Year, new SelectList(ViewBag.Year, "Value", "Text"), "Select Year", new { @class = "form-control input-sm" })
                                 </div>
                                 <div class="col-md-1">
-                                    @Html.ActionLink("Print", "ViewRMAReceiptValue", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" onclick="btnPrint()"><i class="fa fa-print"></i>Print</button>
+                                    @*@Html.ActionLink("Print", "ViewRMAReceiptValue", "Reports", new { data_modal = "test", id = "btnViewReport", onclick = "btnPrint()", @class = "btn btn-sm btn-primary" })*@
                                 </div>
                             </div>
                         </div>
-                        
-                    </div>
-				</div>
-			}
-		</div>
-		<div class="box-footer">
-			<div class="row">
-				<div class="col-md-12">
-					<button class="btn btn-info btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Reports")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
-				</div>
 
-			</div>
-		</div>
-	</div>
-    <script src="@Url.Content("~/Scripts/modalform.js")"></script>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-info btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Reports")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <script src="@Url.Content("~/Scripts/moment.js")"></script>
     <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
-    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
-    <script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
     <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/moment.js")"></script>
-	<script type="text/javascript">
+    <script type="text/javascript">
             $(function () {
                 $('#Year').val('@Model.Year');
 
@@ -121,13 +112,13 @@
                 $('#frm').validate({
                     rules:
                         {
-                            BranchID: {
+                            Branch: {
                                 required: true
                             },
-                            DateFrom: {
+                            FromMonth: {
                                 required: true
                             },
-                            DateTo: {
+                            ToMonth: {
                                 required: true
                             },
                             Year: {
@@ -140,19 +131,31 @@
                 })
             });
             function btnPrint() {
-                debugger;
-                $('#frm').valid();
-                var FromMonth = $("#FromMonth").val();
-				var ToMonth = $("#ToMonth").val();
-                var year = $('#Year').val();
-                var productCode=$('#ProductCode').val();
-				var ReportURL = ("/RMAReports/RMAReceipt.Month.Value");
-                var branchID = $('#Branch').val();
+                if ($('#frm').valid()) {
+                    var FromMonth = $("#FromMonth").val();
+                    var ToMonth = $("#ToMonth").val();
+                    var year = $('#Year').val();
+                    var productCode = $('#ProductCode').val();
+                    var ReportURL = ("RMAReceipt.Month.Value");
+                    var branchID = $('#Branch').val();
 
-                var rooturl = '@Url.Action("ViewRMAReceiptValue", "Reports")';
+                @*var rooturl = '@Url.Action("ViewRMAReceiptValue", "Reports")';
 				var url = rooturl + "?BranchID=" + branchID + "&FromMonth=" + FromMonth + "&ToMonth=" + ToMonth + "&Year=" + year + "&ProductCode=" + productCode + "&URL=" + ReportURL;
-                $("#btnViewReport").attr("href", url);
+                $("#btnViewReport").attr("href", url);*@
+
+                    $.ajax({
+                        url: '@Url.Content("~/Reports/ViewRMAReceiptValue?BranchID=")' + branchID + "&FromMonth=" + FromMonth + "&ToMonth=" + ToMonth + "&Year=" + year + "&ProductCode=" + productCode + "&URL=" + ReportURL,
+                        method: 'get',
+                        contentType: 'text/html',
+                        success: function (html) {
+                            $('#myModal').html(html);
+                            $('#myModal').modal('show');
+                        },
+                        error: function (err) {
+                        }
+                    });
+                }
             }
-	</script>
+    </script>
 </section>
 
