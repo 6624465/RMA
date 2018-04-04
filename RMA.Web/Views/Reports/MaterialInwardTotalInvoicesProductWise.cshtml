@@ -3,7 +3,8 @@
     ViewBag.Title = "MaterialInwardTotalInvoicesProductWise";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link href="@Url.Content("~/Css/datepicker3.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Css/bootstrap-datetimepicker.css")" rel="stylesheet" />
+
 <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
 
 <div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -107,9 +108,13 @@
             $('#MaterialInwardTotalInvoices').parent().addClass('active');
 
             $('.datepicker').datetimepicker({
-                useCurrent: false,
-                format: 'DD/MM/YYYY',
-                inline: false
+                icons: {
+                    time: 'fa fa-clock-o',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-arrow-up',
+                    down: 'fa fa-arrow-down'
+                },
+                format: 'MM/DD/YYYY'
             });
             $('#frm').validate({
                 rules:

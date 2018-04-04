@@ -136,6 +136,7 @@
     <Content Include="Css\alertify.core.css" />
     <Content Include="Css\alertify.default.css" />
     <Content Include="Css\all.css" />
+    <Content Include="Css\bootstrap-datetimepicker.css" />
     <Content Include="Css\bootstrap-timepicker.css" />
     <Content Include="Css\bootstrap.css" />
     <Content Include="Css\bootstrap.min.css" />
