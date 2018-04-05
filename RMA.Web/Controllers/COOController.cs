@@ -577,7 +577,7 @@ namespace RMA.Web.Controllers
         public JsonResult GetConsigneeNameAddress(string consigneeName)
         {
             var customerList = new CustomerBO().GetList(BRANCH_ID).Where(x => x.CustomerName.Contains(consigneeName)).Select(x => x).FirstOrDefault();
-            var customerDetails = new CustomerBO().GetCustomer(new Customer { BranchID = BRANCH_ID, CustomerCode = customerList.CustomerCode });
+           var customerDetails = new CustomerBO().GetCustomer(new Customer { BranchID = BRANCH_ID, CustomerCode = customerList.CustomerCode });
             var countryName = new CountryBO().GetCountry(new Country { CountryCode = customerDetails.CountryCode }).CountryName;
             //var fullAddress = customerDetails.Address1 + "\n" + customerDetails.Address2 + "\n" + customerDetails.State + "\n" + countryName + "\n" + customerDetails.PostCode;
             var consigneeAddress = new ConsigneeAddress() { CustomerName = customerDetails.CustomerName, Address1 = customerDetails.Address1, Address2 = customerDetails.Address2, State = customerDetails.State, Country = countryName, PostCode = (customerDetails.PostCode != "NA" && customerDetails.PostCode != "NP") ? customerDetails.PostCode : "" };

@@ -501,7 +501,7 @@
 
                             if (data != null) {
                                 $("#ConsigneeName").val(data.CustomerName);
-                                $("#ConsigneeAddress").val(data.Address1 + "\n" + data.State + "\n" + data.Country + "   " + data.PostCode);
+                                $("#ConsigneeAddress").val(data.Address1 + "\n" + data.Address2 + "\n" + (data.State==""?"":data.State + "\n") + data.Country + "   " + data.PostCode);
                             }
                             else {
                                 $("#ConsigneeName").val('');
