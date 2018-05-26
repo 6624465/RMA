@@ -10,7 +10,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <link href="@Url.Content("~/Css/select2.min.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Css/sweetalert.css")" rel="stylesheet" />
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="@Url.Content("~/Css/jquery-ui.css")" rel="stylesheet" />
+
 }
 <style>
     #frmCOOHeader label {
@@ -20,14 +21,16 @@
     .hideCntrl {
         display: none;
     }
-    .input-box input[type='text']{
+
+    .input-box input[type='text'] {
         width: 35%;
-        display:inline;
+        display: inline;
     }
-    .input-date{
-    width:50%;
-    margin-left:3px;
-    display:inline;
+
+    .input-date {
+        width: 50%;
+        margin-left: 3px;
+        display: inline;
     }
 </style>
 
@@ -235,16 +238,16 @@
                             <label class="control-label">THIS C/O IS APPLIED TO INVOICE NO.</label>
                             @Html.TextBoxFor(x => x.InvoiceNo, new { @class = "form-control input-sm ", @placeholder = "Invice No" })
                         </div>
-                        
+
                         <div class="col-md-2">
                             <label class="control-label">DATE</label>
                             @Html.TextBoxFor(x => x.InvoiceDate, new { @class = "form-control input-sm input-date datepick" })
                         </div>
-                        
+
                         <div class="col-md-2">
                         </div>
                     </div>
-                    
+
                     <div class="row" style="margin-bottom:10px;">
                         <div class="col-md-2">
                         </div>
@@ -286,15 +289,15 @@
                 <div class="row  no-print">
                     <div class="col-xs-12">
                         @*<button type="button" onclick="SaveHeader();" id="btnSave" class="btn btn-success btn-sm">
-                            <i class="fa fa-save"></i>
-                            Save
-                        </button>*@
+                                <i class="fa fa-save"></i>
+                                Save
+                            </button>*@
 
                         @Html.Button("<i class='fa fa-save'></i>&nbsp;Save", new
-                {
-                  @class = "btn btn-success btn-sm",
-                 onclick = "SaveHeader()"
-                }, SECURABLE.TRANSACTION_ACTION_SAVECOO)
+                   {
+                       @class = "btn btn-success btn-sm",
+                       onclick = "SaveHeader()"
+                   }, SECURABLE.TRANSACTION_ACTION_SAVECOO)
 
                         <button class="btn btn-danger btn-sm" type="button" onclick="DeleteCOOHeader('@Model.DocumentNo')"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
                         <button class="btn btn-default btn-sm" id="c" type="button" onclick="GenerateCOOHeaderReportPDF('@Model.DocumentNo')"><i class='fa fa-eraser' aria-hidden='true'></i>&nbsp;Print</button>
@@ -322,7 +325,7 @@
     <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
     <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
     <script src="@Url.Content("~/Scripts/sweetalert.js")"></script>
-    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui.js")"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.6/xlsx.full.min.js"></script>
     <script type="text/javascript">
 
@@ -392,23 +395,23 @@
                 $("#Country4").attr('readonly', true);
                 $("#Country5").attr('readonly', true);
                 $("#Country6").attr('readonly', true);
-            // $("#InvoiceNo").val('');
-        }
+                // $("#InvoiceNo").val('');
+            }
 
-        function IsCertifeidCheck() {
-            $("#IsCertified").val('@Boolean.TrueString');
-            $("#IsInvoiceConfirm").val('@Boolean.FalseString');
+            function IsCertifeidCheck() {
+                $("#IsCertified").val('@Boolean.TrueString');
+                $("#IsInvoiceConfirm").val('@Boolean.FalseString');
 
-            $("#InvoiceNo").attr('readonly', true);
-            $("#InvoiceDate").attr('readonly', true);
+                $("#InvoiceNo").attr('readonly', true);
+                $("#InvoiceDate").attr('readonly', true);
 
-            $("#Country1").attr('readonly', false);
-            $("#Country2").attr('readonly', false);
-            $("#Country3").attr('readonly', false);
-            $("#Country4").attr('readonly', false);
-            $("#Country5").attr('readonly', false);
-            $("#Country6").attr('readonly', false);
-        }
+                $("#Country1").attr('readonly', false);
+                $("#Country2").attr('readonly', false);
+                $("#Country3").attr('readonly', false);
+                $("#Country4").attr('readonly', false);
+                $("#Country5").attr('readonly', false);
+                $("#Country6").attr('readonly', false);
+            }
 
             $("#DeclarantName").autocomplete({
                 source: function (request, response) {
@@ -501,7 +504,7 @@
 
                             if (data != null) {
                                 $("#ConsigneeName").val(data.CustomerName);
-                                $("#ConsigneeAddress").val(data.Address1 + "\n" + data.Address2 + "\n" + (data.State==""?"":data.State + "\n") + data.Country + "   " + data.PostCode);
+                                $("#ConsigneeAddress").val(data.Address1 + "\n" + data.Address2 + "\n" + (data.State == "" ? "" : data.State + "\n") + data.Country + "   " + data.PostCode);
                             }
                             else {
                                 $("#ConsigneeName").val('');
@@ -699,13 +702,12 @@
 
             fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
             if (validExts.indexOf(fileExt) < 0) {
-                swal("Cancelled", "Invalid file selected, valid files are of " +
-                         validExts.toString() + " types.", "error");
+                swal(" Cancelled", "Invalid file selected, valid files are of " +
+        validExts.toString() + " types.", "error");
                 return false;
             }
             else return true;
         }
-
         function ProcessCOODetails() {
             //if ($('#frmCOOHeader').valid()) {
             //    $('#frmCOOHeader').submit();
