@@ -32,9 +32,9 @@ namespace EZY.RMAS.BusinessFactory
             return invoiceheaderDAL.Save(newItem);
 
         }
-        public List<string> CheckSerailNumberForVendor(Int16 branchID, List<string> serialNumbers)
+        public List<string> CheckSerailNumberForVendor(Int16 branchID,int ProductCategory,string ProductCode, List<string> serialNumbers)
         {
-            return invoiceheaderDAL.CheckSerailNumberForVendor(branchID, serialNumbers);
+            return invoiceheaderDAL.CheckSerailNumberForVendor(branchID, ProductCategory, ProductCode, serialNumbers);
         }
         public bool DeleteInvoiceHeader(InvoiceHeader item)
         {

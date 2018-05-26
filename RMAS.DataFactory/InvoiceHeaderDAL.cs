@@ -176,13 +176,15 @@ namespace EZY.RMAS.DataFactory
 
             return result;
         }
-        public List<string> CheckSerailNumberForVendor(Int16 branchID, List<string> serialNumbers)
+        public List<string> CheckSerailNumberForVendor(Int16 branchID, int ProductCategory,string ProductCode, List<string> serialNumbers)
         {
             List<string> lstMissingSerailNos = new List<string>();
             foreach (var serialNo in serialNumbers)
             {
                 var deleteCommand = db.GetStoredProcCommand(DBRoutine.CHECKVENDORSERIALNODUPLICATE);
                 db.AddInParameter(deleteCommand, "@BranchID", System.Data.DbType.Int16, branchID);
+                db.AddInParameter(deleteCommand, "@ProductCategory", System.Data.DbType.Int16, ProductCategory);
+                db.AddInParameter(deleteCommand, "@ProductCode", System.Data.DbType.String, ProductCode);
                 db.AddInParameter(deleteCommand, "@SerialNo", System.Data.DbType.String, serialNo);
                 if ((int)db.ExecuteScalar(deleteCommand) != 0)
                 {

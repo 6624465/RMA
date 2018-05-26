@@ -15,6 +15,10 @@ using System.Configuration;
 using System.Data.OleDb;
 using System.Data;
 
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+
+
 
 
 namespace RMA.Web.Controllers
@@ -38,7 +42,7 @@ namespace RMA.Web.Controllers
             var branchCode = new BranchBO().GetList().Where(x => x.BranchID == BRANCH_ID).Select(x => x).FirstOrDefault();
 
             var defaultDeclarant = new DeclarantBO().GetList(BRANCH_ID).Where(x => x.DeclarantName == RMA.Web.UTILITY.DEFAULT_DECLARANT).FirstOrDefault();
-             
+
 
 
 
@@ -53,7 +57,7 @@ namespace RMA.Web.Controllers
             ViewBag.FileName = "";
             if (DocumentNo == "")
             {
-                cooHeader.COODetails = new List<COODetail>(); 
+                cooHeader.COODetails = new List<COODetail>();
                 cooHeader.InvoiceDate = DateTime.Now;
                 cooHeader.DepartureDate = DateTime.Now;
                 cooHeader.CreatedOn = DateTime.Now;
@@ -69,8 +73,6 @@ namespace RMA.Web.Controllers
                     cooHeader.Designation = defaultDeclarant.Designation;
 
                 }
-
-
             }
             else
             {
@@ -78,7 +80,6 @@ namespace RMA.Web.Controllers
                 cooHeader.DocumentNo = DocumentNo;
                 cooHeader = new COOHeaderBO().GetCOOHeader(cooHeader);
             }
-
 
             return View(cooHeader);
         }
@@ -159,11 +160,11 @@ namespace RMA.Web.Controllers
                     //return RedirectToRoute(new { controller = "Error", action = "FileContent" });
                     return View("CooHeader", cooHeader);
                 }
-                    
+
             }
 
             return View();
-            
+
         }
 
 
@@ -195,7 +196,7 @@ namespace RMA.Web.Controllers
         }
 
 
-        private List<COODetail> ProcessFile(string fileName)
+        public List<COODetail> ProcessFile(string fileName)
         {
             List<COODetail> lstInvoice = new List<COODetail>();
 
@@ -212,89 +213,175 @@ namespace RMA.Web.Controllers
                 strxlsProvider = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileName + ";Extended Properties=Excel 12.0;";
 
 
-            var objXlsConnection = new OleDbConnection(strxlsProvider);
+
+            //var objXlsConnection = new OleDbConnection(strxlsProvider);
 
             try
             {
 
-                objXlsConnection.Open();
-                if (objXlsConnection.State == ConnectionState.Closed)
-                    return null;
-                DataTable dt = null;
-                dt = objXlsConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                //objXlsConnection.Open();
+                //if (objXlsConnection.State == ConnectionState.Closed)
+                //    return null;
 
-                if (dt == null)
+                //dt = objXlsConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+
+                //if (dt == null)
+                //{
+                //    return null;
+                //}
+
+                //String[] excelSheetNames = new String[dt.Rows.Count];
+                //int i = 0;
+
+                //foreach (DataRow row in dt.Rows)
+                //{
+                //    excelSheetNames[i] = row["TABLE_NAME"].ToString().Trim('\'');
+                //    i++;
+                //}
+
+                //foreach (var sheet in excelSheetNames)
+                //{
+                //    sheet.Trim('\'');
+
+                //    var objCmd = new OleDbCommand("Select * From [" + sheet + "]", objXlsConnection);
+                //    objCmd.CommandType = CommandType.Text;
+
+                //    DA.SelectCommand = objCmd;
+                //    DA.Fill(DS, "XLSData");
+
+                //    rowCount = Convert.ToInt16(DS.Tables[0].Rows.Count);
+
+                //    var tableHeaderValue = DS.Tables[0].Columns[0].ColumnName;
+                //    if (Convert.ToInt32(DS.Tables[0].Columns.Count) == 4)
+                //    {
+                //        short itemNo = 1;
+                //        if (DS.Tables[0].Columns[0].ColumnName.ToString().ToLower() == "model")//&& DS.Tables[0].Columns[1].ColumnName.ToString().ToLower() == "description" && DS.Tables[0].Columns[2].ColumnName.ToString().ToLower() == "quantity (in pcs)" && DS.Tables[0].Columns[3].ColumnName.ToString().ToLower() == "origin")
+                //        {
+                //            foreach (DataRow row in DS.Tables[0].Rows)
+                //            {
+                //                var currentItem = new COODetail();
+
+
+                //                if (row[0].ToString() != "")
+                //                {
+                //                    try
+                //                    {
+                //                        currentItem.ItemNo = itemNo;
+                //                        currentItem.ModelNo = row[0].ToString().Trim();
+                //                        currentItem.Description = row[1].ToString().Trim();
+                //                        currentItem.Qty = row[2].ToString().Trim().Length>0? Convert.ToInt16(row[2].ToString().Trim()): Convert.ToInt16(0);
+                //                        currentItem.Origin = row[3].ToString().Trim();
+
+                //                        lstInvoice.Add(currentItem);
+                //                        itemNo++;
+
+                //                    }
+                //                    catch (Exception)
+                //                    {
+                //                        var myEx = new Exception("Invalid file content");
+                //                        throw myEx;
+                //                    }
+
+                //                }
+                //            }
+                //            ViewBag.FileName = _fileName;
+                //        }
+                //        else
+                //        {
+                //            ViewBag.WrongFileContent = true;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        ViewBag.WrongFileContent = true;
+                //    }
+                //}
+                DataTable dt = new DataTable();
+
+                using (SpreadsheetDocument doc = SpreadsheetDocument.Open(fileName, false))
                 {
-                    return null;
-                }
+                    //Read the first Sheet from Excel file.
+                    Sheet sheet = doc.WorkbookPart.Workbook.Sheets.GetFirstChild<Sheet>();
 
-                String[] excelSheetNames = new String[dt.Rows.Count];
-                int i = 0;
+                    //Get the Worksheet instance.
+                    Worksheet worksheet = (doc.WorkbookPart.GetPartById(sheet.Id.Value) as WorksheetPart).Worksheet;
 
-                foreach (DataRow row in dt.Rows)
-                {
-                    excelSheetNames[i] = row["TABLE_NAME"].ToString().Trim('\'');
-                    i++;
-                }
+                    //Fetch all the rows present in the Worksheet.
+                    IEnumerable<DocumentFormat.OpenXml.Spreadsheet.Row> rows = worksheet.GetFirstChild<SheetData>().Descendants<DocumentFormat.OpenXml.Spreadsheet.Row>();
 
-                foreach (var sheet in excelSheetNames)
-                {
-                    sheet.Trim('\'');
+                    //Create a new DataTable.
+                    //DataTable dt = new DataTable();
 
-                    var objCmd = new OleDbCommand("Select * From [" + sheet + "]", objXlsConnection);
-                    objCmd.CommandType = CommandType.Text;
-
-                    DA.SelectCommand = objCmd;
-                    DA.Fill(DS, "XLSData");
-
-                    rowCount = Convert.ToInt16(DS.Tables[0].Rows.Count);
-
-                    var tableHeaderValue = DS.Tables[0].Columns[0].ColumnName;
-                    if (Convert.ToInt32(DS.Tables[0].Columns.Count) == 4)
+                    //Loop through the Worksheet rows.
+                    foreach (DocumentFormat.OpenXml.Spreadsheet.Row row in rows)
                     {
-                        short itemNo = 1;
-                        if (DS.Tables[0].Columns[0].ColumnName.ToString().ToLower() == "model")//&& DS.Tables[0].Columns[1].ColumnName.ToString().ToLower() == "description" && DS.Tables[0].Columns[2].ColumnName.ToString().ToLower() == "quantity (in pcs)" && DS.Tables[0].Columns[3].ColumnName.ToString().ToLower() == "origin")
+                        //Use the first row to add columns to DataTable.
+                        if (row.RowIndex.Value == 1)
                         {
-                            foreach (DataRow row in DS.Tables[0].Rows)
+                            //dt.Rows.Add();
+                            foreach (Cell cell in row.Descendants<Cell>())
                             {
-                                var currentItem = new COODetail();
-                                
-
-                                if (row[0].ToString() != "")
-                                {
-                                    try
-                                    {
-                                        currentItem.ItemNo = itemNo;
-                                        currentItem.ModelNo = row[0].ToString().Trim();
-                                        currentItem.Description = row[1].ToString().Trim();
-                                        currentItem.Qty = row[2].ToString().Trim().Length>0? Convert.ToInt16(row[2].ToString().Trim()): Convert.ToInt16(0);
-                                        currentItem.Origin = row[3].ToString().Trim();
-
-                                        lstInvoice.Add(currentItem);
-                                        itemNo++;
-
-                                    }
-                                    catch (Exception)
-                                    {
-                                        var myEx = new Exception("Invalid file content");
-                                        throw myEx;
-                                    }
-                                    
-                                }
+                                dt.Columns.Add(GetValue(doc, cell));
                             }
-                            ViewBag.FileName = _fileName;
                         }
                         else
                         {
-                            ViewBag.WrongFileContent = true;
+                            //Add rows to DataTable.
+                            dt.Rows.Add();
+                            int i = 0;
+                            foreach (Cell cell in row.Descendants<Cell>())
+                            {
+                                var cellValue = GetValue(doc, cell);
+                                if (cellValue != "")
+                                {
+                                    dt.Rows[dt.Rows.Count - 1][i] = cellValue;
+                                    i++;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
                         }
-                    }
-                    else
-                    {
-                        ViewBag.WrongFileContent = true;
                     }
                 }
 
+                if (Convert.ToInt32(dt.Columns.Count) == 4)
+                {
+                    short itemNo = 1;
+                    if (dt.Columns[0].ColumnName.ToString().ToLower() == "model")//&& DS.Tables[0].Columns[1].ColumnName.ToString().ToLower() == "description" && DS.Tables[0].Columns[2].ColumnName.ToString().ToLower() == "quantity (in pcs)" && DS.Tables[0].Columns[3].ColumnName.ToString().ToLower() == "origin")
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            var currentItem = new COODetail();
+
+                            if (row[0].ToString() != "")
+                            {
+                                try
+                                {
+                                    currentItem.ItemNo = itemNo;
+                                    currentItem.ModelNo = row[0].ToString().Trim();
+                                    currentItem.Description = row[1].ToString().Trim();
+                                    currentItem.Qty = row[2].ToString().Trim().Length > 0 ? Convert.ToInt16(row[2].ToString().Trim()) : Convert.ToInt16(0);
+                                    currentItem.Origin = row[3].ToString().Trim();
+                                    lstInvoice.Add(currentItem);
+                                    itemNo++;
+
+                                }
+                                catch (Exception)
+                                {
+                                    var myEx = new Exception("Invalid file content");
+                                    throw myEx;
+                                }
+
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 return lstInvoice;
             }
@@ -305,8 +392,18 @@ namespace RMA.Web.Controllers
             }
             finally
             {
-                objXlsConnection.Close();
+                //objXlsConnection.Close();
             }
+        }
+
+        public string GetValue(SpreadsheetDocument doc, Cell cell)
+        {
+            string value = cell.CellValue != null ? cell.CellValue.InnerText : "";
+            if (cell.CellValue != null && cell.DataType != null && cell.DataType.Value == CellValues.SharedString)
+            {
+                return doc.WorkbookPart.SharedStringTablePart.SharedStringTable.ChildElements.GetItem(int.Parse(value)).InnerText;
+            }
+            return value;
         }
 
 
@@ -503,7 +600,7 @@ namespace RMA.Web.Controllers
                     }
                     if (cooHeader.Country2 != null)
                     {
-                        country1 = country1 + ", " + cooHeader.Country2.ToString() ;
+                        country1 = country1 + ", " + cooHeader.Country2.ToString();
                     }
 
 
@@ -545,19 +642,19 @@ namespace RMA.Web.Controllers
                 {
                     if (count < cooHeader.COODetails.Count)
                     {
-                        if(!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].ModelNo))
+                        if (!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].ModelNo))
                             pdfFormFields.SetField("model" + i + "", cooHeader.COODetails[count].ModelNo.ToString());
                         else
                             pdfFormFields.SetField("model" + i + "", "");
 
-                        if(!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].Description))
+                        if (!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].Description))
                             pdfFormFields.SetField("desc" + i + "", cooHeader.COODetails[count].Description.ToString());
                         else
                             pdfFormFields.SetField("desc" + i + "", "");
 
-                        pdfFormFields.SetField("qty" + i + "", cooHeader.COODetails[count].Qty>0? cooHeader.COODetails[count].Qty.ToString() : "");
+                        pdfFormFields.SetField("qty" + i + "", cooHeader.COODetails[count].Qty > 0 ? cooHeader.COODetails[count].Qty.ToString() : "");
 
-                        if(!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].Origin))
+                        if (!string.IsNullOrWhiteSpace(cooHeader.COODetails[count].Origin))
                             pdfFormFields.SetField("org" + i + "", cooHeader.COODetails[count].Origin.ToString());
                         else
                             pdfFormFields.SetField("org" + i + "", "");
@@ -577,7 +674,7 @@ namespace RMA.Web.Controllers
         public JsonResult GetConsigneeNameAddress(string consigneeName)
         {
             var customerList = new CustomerBO().GetList(BRANCH_ID).Where(x => x.CustomerName.Contains(consigneeName)).Select(x => x).FirstOrDefault();
-           var customerDetails = new CustomerBO().GetCustomer(new Customer { BranchID = BRANCH_ID, CustomerCode = customerList.CustomerCode });
+            var customerDetails = new CustomerBO().GetCustomer(new Customer { BranchID = BRANCH_ID, CustomerCode = customerList.CustomerCode });
             var countryName = new CountryBO().GetCountry(new Country { CountryCode = customerDetails.CountryCode }).CountryName;
             //var fullAddress = customerDetails.Address1 + "\n" + customerDetails.Address2 + "\n" + customerDetails.State + "\n" + countryName + "\n" + customerDetails.PostCode;
             var consigneeAddress = new ConsigneeAddress() { CustomerName = customerDetails.CustomerName, Address1 = customerDetails.Address1, Address2 = customerDetails.Address2, State = customerDetails.State, Country = countryName, PostCode = (customerDetails.PostCode != "NA" && customerDetails.PostCode != "NP") ? customerDetails.PostCode : "" };

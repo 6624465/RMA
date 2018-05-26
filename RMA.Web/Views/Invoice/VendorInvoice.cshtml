@@ -588,11 +588,12 @@
             }
         }
         function SaveVendorInvoice() {
-            
+            debugger;
             if ($('#frm').valid()) {
                 var v = $('#Quantity').val();
                 var deleteCount=$('.deleteCss').length;
                 var length = $('.detailCount').length-deleteCount;
+               // var length = $('.detailCount').length;
                 if(v == 0)
                 {
                     swal("Cancelled", "Atleast add one serial No.", "error");
@@ -698,6 +699,7 @@
                 if (file != null) {
                     $('#scanBtn').attr('disabled', 'disabled');
                     ProcessVendorInvoice();
+                   // ProcessVendorInvoices();
                 }
                 else
                     $('#scanBtn').removeAttr('disabled');

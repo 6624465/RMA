@@ -158,6 +158,9 @@ namespace RMA.Web.Controllers
             invoiceHeader.InvoiceDate = UTILITY.SINGAPORETIME;
             invoiceHeader.InvoiceType = UTILITY.CONFIG_INVOICETYPE_VENDOR;
 
+            var ProductCategory = invoiceHeader.ProductCategory;
+            var ProductCode = invoiceHeader.ProductCode;
+
             var appSettingsPath = ConfigurationManager.AppSettings["VendorInputFileSharePath"];
             var folderPath = Server.MapPath(appSettingsPath);
             CreateDirectory(folderPath);
@@ -175,10 +178,11 @@ namespace RMA.Web.Controllers
 
                     List<string> lstSerialNos = new List<string>();
                     List<string> returnItems = new List<string>();
+                    
                     foreach (var NewSerialNo in lstInvoice)
                     {
                         lstSerialNos.Add(NewSerialNo.SerialNo);
-                        returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, lstSerialNos);
+                        returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, ProductCategory, ProductCode, lstSerialNos);
                     }
                         if (returnItems.Count > 0)
                         {
@@ -243,7 +247,7 @@ namespace RMA.Web.Controllers
                 {
                     lstSerialNos.Add(NewSerialNo.SerialNo);
                     //invoiceHeader.InvoiceDetailItems.ForEach(x => lstSerialNos.Add(x.SerialNo));
-                    returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, lstSerialNos);
+                    returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, ProductCategory, ProductCode, lstSerialNos);
                 }
                 if (returnItems.Count > 0)
                 {
@@ -715,7 +719,7 @@ namespace RMA.Web.Controllers
 
                     currentItem.SerialNo = row[0].ToString().Trim();//row["Part #"].ToString();
                                                                     //currentItem.SerialNo = row["Serial Number"].ToString();
-
+                    if(currentItem.SerialNo!="")
                     lstInvoice.Add(currentItem);
                 }
 
