@@ -182,9 +182,11 @@ namespace RMA.Web.Controllers
                     foreach (var NewSerialNo in lstInvoice)
                     {
                         lstSerialNos.Add(NewSerialNo.SerialNo);
-                        returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, ProductCategory, ProductCode, lstSerialNos);
                     }
-                        if (returnItems.Count > 0)
+
+                    returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, ProductCategory, ProductCode, lstSerialNos);
+
+                    if (returnItems.Count > 0)
                         {
                             foreach (var item in returnItems)
                             {
@@ -247,8 +249,9 @@ namespace RMA.Web.Controllers
                 {
                     lstSerialNos.Add(NewSerialNo.SerialNo);
                     //invoiceHeader.InvoiceDetailItems.ForEach(x => lstSerialNos.Add(x.SerialNo));
-                    returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, ProductCategory, ProductCode, lstSerialNos);
                 }
+                returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, ProductCategory, ProductCode, lstSerialNos);
+
                 if (returnItems.Count > 0)
                 {
                     foreach (var item in returnItems)
