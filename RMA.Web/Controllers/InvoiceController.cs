@@ -512,8 +512,8 @@ namespace RMA.Web.Controllers
 
                         invoiceHeader.InvoiceDetailItems.ForEach(x => serialNoList.Add(x.SerialNo));
 
-                        returnItems = new InvoiceHeaderBO().CheckSerailNumber(BRANCH_ID, invoiceHeader.ProductCategory, invoiceHeader.ProductCode, serialNoList);
-
+                        //returnItems = new InvoiceHeaderBO().CheckSerailNumber(BRANCH_ID, invoiceHeader.ProductCategory, invoiceHeader.ProductCode, serialNoList);
+                        returnItems = new InvoiceHeaderBO().CheckSerailNumber(BRANCH_ID,serialNoList);
                         if (returnItems.Count > 0)
                         {
                             @TempData["IsNotExist"] = true;
@@ -532,7 +532,7 @@ namespace RMA.Web.Controllers
 
                 invoiceHeader.InvoiceDetailItems.ForEach(x => serialNoList.Add(x.SerialNo));
 
-                returnItems = new InvoiceHeaderBO().CheckSerailNumber(BRANCH_ID, invoiceHeader.ProductCategory, invoiceHeader.ProductCode, serialNoList);
+                returnItems = new InvoiceHeaderBO().CheckSerailNumber(BRANCH_ID,serialNoList);
 
                 if (returnItems.Count > 0)
                 {

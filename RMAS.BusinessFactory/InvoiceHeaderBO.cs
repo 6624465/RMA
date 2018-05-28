@@ -53,9 +53,9 @@ namespace EZY.RMAS.BusinessFactory
             return invoiceheaderDAL.SerialNoInquiry(modelNo, serialNo);
         }
 
-        public List<string> CheckSerailNumber(Int16 branchID,Int16 ProductCategory,string ProductCode, List<string> serialNumbers)
+        public List<string> CheckSerailNumber(Int16 branchID,List<string> serialNumbers)
         {
-            return invoiceheaderDAL.CheckSerailNumber(branchID, ProductCategory, ProductCode, serialNumbers);
+            return invoiceheaderDAL.CheckSerailNumber(branchID,serialNumbers);
         }
     }
 }

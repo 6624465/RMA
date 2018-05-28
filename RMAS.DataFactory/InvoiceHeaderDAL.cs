@@ -131,7 +131,7 @@ namespace EZY.RMAS.DataFactory
 
 
         }
-        public List<string> CheckSerailNumber(Int16 branchID,Int16 ProductCategory,string ProductCode, List<string> serialNumbers)
+        public List<string> CheckSerailNumber(Int16 branchID,List<string> serialNumbers)
         {
             List<string> lstMissingSerailNos = new List<string>();
 
@@ -139,10 +139,11 @@ namespace EZY.RMAS.DataFactory
             {
                 var deleteCommand = db.GetStoredProcCommand(DBRoutine.CHECKINWARDSERIALNO);
                 db.AddInParameter(deleteCommand, "@BranchID", System.Data.DbType.Int16, branchID);
-                db.AddInParameter(deleteCommand, "@ProductCategory", System.Data.DbType.Int16, ProductCategory);
-                db.AddInParameter(deleteCommand, "@ProductCode", System.Data.DbType.String, ProductCode);
+                //db.AddInParameter(deleteCommand, "@ProductCategory", System.Data.DbType.Int16, ProductCategory);
+                //db.AddInParameter(deleteCommand, "@ProductCode", System.Data.DbType.String, ProductCode);
                 db.AddInParameter(deleteCommand, "@SerialNo", System.Data.DbType.String, serialNo);
-                if ((int)db.ExecuteScalar(deleteCommand) == 0)
+                
+                if ((int)db.ExecuteNonQuery(deleteCommand) != 0)
                 {
                     lstMissingSerailNos.Add(serialNo);
                 }
