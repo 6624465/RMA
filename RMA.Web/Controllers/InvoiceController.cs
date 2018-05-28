@@ -179,10 +179,12 @@ namespace RMA.Web.Controllers
                     List<string> lstSerialNos = new List<string>();
                     List<string> returnItems = new List<string>();
                     
-                    foreach (var NewSerialNo in lstInvoice)
-                    {
-                        lstSerialNos.Add(NewSerialNo.SerialNo);
-                    }
+                    //foreach (var NewSerialNo in lstInvoice)
+                    //{
+                    //    lstSerialNos.Add(NewSerialNo.SerialNo);
+                    //}
+
+                    lstInvoice.ForEach(x => lstSerialNos.Add(x.SerialNo));
 
                     returnItems = new InvoiceHeaderBO().CheckSerailNumberForVendor(BRANCH_ID, ProductCategory, ProductCode, lstSerialNos);
 
