@@ -65,6 +65,10 @@ namespace RMA.Web.Controllers
         {
             return View();
         }
+        public ActionResult Services()
+        {
+            return View();
+        }
         public class test
         {
             public string name { get; set; }

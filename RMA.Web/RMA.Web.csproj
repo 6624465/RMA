@@ -379,6 +379,7 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\RMAController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Core\WebSsnFilter.cs" />
@@ -508,6 +509,9 @@
     <Content Include="Views\Reports\RMATransactionReceived.cshtml" />
     <Content Include="Views\Reports\RMATransactionReturn.cshtml" />
     <Content Include="Views\Reports\ViewReport.cshtml" />
+    <Content Include="Views\Home\Services.cshtml" />
+    <Content Include="Views\Services\CreateJob.cshtml" />
+    <Content Include="Views\Services\JobSheetList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

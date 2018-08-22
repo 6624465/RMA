@@ -11,7 +11,7 @@
                 <div class="row">
                     @if (Model.IsMaster)
                     {
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="main-section grey ">
                                 <a href='@Url.Content("~/Home/Masters")'>
                                     <div class="menu_section  grey">
@@ -28,7 +28,7 @@
                     }
                     @if (Model.IsTransactions)
                     {
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="main-section blue">
                                 <a href='@Url.Content("~/Home/Transactions")'>
                                     <div class="menu_section blue">
@@ -43,9 +43,23 @@
                             </div>
                         </div>
                     }
+                    <div class="col-md-2">
+                        <div class="main-section blue">
+                            <a href='@Url.Content("~/Home/Services")'>
+                                <div class="menu_section blue">
+                                    <span> <i class="fa fa-retweet  fa-5x" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="content-section blue-btm">
+                                    <b> Services</b>
+                                    <p>View the Services list</p>
+                                    <div class="btn btn-lg btn-danger"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                     @if (Model.IsAdministration)
                     {
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="main-section green">
                                 <a href='@Url.Content("~/Home/Administration")'>
                                     <div class="menu_section green">
@@ -62,7 +76,7 @@
                     }
                     @if (Model.IsReports)
                     {
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="main-section org">
                                 <a href='@Url.Content("~/Home/Reports")'>
                                     <div class="menu_section org">

@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Services";
+}
+
+<section class="content">
+    <div class="bs-example list-items">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div class="row">
+                    <section class="content-header">
+                        <h1>
+                            &nbsp;
+                            @*<small>Control panel</small>*@
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href='@Url.Content("~/Home/Index")'><i class="fa fa-dashboard"></i> Home</a></li>
+                            @*<li><a href='@Url.Content("~/Home/Index")'>Modules</a></li>*@
+                            <li class="active">Services</li>
+                        </ol>
+                    </section>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="main-section grey ">
+                            @Html.RmaActionLink(Url.Content("~/Invoice/MaterialsEnquiry"),
+                             "<div class='menu_section grey'>" +
+                             "<span><i class='fa fa-list-alt fa-4x'></i></span>" +
+                             "</div>" +
+                             "<div class='content-section grey-btm'>" +
+                             "<b>Product Inquiry</b>" +
+                             "<p>Search for Products</p>" +
+                             "<div class='btn btn-lg btn-danger'></div>" +
+                             "</div>", new { }, SECURABLE.TRANSACTION_MENU_MATERIALINWARD)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section blue">
+                            @Html.RmaActionLink(Url.Content("~/Services/JobSheetList"),
+                              "<div class='menu_section blue'>" +
+                              "<span><i class='fa fa-list-alt fa-4x'></i></span>" +
+                              "</div>" +
+                              "<div class='content-section blue-btm'>" +
+                              "<b>Create Job</b>" +
+                              "<p>Create or Modify the Job</p>" +
+                              "<div class='btn btn-lg btn-danger'></div>" +
+                              "</div>", new { }, SECURABLE.TRANSACTION_MENU_MATERIALOUTWARD)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section green">
+                            @Html.RmaActionLink(Url.Content("~/Services/ServiceStore"),
+                               "<div class='menu_section green'>" +
+                               "<span><i class='fa fa-list-alt fa-4x'></i></span>" +
+                               "</div>" +
+                               "<div class='content-section green-btm'>" +
+                               "<b>Service Store</b>" +
+                               "<p>View The Service Store</p>" +
+                               "<div class='btn btn-lg btn-danger'></div>" +
+                               "</div>", new { }, SECURABLE.TRANSACTION_MENU_RMAVALIDATION)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section ddgreen">
+                            @Html.RmaActionLink(Url.Content("~/Services/CSM"),
+                                "<div class='menu_section ddgreen'>" +
+                                "<span><i class='fa fa-level-up fa-4x'></i></span>" +
+                                "</div>" +
+                                "<div class='content-section ddgreen-btm'>" +
+                                "<b>CSM</b>" +
+                                "<p>Create or Modify the CSM</p>" +
+                                "<div class='btn btn-lg btn-danger'></div>" +
+                                "</div>", new { }, SECURABLE.TRANSACTION_MENU_VENDOROUTWARD)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="main-section dgreen">
+                            @Html.RmaActionLink(Url.Content("~/Services/VendorClaimProcess"),
+                             "<div class='menu_section dgreen'>" +
+                             "<span><i class='fa fa-level-down fa-4x'></i></span>" +
+                             "</div>" +
+                             "<div class='content-section dgreen-btm'>" +
+                             "<b>Vendor Claim Process</b>" +
+                             "<p>Create or Modify the Vendor Claim Process</p>" +
+                             "<div class='btn btn-lg btn-danger'></div>" +
+                             "</div>", new { }, SECURABLE.TRANSACTION_MENU_VENDORRETURN)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section org">
+                            @Html.RmaActionLink(Url.Content("~/Services/CreateServiceQuote"),
+                              "<div class='menu_section org'>" +
+                              "<span><i class='fa fa-sign-out fa-4x'></i></span>" +
+                              "</div>" +
+                              "<div class='content-section org-btm'>" +
+                              "<b>Create Service Quote/Invoice</b>" +
+                              "<p>Create or Modify the Service Quote/Invoice</p>" +
+                              "<div class='btn btn-lg btn-danger'></div>" +
+                              "</div>", new { }, SECURABLE.TRANSACTION_MENU_RMARETURN)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section grey ">
+                            @Html.RmaActionLink(Url.Content("~/Services/StoresBranch"),
+                               "<div class='menu_section grey'>" +
+                               "<span><i class='fa fa-search fa-4x'></i></span>" +
+                               "</div>" +
+                               "<div class='content-section grey-btm'>" +
+                               "<b>Stores Branch</b>" +
+                               "<p>Create or Modify the  Branches</p>" +
+                               "<div class='btn btn-lg btn-danger'></div>" +
+                               "</div>", new { }, SECURABLE.TRANSACTION_MENU_MATERIALINQUIRY)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="main-section blue">
+                            @Html.RmaActionLink(Url.Content("~/Services/Reports"),
+                                "<div class='menu_section blue'>" +
+                                "<span><i class='fa fa-list fa-4x'></i></span>" +
+                                "</div>" +
+                                "<div class='content-section blue-btm'>" +
+                                "<b>Reports</b>" +
+                                "<p>View The Reports</p>" +
+                                "<div class='btn btn-lg btn-danger'></div>" +
+                                "</div>", new { }, SECURABLE.TRANSACTION_MENU_COO)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
