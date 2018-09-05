@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using EZY.RMAS.Contract;
+using EZY.RMAS.BusinessFactory;
+
 namespace RMA.Web.Controllers
 {
     public class ServicesController : Controller
@@ -15,7 +18,16 @@ namespace RMA.Web.Controllers
         }
         public ActionResult CreateJob()
         {
-            return View();
+            Users user = new Users();
+            user.RoleCodeList = new UsersBO().GetList().Where(x=>x.RoleCode== "Engineer").Select(x => new SelectListItem
+            {
+                Value = x.RoleCode,
+                Text = x.UserName
+           }).ToList();
+           
+
+
+            return View(user);
         }
         public ActionResult JobSheetList()
         {

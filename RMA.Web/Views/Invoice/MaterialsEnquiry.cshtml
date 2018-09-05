@@ -36,8 +36,8 @@
                     <div class="col-md-3">
                         <label class="control-label pull-right">SerialNo's Status</label>
                         @*</div>
-                            <div class="col-md-3">
-                                @Html.TextAreaFor(x => x.CustomerAddress, new { @class = "form-control input-sm", placeholder = "Customer Address" })*@
+            <div class="col-md-3">
+                @Html.TextAreaFor(x => x.CustomerAddress, new { @class = "form-control input-sm", placeholder = "Customer Address" })*@
                     </div>
                     <div class="col-md-2">
                         <input id="fileupload" type="file" name="file" onchange="fileChanged(this)" />
@@ -49,6 +49,19 @@
                             <i class="fa fa-barcode" aria-hidden="true"></i>&nbsp;Scan
                         </button>
                     </div>
+                    <div class="col-md-4">
+
+
+                    </div>
+                    <div class="col-md-2 pull-right">
+                        <button type="button" 
+                                class="btn btn-default btn-sm"
+                                onclick="location.href='@Url.Content("~/Services/CreateJob")'">
+                            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create Job Sheet
+                        </button>
+
+                    </div>
+
                 </div>
                 @if (Model.Count != 0)
                 {

@@ -64,32 +64,33 @@ namespace RMA.Web.Controllers
                     LayoutMenuRights item = new LayoutMenuRights();
                     item.MenuName = menuItems[i].securableItem;
                     item.Icon = menuItems[i].Icon;
+                    //List<Securables> securable = securablesAll.Where(x => x.GroupID == menuItems[i].securableItem && (x.ActionType == "Menu")).ToList();
                     item.securablesLst = securablesAll.Where(x => x.GroupID == menuItems[i].securableItem && (x.ActionType == "Menu"))
-                                                   .Select(x => new SecurablesRights
-                                                   {
-                                                       SecurableItem = x.SecurableItem,
-                                                       GroupID = x.GroupID,
-                                                       Description = x.Description,
-                                                       ActionType = x.ActionType,
-                                                       Link = x.Link,
-                                                       Icon = x.Icon,
-                                                       hasRight = (securables.Where(j => j.SecurableItem == x.SecurableItem).Count() > 0),
-                                                       Sequence = x.Sequence,
-                                                       ParentSequence = x.ParentSequence,
-                                                       ActionMenus = securablesAll.Where(y => y.GroupID == menuItems[i].securableItem && (y.ActionType == "Action") && y.ParentSequence == x.Sequence)
-                                                                                   .Select(y => new SecurablesRights
-                                                                                   {
-                                                                                       SecurableItem = y.SecurableItem,
-                                                                                       GroupID = y.GroupID,
-                                                                                       Description = y.Description,
-                                                                                       ActionType = y.ActionType,
-                                                                                       Link = y.Link,
-                                                                                       Icon = y.Icon,
-                                                                                       hasRight = (securables.Where(jk => jk.SecurableItem == y.SecurableItem).Count() > 0),
-                                                                                       Sequence = y.Sequence,
-                                                                                       ParentSequence = y.ParentSequence
-                                                                                   }).ToList<SecurablesRights>()
-                                                   }).OrderBy(x => x.ParentSequence).ToList<SecurablesRights>();
+                    .Select(x => new SecurablesRights
+                     {
+                         SecurableItem = x.SecurableItem,
+                         GroupID = x.GroupID,
+                         Description = x.Description,
+                         ActionType = x.ActionType,
+                         Link = x.Link,
+                         Icon = x.Icon,
+                         hasRight = (securables.Where(j => j.SecurableItem == x.SecurableItem).Count() > 0),
+                         Sequence = x.Sequence,
+                         ParentSequence = x.ParentSequence,
+                        ActionMenus = securablesAll.Where(y => y.GroupID == menuItems[i].securableItem && (y.ActionType == "Action") && y.ParentSequence == x.Sequence)
+                                                    .Select(y => new SecurablesRights
+                                                    {
+                                                        SecurableItem = y.SecurableItem,
+                                                        GroupID = y.GroupID,
+                                                        Description = y.Description,
+                                                        ActionType = y.ActionType,
+                                                        Link = y.Link,
+                                                        Icon = y.Icon,
+                                                        hasRight = (securables.Where(jk => jk.SecurableItem == y.SecurableItem).Count() > 0),
+                                                        Sequence = y.Sequence,
+                                                        ParentSequence = y.ParentSequence
+                                                    }).ToList<SecurablesRights>()
+                    }).OrderBy(x => x.ParentSequence).ToList<SecurablesRights>();
 
                     if (item.securablesLst.Count > 0)
                     {
