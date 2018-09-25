@@ -55,6 +55,8 @@
     <Compile Include="DashBoardBO.cs" />
     <Compile Include="DeclarantBO.cs" />
     <Compile Include="EduProductBO.cs" />
+    <Compile Include="JobFormDetailBO.cs" />
+    <Compile Include="JobFormHeaderBO.cs" />
     <Compile Include="LookupBO.cs" />
     <Compile Include="ProductBO.cs" />
     <Compile Include="ProductCategoryBO.cs" />

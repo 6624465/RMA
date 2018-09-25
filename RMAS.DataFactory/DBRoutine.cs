@@ -424,5 +424,23 @@ namespace EZY.RMAS.DataFactory
         public const string SAVECOODETAIL = "[Operation].[usp_COODetailSave]";
         public const string DELETECOODETAIL = "[Operation].[usp_COODetailDelete]";
 
+
+        public const string SELECTJOBFORMHEADER = "[Services].[usp_JobFormHeaderSelect]";
+        public const string LISTJOBFORMHEADER = "[Services].[usp_JobFormHeaderList]";
+        public const string JOBFORMHEADERPAGEVIEW = "[Services].[usp_JobFormHeaderPageView]";
+        public const string JOBFORMHEADERRECORDCOUNT = "[Services].[usp_JobFormHeaderRecordCount]";
+        public const string JOBFORMHEADERAUTOCOMPLETESEARCH = "[Services].[usp_JobFormHeaderAutoCompleteSearch]";
+        public const string SAVEJOBFORMHEADER = "[Services].[usp_JobFormHeaderSave]";
+        public const string DELETEJOBFORMHEADER = "[Services].[usp_JobFormHeaderDelete]";
+
+
+        /// <summary>
+        /// [Services].[JobFormDetail]
+        /// </summary>
+
+        public const string SELECTJOBFORMDETAIL = "[Services].[usp_JobFormDetailSelect]";
+        public const string LISTJOBFORMDETAIL = "[Services].[usp_JobFormDetailList]";
+        public const string SAVEJOBFORMDETAIL = "[Services].[usp_JobFormDetailSave]";
+        public const string DELETEJOBFORMDETAIL = "[Services].[usp_JobFormDetailDelete]";
     }
 }

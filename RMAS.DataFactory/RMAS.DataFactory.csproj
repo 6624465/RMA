@@ -75,6 +75,8 @@
     <Compile Include="DeclarantDAL.cs" />
     <Compile Include="EduProductDAL.cs" />
     <Compile Include="IDataFactory.cs" />
+    <Compile Include="JobFormDetailDAL.cs" />
+    <Compile Include="JobFormHeaderDAL.cs" />
     <Compile Include="LookupDAL.cs" />
     <Compile Include="ProductCategoryDAL.cs" />
     <Compile Include="ProductDAL.cs" />

@@ -65,6 +65,8 @@
     <Compile Include="Customer.cs" />
     <Compile Include="DashBoardParams.cs" />
     <Compile Include="Declarant.cs" />
+    <Compile Include="JobFormDetail.cs" />
+    <Compile Include="JobFormHeader.cs" />
     <Compile Include="MaterialInandOutYear.cs" />
     <Compile Include="MaterialInwardDashboardDTO.cs" />
     <Compile Include="MaterialInwardInvoices.cs" />
