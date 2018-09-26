@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+using System.Web.Mvc;
 
 namespace EZY.RMAS.Contract
 {
@@ -46,6 +46,13 @@ namespace EZY.RMAS.Contract
         public DateTime CreatedOn { get; set; }
 
         public List<JobFormDetail> JobFormDetails { get; set; }
+
+        public string CustomerName { get; set; }
+        public IEnumerable<SelectListItem> EngineerList { get; set; }
+
+        public IEnumerable<SelectListItem> ProductCategoryList { get; set; }
+
+        public IEnumerable<SelectListItem> ServiceTypeList { get; set; }
 
     }
 }

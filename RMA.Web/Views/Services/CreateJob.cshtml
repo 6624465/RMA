@@ -1,10 +1,12 @@
-﻿@model EZY.RMAS.Contract.Users
+﻿@model EZY.RMAS.Contract.JobFormHeader
     @{
     ViewBag.Title = "CreateJob";
 }
 
 <section class="content">
-   
+    @using (Html.BeginForm("CreateJob", "Services", FormMethod.Post, new { id = "frm", name = "frm" }))
+    {
+
         <div class="box box-default">
             <div class="box-header with-border">
                 <div class="row">
@@ -24,20 +26,21 @@
                             <div class="col-md-1">
 
                             </div>
-                                <div class="col-md-2">  
-                                    @Html.Label("Customer Name", new { @class = "control-label input-sm" })
-                                </div>
-                                <div class="col-md-3 pull-left">
-                                   @Html.TextBox("Customer Name", "", new { @class = "form-control input-sm",placeholder= "Customer Name" })
-                                </div>
+                            @Html.HiddenFor(x=>x.JobID)
+                            <div class="col-md-2">
+                                @Html.Label("Customer Name", new { @class = "control-label input-sm" })
+                            </div>
+                            <div class="col-md-3 pull-left">
+                                @Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control input-sm", placeholder = "Customer Name" })
+                            </div>
                             <div class="col-md-2">
                                 @Html.Label("Date Receive", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-2">
-                                @Html.TextBox("Date Receive", "", new { @class = "form-control input-sm datepicker" })
+                                @Html.TextBoxFor(x => x.DateReceived, new { @class = "form-control input-sm datepicker" })
                             </div>
-                    </div>
                         </div>
+                    </div>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-1">
@@ -47,13 +50,13 @@
                                 @Html.Label("Address", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-3">
-                                @Html.TextBox("Address", "", new { @class = "form-control input-sm", placeholder = "Address" })
+                                @Html.TextBoxFor(x => x.Address1, new { @class = "form-control input-sm", placeholder = "Address" })
                             </div>
                             <div class="col-md-2">
                                 @Html.Label("Date Return", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-2">
-                                @Html.TextBox("Date Return", "", new { @class = "form-control input-sm datepicker" })
+                                @Html.TextBoxFor(x => x.DateReturn, new { @class = "form-control input-sm datepicker" })
                             </div>
                         </div>
                     </div>
@@ -66,13 +69,13 @@
                                 @Html.Label("Phone", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-3">
-                               @Html.TextBox("Phone", "", new { @class = "form-control input-sm" , placeholder = "Phone" })
+                                @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control input-sm", placeholder = "Phone" })
                             </div>
                             <div class="col-md-2">
                                 @Html.Label("Assign Engineer", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-2">
-                                @Html.DropDownListFor(m=>m.RoleCode,Model.RoleCodeList, "SELECT ENGINEER", new { @class = "form-control input-sm" })
+                                @Html.DropDownListFor(m => m.AssignedEngineer, Model.EngineerList, "SELECT ENGINEER", new { @class = "form-control input-sm" })
                             </div>
                         </div>
                     </div>
@@ -85,13 +88,13 @@
                                 @Html.Label("Email", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-3">
-                                @Html.TextBox("Email", "", new { @class = "form-control input-sm", placeholder = "Email" })
+                                @Html.TextBoxFor(x => x.EmailID, new { @class = "form-control input-sm", placeholder = "Email" })
                             </div>
                             <div class="col-md-2">
                                 @Html.Label("Product category", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-2">
-                                
+                                @Html.DropDownListFor(m => m.ProductCategory, Model.ProductCategoryList, "SELECT CATEGORY", new { @class = "form-control input-sm" })
                             </div>
                         </div>
                     </div>
@@ -102,31 +105,31 @@
                             </div>
                             <div class="col-md-2">
                                 @Html.Label("Purchased Date", new { @class = "control-label input-sm " })
-                                
+
                             </div>
                             <div class="col-md-1">
-                                @Html.TextBox("Purchased Date", "", new { @class = "form-control input-sm datepicker" })
-                                
+                                @Html.TextBoxFor(x => x.PurchaseDate, new { @class = "form-control input-sm datepicker" })
+
                             </div>
                             <div class="col-md-1">
-                                @Html.Label("Invoice No:", new { @class = "control-label input-sm pull-right"})
+                                @Html.Label("Invoice No:", new { @class = "control-label input-sm pull-right" })
                             </div>
                             <div class="col-md-1">
-                                @Html.TextBox("Invoice No:", "", new { @class = "form-control input-sm", placeholder = "Invoice No" })
+                                @Html.TextBoxFor(x => x.InvoiceNo, new { @class = "form-control input-sm", placeholder = "Invoice No" })
                             </div>
                             <div class="col-md-2">
                                 @Html.Label("Service Type", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-2">
-                               
+                                @Html.DropDownListFor(m => m.ServiceType, Model.ServiceTypeList, "SELECT SERVICE TYPE", new { @class = "form-control input-sm" })
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <button class="btn btn-sm btn-default pull-right">Add</button>
+                            <button class="btn btn-sm btn-default pull-right" onclick="Add()">Add</button>
                         </div>
-                        
+
                     </div>
                     <div class="row" style="margin-top:10px;">
                         <div class="col-md-12">
@@ -141,61 +144,68 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                         1
-                                        </td>
-                                        <td>
-                                            @Html.TextBox("new", "", new
-                                        {
-                                            @class = "form-control input-sm",
-                                            required = "required",
-                                            style = "width:200px;",
+                                    @for (var i = 0; i < Model.JobFormDetails.Count(); i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                1
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(x=>x.JobFormDetails[i].ItemID)
+                                                @Html.TextBoxFor(x => x.JobFormDetails[i].ProductDescription, new
+                                                {
+                                                    @class = "form-control input-sm",
+                                                    required = "required",
+                                                    style = "width:200px;",
 
-                                        })
-                                        </td>
-                                        <td>
-                                            @Html.TextBox("new", "", new
-                                        {
-                                            @class = "form-control input-sm",
-                                            required = "required",
-                                            style = "width:200px;",
+                                                })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobFormDetails[i].ModelNo, new
+                                                {
+                                                    @class = "form-control input-sm",
+                                                    required = "required",
+                                                    style = "width:200px;",
 
-                                        })
-                                        </td>
-                                        <td>
-                                            @Html.TextBox("new", "", new
-                                        {
-                                            @class = "form-control input-sm",
-                                            required = "required",
-                                            style = "width:200px;",
+                                                })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobFormDetails[i].SerialNo, new
+                                                {
+                                                    @class = "form-control input-sm",
+                                                    required = "required",
+                                                    style = "width:200px;",
 
-                                        })
-                                        </td>
-                                        <td>
-                                            @Html.TextBox("new", "", new
-                                        {
-                                            @class = "form-control input-sm",
-                                            required = "required",
-                                            style = "width:200px;",
+                                                })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.JobFormDetails[i].Remarks, new
+                                                {
+                                                    @class = "form-control input-sm",
+                                                    required = "required",
+                                                    style = "width:200px;",
 
-                                        })
-                                        </td>
-                                        
-                                    </tr>
-                                   
+                                                })
+                                            </td>
+
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                  
+                    <div>
+                        <button class="btn btn-sm btn-primary pull-right" onclick="SaveJobForm()">Save</button>
+                    </div>
+
                 </fieldset>
             </div>
-           
+
 
         </div>
-    
-  
+    }
+
+
 </section>
 <script src="@Url.Content("~/Scripts/moment.js")"></script>
 <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
@@ -208,5 +218,15 @@
         inline: false
         });
     });
-            
+
+
+    function Add() {
+        $('#frm').submit();
+    }
+    function SaveJobForm() {
+    $('#frm').attr('action', '@Url.Content("~/Services/JobFormSave")');
+    $('#frm').submit();
+    }
+      
+
  </script>
