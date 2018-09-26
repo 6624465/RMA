@@ -434,6 +434,10 @@ namespace EZY.RMAS.DataFactory
         public const string DELETEJOBFORMHEADER = "[Services].[usp_JobFormHeaderDelete]";
 
 
+        
+        public const string GETPRODUCTDETAILSBYSERIALNO = "[Services].[GetProductDetailsBySerialNumber]";
+
+
         /// <summary>
         /// [Services].[JobFormDetail]
         /// </summary>

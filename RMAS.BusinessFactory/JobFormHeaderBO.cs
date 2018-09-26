@@ -36,6 +36,11 @@ namespace EZY.RMAS.BusinessFactory
             return (JobFormHeader)jobformheaderDAL.GetItem<JobFormHeader>(item);
         }
 
+
+        public JobFormHeader GetJobFormHeader(short branchID, string serialNo)
+        {
+            return (JobFormHeader)jobformheaderDAL.GetItem<JobFormHeader>(branchID, serialNo);
+        }
     }
 }
 

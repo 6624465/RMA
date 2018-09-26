@@ -30,6 +30,10 @@ namespace EZY.RMAS.DataFactory
                                            .DoNotMap(hd => hd.JobFormDetails)
                                            .Build(), branchID).ToList();
         }
+
+
+        
+
         public List<JobFormHeader> SearchList(short branchID, string vesselName, string consigneeName, DateTime dateFrom, DateTime dateTo)
         {
             return db.ExecuteSprocAccessor(DBRoutine.JOBFORMHEADERAUTOCOMPLETESEARCH, MapBuilder<JobFormHeader>.MapAllProperties()
@@ -172,6 +176,25 @@ namespace EZY.RMAS.DataFactory
 
         #endregion
 
+        public IContract GetItem<T>(short branchID, string serialNo) where T : IContract
+        {
+             
+
+            var jobformheaderItem = db.ExecuteSprocAccessor(DBRoutine.GETPRODUCTDETAILSBYSERIALNO,
+                                                    MapBuilder<JobFormHeader>.MapAllProperties()
+                                           .DoNotMap(hd => hd.JobFormDetails)
+                                           .Build(),branchID,serialNo).FirstOrDefault();
+
+            if (jobformheaderItem == null) return null;
+
+
+            jobformheaderItem.JobFormDetails = new List<JobFormDetail>();
+
+
+
+            return jobformheaderItem;
+        }
+        
     }
 }
 
