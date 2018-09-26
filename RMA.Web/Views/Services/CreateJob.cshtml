@@ -187,6 +187,7 @@
 
                                                 })
                                             </td>
+                                            <td><button class="btn btn-sm btn-danger pull-right" onclick="DeleteJobForm()">Delete</button></td>
 
                                         </tr>
                                     }
@@ -218,14 +219,37 @@
         inline: false
         });
     });
+    $('#frm').validate({
+        rules: {
+            CustomerName: {
+                required: true
+            },
+            'JobFormDetails.ProductDescription': {
+                required: true
+            },
+            'JobFormDetails.SerialNo': {
+                required: true
+            },
+            'JobFormDetails.Remarks': {
+                required: true
+            },
+            'JobFormDetails.ModelNo': {
+                required: true
+            }
+        }
+    });
 
 
     function Add() {
-        $('#frm').submit();
+        if ($('#frm').valid()) {
+            $('#frm').submit();
+        }
     }
     function SaveJobForm() {
-    $('#frm').attr('action', '@Url.Content("~/Services/JobFormSave")');
-    $('#frm').submit();
+        if ($('#frm').valid()) {
+            $('#frm').attr('action', '@Url.Content("~/Services/JobFormSave")');
+            $('#frm').submit();
+        }
     }
       
 
