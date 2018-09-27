@@ -41,6 +41,10 @@ namespace EZY.RMAS.Contract
 
         public Int16 ServiceType { get; set; }
 
+        public Int16 ServiceStatus { get; set; }
+
+        public string ServiceStatusDescription { get; set; }
+
         public string CreatedBy { get; set; }
 
         public DateTime CreatedOn { get; set; }
