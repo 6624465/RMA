@@ -246,8 +246,9 @@
     
    
     function DeleteRecord(e, i) {
+        debugger;
         if ($('#frm').valid()) {
-            $('#tr_i').hide();
+            $('#tr_'+i).remove();
         }
     }
    
