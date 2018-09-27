@@ -104,7 +104,8 @@ namespace RMA.Web.Controllers
         }
         public ActionResult JobSheetList()
         {
-            return View();
+            var jobheaderlist = new JobFormHeaderBO().GetList(BRANCH_ID);
+            return View(jobheaderlist);
         }
         public ActionResult ServiceStore()
         {

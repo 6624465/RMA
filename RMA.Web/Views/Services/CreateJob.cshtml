@@ -145,53 +145,55 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
                                     @for (var i = 0; i < Model.JobFormDetails.Count(); i++)
-                                    {
-                                        <tr>
-                                            <td>
-                                                1
-                                            </td>
-                                            <td>
-                                                @Html.HiddenFor(x=>x.JobFormDetails[i].ItemID)
-                                                @Html.TextBoxFor(x => x.JobFormDetails[i].ProductDescription, new
-                                                {
-                                                    @class = "form-control input-sm",
-                                                    required = "required",
-                                                    style = "width:200px;",
+    {
+                                    <tr id="tr_@i" class="tr">
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            @Html.HiddenFor(x => x.JobFormDetails[i].ItemID)
+                                            @Html.TextBoxFor(x => x.JobFormDetails[i].ProductDescription, new
+        {
+            @class = "form-control input-sm",
+            required = "required",
+            style = "width:200px;",
 
-                                                })
-                                            </td>
-                                            <td>
-                                                @Html.TextBoxFor(x => x.JobFormDetails[i].ModelNo, new
-                                                {
-                                                    @class = "form-control input-sm",
-                                                    required = "required",
-                                                    style = "width:200px;",
+        })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.JobFormDetails[i].ModelNo, new
+        {
+            @class = "form-control input-sm",
+            required = "required",
+            style = "width:200px;",
 
-                                                })
-                                            </td>
-                                            <td>
-                                                @Html.TextBoxFor(x => x.JobFormDetails[i].SerialNo, new
-                                                {
-                                                    @class = "form-control input-sm",
-                                                    required = "required",
-                                                    style = "width:200px;",
+        })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.JobFormDetails[i].SerialNo, new
+        {
+            @class = "form-control input-sm",
+            required = "required",
+            style = "width:200px;",
 
-                                                })
-                                            </td>
-                                            <td>
-                                                @Html.TextBoxFor(x => x.JobFormDetails[i].Remarks, new
-                                                {
-                                                    @class = "form-control input-sm",
-                                                    required = "required",
-                                                    style = "width:200px;",
+        })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(x => x.JobFormDetails[i].Remarks, new
+        {
+            @class = "form-control input-sm",
+            required = "required",
+            style = "width:200px;",
 
-                                                })
-                                            </td>
-                                            <td><button class="btn btn-sm btn-danger pull-right" onclick="DeleteJobForm()">Delete</button></td>
+        })
+                                        </td>
+                                        <td><button id="button" class="btn btn-sm btn-danger pull-right" type="button" onclick="DeleteRecord(this,@i)">Delete</button></td>
 
-                                        </tr>
+                                    </tr>
                                     }
+                                
                                 </tbody>
                             </table>
                         </div>
@@ -219,27 +221,36 @@
         format: 'DD/MM/YYYY',
         inline: false
         });
-    });
-    $('#frm').validate({
-        rules: {
-            CustomerName: {
-                required: true
-            },
-            'JobFormDetails.ProductDescription': {
-                required: true
-            },
-            'JobFormDetails.SerialNo': {
-                required: true
-            },
-            'JobFormDetails.Remarks': {
-                required: true
-            },
-            'JobFormDetails.ModelNo': {
-                required: true
+        $('#frm').validate({
+            rules: {
+                CustomerName: {
+                    required: true
+                },
+                'JobFormDetails.ProductDescription': {
+                    required: true
+                },
+                'JobFormDetails.SerialNo': {
+                    required: true
+                },
+                'JobFormDetails.Remarks': {
+                    required: true
+                },
+                'JobFormDetails.ModelNo': {
+                    required: true
+                }
             }
-        }
-    });
 
+        });
+        
+    });
+    
+   
+    function DeleteRecord(e, i) {
+        if ($('#frm').valid()) {
+            $('#tr_i').hide();
+        }
+    }
+   
 
     function Add() {
         if ($('#frm').valid()) {

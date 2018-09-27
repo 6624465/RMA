@@ -464,6 +464,7 @@
         //    }
         //}
         function DeleteSerial(serialNoId, serialNo) {
+            debugger;
             var changeSerialNo = $('#InvoiceDetailItems_' + serialNoId + '__SerialNo').val('Deleted');
             var x = $('#' + serialNoId).removeClass('detailCount').hide();
             var v = $('#Quantity').val();
