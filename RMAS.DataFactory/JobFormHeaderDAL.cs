@@ -65,6 +65,12 @@ namespace EZY.RMAS.DataFactory
 
             try
             {
+                if (jobformheader.JobID <=0)
+                {
+                    jobformheader.ServiceStatus = 2000;
+                }
+
+
                 var savecommand = db.GetStoredProcCommand(DBRoutine.SAVEJOBFORMHEADER);
 
                 db.AddInParameter(savecommand, "JobID", System.Data.DbType.Int64, jobformheader.JobID);
@@ -82,6 +88,8 @@ namespace EZY.RMAS.DataFactory
                 db.AddInParameter(savecommand, "ProductCategory", System.Data.DbType.Int16, jobformheader.ProductCategory);
                 db.AddInParameter(savecommand, "ServiceType", System.Data.DbType.Int16, jobformheader.ServiceType);
                 db.AddInParameter(savecommand, "CreatedBy", System.Data.DbType.String, jobformheader.CreatedBy);
+                db.AddInParameter(savecommand, "ServiceStatus", System.Data.DbType.String, jobformheader.ServiceStatus);
+                db.AddInParameter(savecommand, "SerialNo", System.Data.DbType.String, jobformheader.SerialNo);
                 db.AddOutParameter(savecommand, "NewJobID", System.Data.DbType.Int64,0);
 
 
