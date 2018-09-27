@@ -89,6 +89,7 @@ namespace EZY.RMAS.DataFactory
                 db.AddInParameter(savecommand, "ServiceType", System.Data.DbType.Int16, jobformheader.ServiceType);
                 db.AddInParameter(savecommand, "CreatedBy", System.Data.DbType.String, jobformheader.CreatedBy);
                 db.AddInParameter(savecommand, "ServiceStatus", System.Data.DbType.String, jobformheader.ServiceStatus);
+                db.AddInParameter(savecommand, "SerialNo", System.Data.DbType.String, jobformheader.SerialNo);
                 db.AddOutParameter(savecommand, "NewJobID", System.Data.DbType.Int64,0);
 
 
