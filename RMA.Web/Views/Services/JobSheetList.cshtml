@@ -94,6 +94,7 @@
                                 <th>Customer</th>
                                 <th>Engineer</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -104,7 +105,8 @@
                                 <td>@Model[i].DateReceived</td>
                                 <td>@Model[i].CustomerName</td>
                                 <td>@Model[i].AssignedEngineer</td>
-                                <td><button class="btn btn-sm btn-default" onclick="@Url.Content("~/Services/CreateJob?serialNo=")">Edit</button></td>
+                                <td>@Model[i].ServiceStatusDescription</td>
+                                <td><button class="btn btn-sm btn-default" onclick="location.href='@Url.Content("~/Services/GetJobForm?JobId="+ Model[i].JobID)'">Edit</button></td>
                             </tr>
                       }
                         </tbody>

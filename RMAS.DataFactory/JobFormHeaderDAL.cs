@@ -170,7 +170,7 @@ namespace EZY.RMAS.DataFactory
                                                     MapBuilder<JobFormHeader>.MapAllProperties()
                                            .DoNotMap(hd => hd.JobFormDetails)
                                            .Build(),
-                                                    ((JobFormHeader)lookupItem).BranchID, item.DocumentNo).FirstOrDefault();
+                                                    item.JobID,item.BranchID ).FirstOrDefault();
 
             if (jobformheaderItem == null) return null;
 
@@ -202,7 +202,36 @@ namespace EZY.RMAS.DataFactory
 
             return jobformheaderItem;
         }
-        
+
+        public bool DeleteJobID(short BranchId,short JobID)
+        {
+            var result = false;
+            var connnection = db.CreateConnection();
+            connnection.Open();
+
+            var transaction = connnection.BeginTransaction();
+
+            try
+            {
+                var deleteCommand = db.GetStoredProcCommand(DBRoutine.DELETEJOBFORMHEADER);
+
+                db.AddInParameter(deleteCommand, "BranchID", System.Data.DbType.Int16, BranchId);
+                db.AddInParameter(deleteCommand, "JobID", System.Data.DbType.Int64, JobID);
+
+                result = Convert.ToBoolean(db.ExecuteNonQuery(deleteCommand, transaction));
+
+                transaction.Commit();
+
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw ex;
+            }
+
+            return result;
+        }
+
     }
 }
 

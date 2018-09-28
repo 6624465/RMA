@@ -16,6 +16,46 @@ namespace RMA.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult GetJobForm(Int16 JobId)
+        {
+
+            var jobformheader = new JobFormHeaderBO().GetJobFormHeader(
+                    new JobFormHeader { BranchID = BRANCH_ID, JobID = JobId }
+                );
+            jobformheader.EngineerList = new UsersBO().GetList().Where(x => x.RoleCode == "Engineer").Select(x => new SelectListItem
+            {
+                Value = x.RoleCode,
+                Text = x.UserName
+            }).ToList();
+            var ProductCategory = new LookupBO()
+                                       .GetList()
+                                       .Where(x => x.LookupCategory == "CategoryGroup" && x.Status == true)
+                                       .Select(x => new SelectListItem
+                                       {
+                                           Value = x.LookupID.ToString(),
+                                           Text = x.LookupCode
+                                       })
+                                       .ToList();
+            ProductCategory.Add(new SelectListItem
+            {
+                Text = "ALL",
+                Value = 0.ToString()
+            });
+            jobformheader.ProductCategoryList = ProductCategory;
+            jobformheader.ServiceTypeList = new LookupBO()
+                                    .GetList()
+                                    .Where(x => x.LookupCategory == "Service Type" && x.Status == true)
+                                    .Select(x => new SelectListItem
+                                    {
+                                        Value = x.LookupID.ToString(),
+                                        Text = x.LookupCode
+                                    })
+                                    .ToList();
+            return View(jobformheader);
+
+        }
+        [HttpGet]
         public ActionResult CreateJob(string serialNo)
         {
             var jobheader = new JobFormHeaderBO().GetJobFormHeader(BRANCH_ID, serialNo);
@@ -100,7 +140,14 @@ namespace RMA.Web.Controllers
             jobheader.CreatedOn = DateTime.Now;
             var jobsaved = new JobFormHeaderBO().SaveJobFormHeader(jobheader);
 
-            return RedirectToAction("ProductInquiry");
+            return RedirectToAction("JobSheetList");
+        }
+
+        [HttpGet]
+        public ActionResult DeleteJobForm(short JobID)
+        {
+            var jobheader = new JobFormHeaderBO().DeleteJobForm(BRANCH_ID, JobID);
+            return RedirectToAction("JobSheetList");
         }
         public ActionResult JobSheetList()
         {

@@ -16,6 +16,7 @@ namespace RMA.Web.Controllers
     {
         [HttpGet]
         public ActionResult Index()
+
         {
             LoginViewModel model = new LoginViewModel();
 
