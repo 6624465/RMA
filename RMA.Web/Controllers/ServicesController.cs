@@ -101,6 +101,9 @@ namespace RMA.Web.Controllers
                 Jobheader.EngineerList = EngineerList;
                 Jobheader.ProductCategoryList = ProductCategory;
                 Jobheader.ServiceTypeList = ServiceTypeList;
+                Jobheader.DateReceived = DateTime.Now;
+                Jobheader.DateReturn = DateTime.Now;
+                Jobheader.PurchaseDate = DateTime.Now;
                 return View(Jobheader);
             }
 
