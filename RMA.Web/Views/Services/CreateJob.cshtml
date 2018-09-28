@@ -1,6 +1,7 @@
 ﻿@model EZY.RMAS.Contract.JobFormHeader
     @{
-    ViewBag.Title = "CreateJob";
+        ViewBag.Title = "CreateJob";
+
 }
 
 <section class="content">
@@ -146,61 +147,75 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    @for (var i = 0; i < Model.JobFormDetails.Count(); i++)
+                                    @if (Model.JobFormDetails != null &&  Model.JobFormDetails.Count > 0)
     {
-                                    <tr id="tr_@i" class="tr">
-                                        <td>
-                                            1
-                                        </td>
-                                        <td>
-                                            @Html.HiddenFor(x => x.JobFormDetails[i].ItemID)
-                                            @Html.TextBoxFor(x => x.JobFormDetails[i].ProductDescription, new
+                                for (var i = 0; i < Model.JobFormDetails.Count(); i++)
+{
+                                <tr id="tr_@i" class="tr">
+                                    <td>
+                                        @(i+1)
+                                     </td>
+                                    <td>
+                                        @Html.HiddenFor(x => x.JobFormDetails[i].ItemID)
+                                        @Html.TextBoxFor(x => x.JobFormDetails[i].ProductDescription, new
         {
             @class = "form-control input-sm",
             required = "required",
             style = "width:200px;",
 
         })
-                                        </td>
-                                        <td>
-                                            @Html.TextBoxFor(x => x.JobFormDetails[i].ModelNo, new
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.JobFormDetails[i].ModelNo, new
         {
             @class = "form-control input-sm",
             required = "required",
             style = "width:200px;",
 
         })
-                                        </td>
-                                        <td>
-                                            @Html.TextBoxFor(x => x.JobFormDetails[i].SerialNo, new
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.JobFormDetails[i].SerialNo, new
         {
             @class = "form-control input-sm",
             required = "required",
             style = "width:200px;",
 
         })
-                                        </td>
-                                        <td>
-                                            @Html.TextBoxFor(x => x.JobFormDetails[i].Remarks, new
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(x => x.JobFormDetails[i].Remarks, new
         {
             @class = "form-control input-sm",
             required = "required",
             style = "width:200px;",
 
         })
-                                        </td>
-                                        <td><button id="button" class="btn btn-sm btn-danger pull-right" type="button" onclick="DeleteRecord(this,@i)">Delete</button></td>
+                                    </td>
+                                    <td><button id="button" class="btn btn-sm btn-danger pull-right" type="button" onclick="DeleteRecord(this,@i)">Delete</button></td>
 
-                                    </tr>
-                                    }
-                                
+                                </tr>
+}
+}
+
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div>
-                        <button class="btn btn-sm btn-primary pull-right" onclick="SaveJobForm()">Save</button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button class="btn btn-sm btn-primary" onclick="SaveJobForm()">Save</button>
+                                @if (Model.JobID != 0)
+    {
+                            <button class="btn btn-sm btn-danger" type="button" onclick="location.href='@Url.Content("~/Services/DeleteJobForm?JobID=" + Model.JobID)'">Delete</button>
+}
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </fieldset>

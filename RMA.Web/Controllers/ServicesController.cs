@@ -59,37 +59,53 @@ namespace RMA.Web.Controllers
         public ActionResult CreateJob(string serialNo)
         {
             var jobheader = new JobFormHeaderBO().GetJobFormHeader(BRANCH_ID, serialNo);
-
-            jobheader.EngineerList = new UsersBO().GetList().Where(x => x.RoleCode == "Engineer").Select(x => new SelectListItem
+            var EngineerList =  new UsersBO().GetList().Where(x => x.RoleCode == "Engineer").Select(x => new SelectListItem
             {
                 Value = x.RoleCode,
                 Text = x.UserName
             }).ToList();
             var ProductCategory = new LookupBO()
-                                       .GetList()
-                                       .Where(x => x.LookupCategory == "CategoryGroup" && x.Status == true)
-                                       .Select(x => new SelectListItem
-                                       {
-                                           Value = x.LookupID.ToString(),
-                                           Text = x.LookupCode
-                                       })
-                                       .ToList();
+                                          .GetList()
+                                          .Where(x => x.LookupCategory == "CategoryGroup" && x.Status == true)
+                                          .Select(x => new SelectListItem
+                                          {
+                                              Value = x.LookupID.ToString(),
+                                              Text = x.LookupCode
+                                          })
+                                          .ToList();
             ProductCategory.Add(new SelectListItem
             {
                 Text = "ALL",
                 Value = 0.ToString()
             });
-            jobheader.ProductCategoryList = ProductCategory;
-            jobheader.ServiceTypeList = new LookupBO()
-                                    .GetList()
-                                    .Where(x => x.LookupCategory == "Service Type" && x.Status == true)
-                                    .Select(x => new SelectListItem
-                                    {
-                                        Value = x.LookupID.ToString(),
-                                        Text = x.LookupCode
-                                    })
-                                    .ToList();
-            return View(jobheader);
+           var  ServiceTypeList = new LookupBO()
+                                        .GetList()
+                                        .Where(x => x.LookupCategory == "Service Type" && x.Status == true)
+                                        .Select(x => new SelectListItem
+                                        {
+                                            Value = x.LookupID.ToString(),
+                                            Text = x.LookupCode
+                                        })
+                                        .ToList();
+            if (jobheader != null)
+            {
+                jobheader.EngineerList = EngineerList;
+               
+                jobheader.ProductCategoryList = ProductCategory;
+                jobheader.ServiceTypeList = ServiceTypeList;
+                return View(jobheader);
+            }
+            else
+            {
+                var Jobheader = new JobFormHeader();
+                Jobheader.EngineerList = EngineerList;
+                Jobheader.ProductCategoryList = ProductCategory;
+                Jobheader.ServiceTypeList = ServiceTypeList;
+                return View(Jobheader);
+            }
+
+           
+            
         }
 
         [HttpPost]

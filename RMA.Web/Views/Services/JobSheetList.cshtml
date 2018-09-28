@@ -27,7 +27,7 @@
                         "CustomerInvoice", "Invoice",
                         new { invoiceNo = "", documentNo = "" }, new { @class = "btn btn-default btn-sm" })
                     }*@
-            <button class="btn btn-default btn-sm" onclick="location.href='@Url.Content("~/Services/CreateJob")'">
+            <button class="btn btn-default btn-sm" onclick="location.href='@Url.Content("~/Services/CreateJob?serialNo=" + "")'">
                 <span>
                     <i class='fa fa-plus' aria-hidden='true'></i>
                 </span>
@@ -105,7 +105,8 @@
                                 <td>@Model[i].DateReceived</td>
                                 <td>@Model[i].CustomerName</td>
                                 <td>@Model[i].AssignedEngineer</td>
-                                <td>@Model[i].ServiceStatusDescription</td>
+                                <td>
+                                    <span class="badge bg-green">@Model[i].ServiceStatusDescription</span></td>
                                 <td><button class="btn btn-sm btn-default" onclick="location.href='@Url.Content("~/Services/GetJobForm?JobId="+ Model[i].JobID)'">Edit</button></td>
                             </tr>
                       }
