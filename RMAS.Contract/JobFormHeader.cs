@@ -59,6 +59,7 @@ namespace EZY.RMAS.Contract
         public IEnumerable<SelectListItem> ProductCategoryList { get; set; }
 
         public IEnumerable<SelectListItem> ServiceTypeList { get; set; }
+        public IEnumerable<SelectListItem> CustomerList { get; set; }
 
     }
 }

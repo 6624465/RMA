@@ -25,7 +25,7 @@ namespace RMA.Web.Controllers
                 );
             jobformheader.EngineerList = new UsersBO().GetList().Where(x => x.RoleCode == "Engineer").Select(x => new SelectListItem
             {
-                Value = x.RoleCode,
+                Value = x.UserID,
                 Text = x.UserName
             }).ToList();
             var ProductCategory = new LookupBO()
@@ -52,6 +52,16 @@ namespace RMA.Web.Controllers
                                         Text = x.LookupCode
                                     })
                                     .ToList();
+            jobformheader.CustomerList = new CustomerBO()
+                                    .GetList(BRANCH_ID)
+                                    .Where(x => x.CustomerType == 103 && x.Status == true)
+                                    .Select(x => new SelectListItem
+                                    {
+                                        Value = x.CustomerCode,
+                                        Text = x.CustomerName
+                                    })
+                                    .OrderBy(x => x.Text)
+                                    .ToList();
             return View(jobformheader);
 
         }
@@ -61,7 +71,7 @@ namespace RMA.Web.Controllers
             var jobheader = new JobFormHeaderBO().GetJobFormHeader(BRANCH_ID, serialNo);
             var EngineerList =  new UsersBO().GetList().Where(x => x.RoleCode == "Engineer").Select(x => new SelectListItem
             {
-                Value = x.RoleCode,
+                Value = x.UserID,
                 Text = x.UserName
             }).ToList();
             var ProductCategory = new LookupBO()
@@ -87,24 +97,41 @@ namespace RMA.Web.Controllers
                                             Text = x.LookupCode
                                         })
                                         .ToList();
+            var CustomerList = new CustomerBO()
+                                    .GetList(BRANCH_ID)
+                                    .Where(x => x.CustomerType == 103 && x.Status == true)
+                                    .Select(x => new SelectListItem
+                                    {
+                                        Value = x.CustomerCode,
+                                        Text = x.CustomerName
+                                    })
+                                    .OrderBy(x => x.Text)
+                                    .ToList();
             if (jobheader != null)
             {
                 jobheader.EngineerList = EngineerList;
                
                 jobheader.ProductCategoryList = ProductCategory;
                 jobheader.ServiceTypeList = ServiceTypeList;
+                jobheader.CustomerList = CustomerList;
                 return View(jobheader);
             }
             else
             {
-                var Jobheader = new JobFormHeader();
-                Jobheader.EngineerList = EngineerList;
-                Jobheader.ProductCategoryList = ProductCategory;
-                Jobheader.ServiceTypeList = ServiceTypeList;
-                Jobheader.DateReceived = DateTime.Now;
-                Jobheader.DateReturn = DateTime.Now;
-                Jobheader.PurchaseDate = DateTime.Now;
-                return View(Jobheader);
+                jobheader = new JobFormHeader();
+                jobheader.EngineerList = EngineerList;
+                jobheader.ProductCategoryList = ProductCategory;
+                jobheader.ServiceTypeList = ServiceTypeList;
+                //jobheader.CustomerCode = jobheader.CustomerCode == null ? "" : jobheader.CustomerCode;
+                //if(jobheader.CustomerCode == null)
+                //{
+                //    jobheader.CustomerCode = "";
+                //}
+                jobheader.CustomerList = CustomerList;
+                jobheader.DateReceived = DateTime.Now;
+                jobheader.DateReturn = DateTime.Now;
+                jobheader.PurchaseDate = DateTime.Now;
+                return View(jobheader);
             }
 
            
@@ -117,7 +144,7 @@ namespace RMA.Web.Controllers
             JobFormDetail jobdetail = new JobFormDetail();
             jobheader.EngineerList = new UsersBO().GetList().Where(x => x.RoleCode == "Engineer").Select(x => new SelectListItem
             {
-                Value = x.RoleCode,
+                Value = x.UserID,
                 Text = x.UserName
             }).ToList();
             var ProductCategory = new LookupBO()
@@ -143,6 +170,16 @@ namespace RMA.Web.Controllers
                                         Value = x.LookupID.ToString(),
                                         Text = x.LookupCode
                                     })
+                                    .ToList();
+            jobheader.CustomerList = new CustomerBO()
+                                    .GetList(BRANCH_ID)
+                                    .Where(x => x.CustomerType == 103 && x.Status == true)
+                                    .Select(x => new SelectListItem
+                                    {
+                                        Value = x.CustomerCode,
+                                        Text = x.CustomerName
+                                    })
+                                    .OrderBy(x => x.Text)
                                     .ToList();
 
             if (jobheader.JobFormDetails == null)

@@ -27,16 +27,39 @@
                             <div class="col-md-1">
 
                             </div>
-                            @Html.HiddenFor(x=>x.JobID)
+                          
+                            <div class="col-md-2">
+                                @Html.Label("Serial Number", new { @class = "control-label input-sm" })
+                            </div>
+                            <div class="col-md-3 pull-left">
+                                @Html.TextBoxFor(x => x.SerialNo, new { @class = "form-control input-sm " })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.HiddenFor(x=>x.JobID)
+                                @Html.Label("JobId", new { @class = "control-label input-sm" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.TextBoxFor(x => x.JobID, new { @class = "form-control input-sm" ,disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-1">
+
+                            </div>
+                           
                             <div class="col-md-2">
                                 @Html.Label("Customer Name", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-3 pull-left">
-                                @Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control input-sm", placeholder = "Customer Name" })
-                                @Html.HiddenFor(x=>x.CustomerCode)
+                                @*@Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control input-sm", placeholder = "Customer Name" })
+                                @Html.HiddenFor(x=>x.CustomerCode)*@
+                                @Html.DropDownListFor(m => m.CustomerCode, Model.CustomerList, "SELECT CUSTOMER", new { @class = "form-control input-sm" })
+                               
                             </div>
                             <div class="col-md-2">
-                                @Html.HiddenFor(x=>x.SerialNo)
+                                @*@Html.HiddenFor(x=>x.SerialNo)*@
                                 @Html.Label("Date Receive", new { @class = "control-label input-sm" })
                             </div>
                             <div class="col-md-2">
@@ -239,7 +262,10 @@
         });
         $('#frm').validate({
             rules: {
-                CustomerName: {
+                CustomerCode: {
+                    required: true
+                },
+                SerialNo:{
                     required: true
                 },
                 'JobFormDetails.ProductDescription': {
@@ -280,6 +306,8 @@
             $('#frm').submit();
         }
     }
-      
+    //function customercode(el) {
+    //    $('#CustomerCode').value = el.value;
+    //}
 
  </script>
