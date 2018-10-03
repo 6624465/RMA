@@ -512,7 +512,6 @@
     <Content Include="Views\Home\Services.cshtml" />
     <Content Include="Views\Services\CreateJob.cshtml" />
     <Content Include="Views\Services\JobSheetList.cshtml" />
-    <Content Include="Views\Services\GetJobForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

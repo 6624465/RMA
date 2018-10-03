@@ -62,7 +62,7 @@ namespace RMA.Web.Controllers
                                     })
                                     .OrderBy(x => x.Text)
                                     .ToList();
-            return View(jobformheader);
+            return View("CreateJob", jobformheader);
 
         }
         [HttpGet]
