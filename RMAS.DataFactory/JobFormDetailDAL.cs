@@ -132,6 +132,45 @@ namespace EZY.RMAS.DataFactory
             return result;
         }
 
+
+        public bool DeleteAll(Int64 jobID, DbTransaction parentTransaction)
+        {
+            var result = false;
+
+            currentTransaction = parentTransaction;
+
+            if (currentTransaction == null)
+            {
+                connection = db.CreateConnection();
+                connection.Open();
+            }
+
+            var transaction = (currentTransaction == null ? connection.BeginTransaction() : currentTransaction);
+
+
+            try
+            {
+                var deleteCommand = db.GetStoredProcCommand(DBRoutine.DELETEJOBFORMDETAILALL);
+
+                db.AddInParameter(deleteCommand, "JobID", System.Data.DbType.Int64, jobID);
+
+                result = Convert.ToBoolean(db.ExecuteNonQuery(deleteCommand, transaction));
+
+                if (currentTransaction == null)
+                    transaction.Commit();
+
+            }
+            catch (Exception ex)
+            {
+                if (currentTransaction == null)
+                    transaction.Rollback();
+                throw ex;
+            }
+
+            return result;
+        }
+
+
         public IContract GetItem<T>(IContract lookupItem) where T : IContract
         {
             var item = ((JobFormDetail)lookupItem);
