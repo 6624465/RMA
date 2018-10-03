@@ -111,6 +111,8 @@ namespace EZY.RMAS.DataFactory
 
                     JobFormDetailDAL jobformdetailDAL = new JobFormDetailDAL();
 
+                    result = jobformdetailDAL.DeleteAll( jobformheader.JobID  ,transaction) == true ? 1 : 0;
+
                     result = jobformdetailDAL.SaveList(jobformheader.JobFormDetails, transaction) == true ? 1 : 0;
 
                 }

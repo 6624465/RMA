@@ -446,5 +446,7 @@ namespace EZY.RMAS.DataFactory
         public const string LISTJOBFORMDETAIL = "[Services].[usp_JobFormDetailList]";
         public const string SAVEJOBFORMDETAIL = "[Services].[usp_JobFormDetailSave]";
         public const string DELETEJOBFORMDETAIL = "[Services].[usp_JobFormDetailDelete]";
+        public const string DELETEJOBFORMDETAILALL = "[Services].[usp_JobFormDetailDeleteAll]";
+        
     }
 }
