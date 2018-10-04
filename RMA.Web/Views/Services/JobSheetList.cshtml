@@ -94,7 +94,7 @@
                                 <th>Customer</th>
                                 <th>Engineer</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>#Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -107,7 +107,7 @@
                                 <td>@Model[i].AssignedEngineer</td>
                                 <td>
                                     <span class="badge bg-green">@Model[i].ServiceStatusDescription</span></td>
-                                <td><button class="btn btn-sm btn-primary" onclick="location.href='@Url.Content("~/Services/GetJobForm?JobId="+ Model[i].JobID)'">Edit</button></td>
+                                <td><button class="btn btn-sm btn-primary" onclick="location.href='@Url.Content("~/Services/GetJobForm?JobId="+ Model[i].JobID)'"><i class="fa fa-edit"></i>&nbsp;Edit</button></td>
                             </tr>
                       }
                         </tbody>
