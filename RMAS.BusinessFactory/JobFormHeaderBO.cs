@@ -1,6 +1,7 @@
 ﻿using EZY.RMAS.Contract;
 using EZY.RMAS.DataFactory;
 using System.Collections.Generic;
+using System;
 
 namespace EZY.RMAS.BusinessFactory
 {
@@ -46,6 +47,10 @@ namespace EZY.RMAS.BusinessFactory
 
             return jobformheaderDAL.DeleteJobID(branchID, JobID);
 
+        }
+        public List<JobFormHeader> SearchList(short branchID, string documentNo, string invoiceNo, string mobileNo, DateTime dateReceived, Int64 pageSize)
+        {
+            return jobformheaderDAL.SearchList(branchID, documentNo, invoiceNo, mobileNo, dateReceived, pageSize);
         }
     }
 }
