@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="box-body">
-            <div class="form-group">
+            @*<div class="form-group">
 
                 <div class="row">
                     <div class="col-md-1">
@@ -83,10 +83,10 @@
                         <button class="btn btn-default btn-sm">Search</button>
                     </div>
                 </div>
-            </div>
+            </div>*@
             <div class="row" style="margin-top:10px;">
                 <div class="col-md-12">
-                    <table class="table table-striped" id="">
+                    <table class="table table-striped" id="tbljobsheetlist">
                         <thead>
                             <tr>
                                 <th>Service No</th>
@@ -137,7 +137,11 @@
         format: 'DD/MM/YYYY',
         inline: false
         });
-          
+        
+        $('#tbljobsheetlist').DataTable({
+            responsive: true
+        });
+
     });
 
 </script>
