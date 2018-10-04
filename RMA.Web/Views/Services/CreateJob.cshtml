@@ -145,6 +145,7 @@
                             </div>
                             <div class="col-md-2">
                                 @Html.Label("Service Type", new { @class = "control-label input-sm" })
+                               @Html.HiddenFor(x=>x.DocumentNo)
                             </div>
                             <div class="col-md-2">
                                 @Html.DropDownListFor(m => m.ServiceType, Model.ServiceTypeList, "SELECT SERVICE TYPE", new { @class = "form-control input-sm" })

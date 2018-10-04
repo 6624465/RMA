@@ -86,7 +86,7 @@
             </div>
             <div class="row" style="margin-top:10px;">
                 <div class="col-md-12">
-                    <table class="table table-striped" id="tblCustomerInvoices">
+                    <table class="table table-striped" id="">
                         <thead>
                             <tr>
                                 <th>Service No</th>
@@ -107,7 +107,7 @@
                                 <td>@Model[i].AssignedEngineer</td>
                                 <td>
                                     <span class="badge bg-green">@Model[i].ServiceStatusDescription</span></td>
-                                <td><button class="btn btn-sm btn-default" onclick="location.href='@Url.Content("~/Services/GetJobForm?JobId="+ Model[i].JobID)'">Edit</button></td>
+                                <td><button class="btn btn-sm btn-primary" onclick="location.href='@Url.Content("~/Services/GetJobForm?JobId="+ Model[i].JobID)'">Edit</button></td>
                             </tr>
                       }
                         </tbody>
@@ -115,11 +115,21 @@
                 </div>
             </div>
         </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default btn-sm pull-right" type="button" onclick="location.href = '@Url.Content("~/Home/Services")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+                </div>
+
+            </div>
+        </div>
     </div>
 </section>
 <script src="@Url.Content("~/Scripts/moment.js")"></script>
 <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")"></script>
 <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+<script src="@Url.Content("~/Scripts/dataTables.bootstrap.js")"></script>
 <script type="text/javascript">
     $(function(){
         $('.datepicker').datetimepicker({
@@ -127,6 +137,7 @@
         format: 'DD/MM/YYYY',
         inline: false
         });
+          
     });
 
 </script>
