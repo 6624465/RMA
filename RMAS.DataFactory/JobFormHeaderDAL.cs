@@ -34,11 +34,11 @@ namespace EZY.RMAS.DataFactory
 
         
 
-        public List<JobFormHeader> SearchList(short branchID, string vesselName, string consigneeName, DateTime dateFrom, DateTime dateTo)
+        public List<JobFormHeader> SearchList(short branchID, string documentNo, string invoiceNo, string mobileNo, DateTime dateReceived, Int64 pageSize)
         {
             return db.ExecuteSprocAccessor(DBRoutine.JOBFORMHEADERAUTOCOMPLETESEARCH, MapBuilder<JobFormHeader>.MapAllProperties()
                                            .DoNotMap(hd => hd.JobFormDetails)
-                                           .Build(), branchID, consigneeName, vesselName, dateFrom, dateTo).ToList();
+                                           .Build(), branchID, documentNo, invoiceNo, mobileNo, dateReceived, pageSize).ToList();
         }
 
         public bool Save<T>(T item, DbTransaction parentTransaction) where T : IContract
