@@ -21,229 +21,281 @@
                 </div>
             </div>
             <div class="box-body">
-                <fieldset class="form-horizontal">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-1">
+				<fieldset class="form-horizontal">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-1">
 
-                            </div>
-                          
-                            <div class="col-md-2">
-                                @Html.Label("Serial Number", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-3 pull-left">
-                                @Html.TextBoxFor(x => x.SerialNo, new { @class = "form-control input-sm " })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.HiddenFor(x=>x.JobID)
-                                @Html.Label("JobId", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.TextBoxFor(x => x.JobID, new { @class = "form-control input-sm" ,disabled = "disabled" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-1">
+							</div>
 
-                            </div>
-                           
-                            <div class="col-md-2">
-                                @Html.Label("Customer Name", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-3 pull-left">
-                                @*@Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control input-sm", placeholder = "Customer Name" })
-                                @Html.HiddenFor(x=>x.CustomerCode)*@
-                                @Html.DropDownListFor(m => m.CustomerCode, Model.CustomerList, "SELECT CUSTOMER", new { @class = "form-control input-sm" })
-                               
-                            </div>
-                            <div class="col-md-2">
-                                @*@Html.HiddenFor(x=>x.SerialNo)*@
-                                @Html.Label("Date Receive", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.TextBoxFor(x => x.DateReceived, new { @class = "form-control input-sm datepicker" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-1">
+							<div class="col-md-2">
+								@Html.Label("Serial Number", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-3 pull-left">
+								@Html.TextBoxFor(x => x.SerialNo, new { @class = "form-control input-sm " })
+							</div>
+							<div class="col-md-2">
+								@Html.HiddenFor(x => x.JobID)
+								@Html.Label("JobId", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-2">
+								@Html.TextBoxFor(x => x.JobID, new { @class = "form-control input-sm", disabled = "disabled" })
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-1">
 
-                            </div>
-                            <div class="col-md-2">
-                                @Html.Label("Address", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-3">
-                                @Html.TextBoxFor(x => x.Address1, new { @class = "form-control input-sm", placeholder = "Address" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.Label("Date Return", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.TextBoxFor(x => x.DateReturn, new { @class = "form-control input-sm datepicker" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-1">
+							</div>
 
-                            </div>
-                            <div class="col-md-2">
-                                @Html.Label("Phone", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-3">
-                                @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control input-sm", placeholder = "Phone" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.Label("Assign Engineer", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(m => m.AssignedEngineer, Model.EngineerList, "SELECT ENGINEER", new { @class = "form-control input-sm" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-1">
+							<div class="col-md-2">
+								@Html.Label("Customer Name", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-3 pull-left">
+								@*@Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control input-sm", placeholder = "Customer Name" })
+					@Html.HiddenFor(x=>x.CustomerCode)*@
+								@Html.DropDownListFor(m => m.CustomerCode, Model.CustomerList, "SELECT CUSTOMER", new { @class = "form-control input-sm" })
 
-                            </div>
-                            <div class="col-md-2">
-                                @Html.Label("Email", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-3">
-                                @Html.TextBoxFor(x => x.EmailID, new { @class = "form-control input-sm", placeholder = "Email" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.Label("Product category", new { @class = "control-label input-sm" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(m => m.ProductCategory, Model.ProductCategoryList, "SELECT CATEGORY", new { @class = "form-control input-sm" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-1">
+							</div>
+							<div class="col-md-2">
+								@*@Html.HiddenFor(x=>x.SerialNo)*@
+								@Html.Label("Date Receive", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-2">
+								@Html.TextBoxFor(x => x.DateReceived, new { @class = "form-control input-sm datepicker" })
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-1">
 
-                            </div>
-                            <div class="col-md-2">
-                                @Html.Label("Purchased Date", new { @class = "control-label input-sm " })
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Address", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-3">
+								@Html.TextBoxFor(x => x.Address1, new { @class = "form-control input-sm", placeholder = "Address" })
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Date Return", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-2">
+								@Html.TextBoxFor(x => x.DateReturn, new { @class = "form-control input-sm datepicker" })
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-1">
 
-                            </div>
-                            <div class="col-md-1">
-                                @Html.TextBoxFor(x => x.PurchaseDate, new { @class = "form-control input-sm datepicker" })
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Phone", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-3">
+								@Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control input-sm", placeholder = "Phone" })
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Assign Engineer", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-2">
+								@Html.DropDownListFor(m => m.AssignedEngineer, Model.EngineerList, "SELECT ENGINEER", new { @class = "form-control input-sm" })
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-1">
 
-                            </div>
-                            <div class="col-md-1">
-                                @Html.Label("Invoice No:", new { @class = "control-label input-sm pull-right" })
-                            </div>
-                            <div class="col-md-1">
-                                @Html.TextBoxFor(x => x.InvoiceNo, new { @class = "form-control input-sm", placeholder = "Invoice No" })
-                            </div>
-                            <div class="col-md-2">
-                                @Html.Label("Service Type", new { @class = "control-label input-sm" })
-                               @Html.HiddenFor(x=>x.DocumentNo)
-                            </div>
-                            <div class="col-md-2">
-                                @Html.DropDownListFor(m => m.ServiceType, Model.ServiceTypeList, "SELECT SERVICE TYPE", new { @class = "form-control input-sm" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button class="btn btn-sm btn-primary pull-right" onclick="Add()"><i class='fa fa-plus'></i>&nbsp;Add</button>
-                        </div>
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Email", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-3">
+								@Html.TextBoxFor(x => x.EmailID, new { @class = "form-control input-sm", placeholder = "Email" })
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Product category", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-2">
+								@Html.DropDownListFor(m => m.ProductCategory, Model.ProductCategoryList, "SELECT CATEGORY", new { @class = "form-control input-sm" })
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-1">
 
-                    </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-md-12">
-                            <table class="table table-striped" id="tblCustomerInvoices">
-                                <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Product Description</th>
-                                        <th>Model #</th>
-                                        <th>Serial #</th>
-                                        <th>Remarks</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (Model.JobFormDetails != null &&  Model.JobFormDetails.Count > 0)
-    {
-                                for (var i = 0; i < Model.JobFormDetails.Count(); i++)
-{
-                                <tr id="tr_@i" class="tr">
-                                    <td>
-                                        @(i+1)
-                                     </td>
-                                    <td>
-                                        @Html.HiddenFor(x => x.JobFormDetails[i].ItemID)
-                                        @Html.TextBoxFor(x => x.JobFormDetails[i].ProductDescription, new
-        {
-            @class = "form-control input-sm",
-            required = "required",
-            style = "width:200px;",
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Purchased Date", new { @class = "control-label input-sm " })
 
-        })
-                                    </td>
-                                    <td>
-                                        @Html.TextBoxFor(x => x.JobFormDetails[i].ModelNo, new
-        {
-            @class = "form-control input-sm",
-            required = "required",
-            style = "width:200px;",
+							</div>
+							<div class="col-md-1">
+								@Html.TextBoxFor(x => x.PurchaseDate, new { @class = "form-control input-sm datepicker" })
 
-        })
-                                    </td>
-                                    <td>
-                                        @Html.TextBoxFor(x => x.JobFormDetails[i].SerialNo, new
-        {
-            @class = "form-control input-sm",
-            required = "required",
-            style = "width:200px;",
+							</div>
+							<div class="col-md-1">
+								@Html.Label("Invoice No:", new { @class = "control-label input-sm pull-right" })
+							</div>
+							<div class="col-md-1">
+								@Html.TextBoxFor(x => x.InvoiceNo, new { @class = "form-control input-sm", placeholder = "Invoice No" })
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Service Type", new { @class = "control-label input-sm" })
+								@Html.HiddenFor(x => x.DocumentNo)
+							</div>
+							<div class="col-md-2">
+								@Html.DropDownListFor(m => m.ServiceType, Model.ServiceTypeList, "SELECT SERVICE TYPE", new { @class = "form-control input-sm" })
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-1">
 
-        })
-                                    </td>
-                                    <td>
-                                        @Html.TextBoxFor(x => x.JobFormDetails[i].Remarks, new
-        {
-            @class = "form-control input-sm",
-            required = "required",
-            style = "width:200px;",
+							</div>
 
-        })
-                                    </td>
-                                    <td><button id="button" class="btn btn-sm btn-danger pull-right" type="button" onclick="DeleteRecord(this,@i)"><i class="fa fa-trash"></i>&nbsp;Delete</button></td>
+							<div class="col-md-2">
+								@Html.Label("Product Description", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-3 pull-left">
+								@Html.TextBoxFor(x => x.ProductDescription, new { @class = "form-control input-sm " })
+							</div>
+							<div class="col-md-2">
+								@Html.Label("Model Number", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-2">
+								@Html.TextBoxFor(x => x.ModelNo, new { @class = "form-control input-sm"})
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-1">
 
-                                </tr>
-}
-}
+							</div>
+
+							<div class="col-md-2">
+								@Html.Label("Contact Person", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-3 pull-left">
+								@Html.TextBoxFor(x => x.ContactPerson, new { @class = "form-control input-sm" })
+							</div>
+							<div class="col-md-2">
+								
+								@Html.Label("Contact Number", new { @class = "control-label input-sm" })
+							</div>
+							<div class="col-md-2">
+							
+								@Html.TextBoxFor(x => x.ContactPhone, new { @class = "form-control input-sm " })
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<button class="btn btn-sm btn-primary pull-right" onclick="Add()"><i class='fa fa-plus'></i>&nbsp;Add</button>
+						</div>
+
+					</div>
+					<div class="row" style="margin-top:10px;">
+						<div class="col-md-12">
+							<table class="table table-striped" id="tblCustomerInvoices">
+								<thead>
+									<tr>
+										<th>Item</th>
+										<th>Product Description</th>
+										<th>Model #</th>
+										<th>Serial #</th>
+										<th>Remarks</th>
+										<th>Fault Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									@if (Model.JobFormDetails != null && Model.JobFormDetails.Count > 0)
+									{
+										for (var i = 0; i < Model.JobFormDetails.Count(); i++)
+										{
+									<tr id="tr_@i" class="tr">
+										<td>
+											@(i + 1)
+										</td>
+										<td>
+											@Html.HiddenFor(x => x.JobFormDetails[i].ItemID)
+											@Html.TextBoxFor(x => x.JobFormDetails[i].ProductDescription, new
+			{
+				@class = "form-control input-sm",
+				required = "required",
+				style = "width:200px;",
+
+			})
+										</td>
+										<td>
+											@Html.TextBoxFor(x => x.JobFormDetails[i].ModelNo, new
+			{
+				@class = "form-control input-sm",
+				required = "required",
+				style = "width:200px;",
+
+			})
+										</td>
+										<td>
+											@Html.TextBoxFor(x => x.JobFormDetails[i].SerialNo, new
+			{
+				@class = "form-control input-sm",
+				required = "required",
+				style = "width:200px;",
+
+			})
+										</td>
+										<td>
+											@Html.TextBoxFor(x => x.JobFormDetails[i].Remarks, new
+			{
+				@class = "form-control input-sm",
+				required = "required",
+				style = "width:200px;",
+
+			})
+										</td>
+										<td>
+											@Html.TextBoxFor(x => x.JobFormDetails[i].FaultDescription, new
+			{
+				@class = "form-control input-sm",
+				required = "required",
+				style = "width:200px;",
+
+			})
+										</td>
+										<td><button id="button" class="btn btn-sm btn-danger pull-right" type="button" onclick="DeleteRecord(this,@i)"><i class="fa fa-trash"></i>&nbsp;Delete</button></td>
+
+									</tr>
+										}
+									}
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="pull-right">
-                                <button class="btn btn-sm btn-success" onclick="SaveJobForm()"><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
-                                @if (Model.JobID != 0)
-                                {
-                            <button class="btn btn-sm btn-danger" type="button" onclick="location.href='@Url.Content("~/Services/DeleteJobForm?JobID=" + Model.JobID)'"><i class="fa fa-trash"></i>&nbsp;Delete</button>
-                                }
-                                <button class="btn btn-sm btn-default" type="button" onclick="location.href='@Url.Content("~/Home/Services")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="pull-right">
+								<button class="btn btn-sm btn-success" onclick="SaveJobForm()"><i class="fa fa-floppy-o"></i>&nbsp;Save</button>
+								@if (Model.JobID != 0)
+								{
+									<button class="btn btn-sm btn-danger" type="button" onclick="location.href='@Url.Content("~/Services/DeleteJobForm?JobID=" + Model.JobID)'"><i class="fa fa-trash"></i>&nbsp;Delete</button>
+								}
+								<button class="btn btn-sm btn-default" type="button" onclick="location.href='@Url.Content("~/Services/JobSheetList")'"><i class="fa fa-backward"></i>&nbsp;Back</button>
 
-                            </div>
+							</div>
 
-                        </div>
+						</div>
 
-                    </div>
+					</div>
 
-                </fieldset>
+				</fieldset>
             </div>
 
 
