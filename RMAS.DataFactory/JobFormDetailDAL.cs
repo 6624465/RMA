@@ -78,7 +78,7 @@ namespace EZY.RMAS.DataFactory
                 db.AddInParameter(deleteCommand, "ModelNo", System.Data.DbType.String, jobformdetail.ModelNo);
                 db.AddInParameter(deleteCommand, "SerialNo", System.Data.DbType.String, jobformdetail.SerialNo);
                 db.AddInParameter(deleteCommand, "Remarks", System.Data.DbType.String, jobformdetail.Remarks);
-
+                db.AddInParameter(deleteCommand, "FaultDescription", System.Data.DbType.String, jobformdetail.FaultDescription);
 
                 result = db.ExecuteNonQuery(deleteCommand, transaction);
 

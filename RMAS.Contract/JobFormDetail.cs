@@ -24,5 +24,8 @@ namespace EZY.RMAS.Contract
         public string SerialNo { get; set; }
 
         public string Remarks { get; set; }
+
+        public string FaultDescription { get; set; }
+
     }
 }

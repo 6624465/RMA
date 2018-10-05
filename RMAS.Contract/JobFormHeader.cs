@@ -47,6 +47,14 @@ namespace EZY.RMAS.Contract
 
         public string SerialNo { get; set; }
 
+        public string ProductDescription { get; set; }
+
+        public string ModelNo { get; set; }
+
+        public string ContactPerson { get; set; }
+
+        public string ContactPhone { get; set; }
+
         public string CreatedBy { get; set; }
 
         public DateTime CreatedOn { get; set; }
